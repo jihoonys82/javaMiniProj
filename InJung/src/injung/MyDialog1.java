@@ -1,4 +1,4 @@
-package Injung;
+package injung;
 
 import java.awt.Container;
 import java.awt.event.ActionEvent;

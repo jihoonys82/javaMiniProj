@@ -1,4 +1,4 @@
-package Injung;
+package injung;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;

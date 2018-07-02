@@ -1,4 +1,4 @@
-package Injung;
+package injung;
 
 import javax.swing.JPanel;
 import java.awt.GridLayout;
@@ -16,7 +16,7 @@ import javax.swing.JTextField;
  * @author Jihoon Jeong
  *
  */
-public class quizPanel extends JPanel {
+public class QuizPanel extends JPanel {
 	private static final long serialVersionUID = 4157611301322840656L;
 	
 	private JPanel quizPane 	= new JPanel();
@@ -54,7 +54,7 @@ public class quizPanel extends JPanel {
 	/**
 	 * setup quizPanel
 	 */
-	public quizPanel() {
+	public QuizPanel() {
 		// set quizPanel
 		setLayout(null);
 		

@@ -1,4 +1,4 @@
-package Injung;
+package injung;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -19,7 +19,7 @@ import javax.swing.SwingConstants;
  * @author Jihoon Jeong
  *
  */
-public class editEmployeePanel extends JPanel {
+public class EditEmployeePanel extends JPanel {
 	private static final long serialVersionUID = -8685746161617403122L;
 	
 		//main panels
@@ -86,7 +86,7 @@ public class editEmployeePanel extends JPanel {
 		JButton btnConfirm		= new JButton("확인");
 		JButton btnCancel 		= new JButton("취소");
 		
-		public editEmployeePanel() {
+		public EditEmployeePanel() {
 			
 			// set up main Panel
 			setLayout(null);

@@ -1,4 +1,4 @@
-package Injung;
+package injung;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -17,7 +17,7 @@ import javax.swing.ImageIcon;
  * @author Jihoon Jeong
  *
  */
-public class employeeInfoPanel extends JPanel {
+public class EmployeeInfoPanel extends JPanel {
 	private static final long serialVersionUID = -8738983467475324121L;
 
 	//main panels
@@ -60,7 +60,7 @@ public class employeeInfoPanel extends JPanel {
 	JButton btnEditInfo 		= new JButton("Edit Info");
 	JButton btnPasswordChange 	= new JButton("Password Change");
 	
-	public employeeInfoPanel() {
+	public EmployeeInfoPanel() {
 		
 		// set up main Panel
 		setLayout(null);
