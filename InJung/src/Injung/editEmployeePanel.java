@@ -27,7 +27,7 @@ public class editEmployeePanel extends JPanel {
 		private JPanel editInfoPane	= new JPanel();
 		private JPanel buttonPane 	= new JPanel();
 		
-		// sub panels for detailInfoPane
+		// sub panels for editInfoPane
 		private JPanel employeeIdPane 	= new JPanel();
 		private JPanel passwordPane		= new JPanel();
 		private JPanel pwConfirmPane	= new JPanel();
