@@ -22,6 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 /**
  * FileServer Class 
@@ -134,22 +135,24 @@ public class FileServer extends JFrame implements ActionListener {
 	private void startServer() {
 		
 		try {
-			txtConsole.append("***Starting Server***\n");
+			txtConsole.append("***Starting Server***");
 			serv = new ServerSocket(port);
 			
 			while(true) {
-				txtConsole.append("Waiting for Client... \n");
+				txtConsole.append("Waiting for Client...");
 				sock = serv.accept();
 				txtConsole.append("Client("+sock.getInetAddress().getHostAddress()+ ") is connected.\n");
 				
 				FileReceiver receiver = new FileReceiver(sock);
-				receiver.start();
+				SwingUtilities.invokeLater(receiver);
+				
 				
 			} // end of while
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
 			try {
+				txtConsole.append("Closing Service");
 				if(sock!=null) sock.close();
 				if(serv!=null) serv.close();
 			} catch (IOException e) {
