@@ -1,5 +1,6 @@
 package injung;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Rectangle;
 
 import javax.swing.BorderFactory;
@@ -9,204 +10,194 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 
 public class TeamRecordPanel extends JPanel{
 
 	//»ó¼ö
-	private static final int PANEL1_Y=0;
-	private static final int PANEL1_HEIGHT=50;
-	private static final int PANEL1_WIDTH=980;
+	private static final int tablePane_Y=0;
+	private static final int tablePane_HEIGHT=350;
+	private static final int tablePane_WIDTH=980;
 
-	private static final int PANEL2_Y=60;
-	private static final int PANEL2_HEIGHT=300;
-	private static final int PANEL2_WIDTH=980;
-
-	private static final int PANEL3_Y=370;
-	private static final int PANEL3_HEIGHT=155;
-	private static final int PANEL3_WIDTH=660;
+	private static final int inputPane_Y=360;
+	private static final int inputPane_HEIGHT=155;
+	private static final int inputPane_WIDTH=660;
 	
-	private static final int PANEL4_X=670;
-	private static final int PANEL4_Y=370;
-	private static final int PANEL4_HEIGHT=155;
-	private static final int PANEL4_WIDTH=310;
+	private static final int btnPane_X=670;
+	private static final int btnPane_Y=360;
+	private static final int btnPane_HEIGHT=155;
+	private static final int btnPane_WIDTH=310;
 			
 	private static final int PANEL_X=0;
 	
-	
-	//Ã¹¹øÂ° ÆÇ³Ú
-	private JPanel teamRecord_Pane1;
-    private JLabel teamRecord_Pane1_Label1;
-    private JLabel teamRecord_Pane1_Label2;
+	  
+    //Å×ÀÌºí ÆÇ³Ú
+    private JPanel tablePane;
+    //Å×ÀÌºí ÆÇ³Ú - ÄÄÆ÷³ÍÆ®
+    private JTable tbTeamRecord;
+    //Å×ÀÌºí ÆÇ³Ú - ½ºÅ©·Ñ ÆÇ³Ú
+    private JScrollPane scrollPane;
     
-    //µÎ¹øÂ° ÆÇ³Ú
-    private JPanel teamRecord_Pane2;
-    private JList<String> teamRecord_Pane2_List1;
-    private JList<String> teamRecord_Pane2_List2;
-    //µÎ¹øÂ° - ½ºÅ©·Ñ ÆÇ³Ú
-    private JScrollPane teamRecord_Pane2_Scroll1;
-    private JScrollPane teamRecord_Pane2_Scroll2;
+    //ÀÔ·Â ÆÇ³Ú
+    private JPanel inputPane;
+    private JLabel lblTeam;
+    private JLabel lblRole;
+    private JLabel lblLeader;
+    private JTextField txtTeam;
+    private JTextField txtRole;
+    private JTextField txtLeader;
     
-    //¼¼¹øÂ° ÆÇ³Ú
-    private JPanel teamRecord_Pane3;
-    private JLabel teamRecord_Pane3_Label1;
-    private JLabel teamRecord_Pane3_Label2;
-    private JLabel teamRecord_Pane3_Label3;
-    private JTextField teamRecord_Pane3_TextField1;
-    private JTextField teamRecord_Pane3_TextField2;
-    private JTextField teamRecord_Pane3_TextField3;
-    
-    //³×¹øÂ° ÆÇ³Ú
-    private JPanel teamRecord_Pane4;
-    private JButton teamRecord_Pane4_Button1;
-    private JButton teamRecord_Pane4_Button2;
+    //¹öÆ° ÆÇ³Ú
+    private JPanel btnPane;
+    private JButton btnInsert;
+    private JButton btncancel;
     
     
     public TeamRecordPanel() {
 	
     	setLayout(null);
     	
-    	//ÆÇ³Ú1
     	
-    	//ÆÇ³Ú1 - ¼³Á¤
-    	teamRecord_Pane1 = new JPanel();
-    	teamRecord_Pane1.setBounds(PANEL_X, PANEL1_Y, PANEL1_WIDTH, PANEL1_HEIGHT);
-    	teamRecord_Pane1.setLayout(null);
-    	teamRecord_Pane1.setBorder(BorderFactory.createLineBorder(Color.BLUE));
-    	
-    	//ÆÇ³Ú1 - ÄÁÆ÷³ÍÆ®
-    	teamRecord_Pane1_Label1 = new JLabel("ºÎ ¼­");
-    	teamRecord_Pane1_Label1.setFont(teamRecord_Pane1_Label1.getFont().deriveFont(20.0f));
-    	teamRecord_Pane1_Label1.setBounds(new Rectangle(PANEL_X, PANEL1_Y, 300, PANEL1_HEIGHT));
-    	teamRecord_Pane1_Label1.setHorizontalAlignment(JLabel.CENTER);
-    	teamRecord_Pane1_Label1.setBorder(BorderFactory.createLineBorder(Color.BLUE));
+    	//ÆÀ·¹ÄÚµå ÆÇ³Ú
+    	//ÆÀ·¹ÄÚµå ÆÇ³Ú - ¼³Á¤
 
-    	teamRecord_Pane1_Label2 = new JLabel("³» ¿ë");
-    	teamRecord_Pane1_Label2.setFont(teamRecord_Pane1_Label2.getFont().deriveFont(20.0f));
-    	teamRecord_Pane1_Label2.setBounds(new Rectangle(300, PANEL1_Y, 680, PANEL1_HEIGHT));
-    	teamRecord_Pane1_Label2.setHorizontalAlignment(JLabel.CENTER);
-    	teamRecord_Pane1_Label2.setBorder(BorderFactory.createLineBorder(Color.BLUE));
+    	tablePane = new JPanel();
+    	tablePane.setBounds(PANEL_X, tablePane_Y, tablePane_WIDTH, tablePane_HEIGHT);
+    	tablePane.setLayout(null);
+    	tablePane.setBorder(BorderFactory.createLineBorder(Color.BLUE));
+    	
+    	//ÆÀ·¹ÄÚµå ÆÇ³Ú - ÄÄÆ÷³ÍÆ®
+    	//		µ¥ÀÌÅÍ
+    	String[] columnNames = {"ºÎ¼­","Role","Leader","¼öÁ¤","Ãë¼Ò"};
+    	Object[][] rowData = {
+    			{"»çÀå½Ç","»çÀå","È«±æµ¿"},
+    			{"Àç¹«°æ¿µÆÀ","Àç¹«°æ¿µ ÃÑ°ý","ÀÌ¼ø½Å"},
+    			{"ÀÎ»ç°ü¸®ÆÀ","ÀÎ»ç°ü¸®","Á¦ÁÖ¾²"},
+    			{"°³¹ß1ÆÀ","ÇÁ·Î±×·¥ °³¹ß","Àª¸®¾Ï"},
+    			{"°³¹ß2ÆÀ","ÇÁ·Î±×·¥ °³¹ß","¿ÀÃÊ¾Æ"},
+    			{"±âÈ¹ÆÀ","ÇÁ·Î±×·¥ ±âÈ¹","³×ÀÌ¸¶¸£"}
+    	};
+    	
+    	//		Å×ÀÌºí ¼³Á¤
+    	DefaultTableModel tbDefault = new DefaultTableModel(rowData, columnNames); 
+    	tbTeamRecord = new JTable(tbDefault);
+    	tbTeamRecord.setFont(new Font("°íµñ",Font.BOLD,20));
+    	tbTeamRecord.setRowHeight(30);
 
-    	teamRecord_Pane1.add(teamRecord_Pane1_Label1);
-    	teamRecord_Pane1.add(teamRecord_Pane1_Label2);
+    	TableColumn firstColoumn = tbTeamRecord.getColumnModel().getColumn(0);
+    	firstColoumn.setPreferredWidth(200);
+    	firstColoumn.setMinWidth(200);
+    	firstColoumn.setMaxWidth(200);
+    	TableColumn secondColoumn = tbTeamRecord.getColumnModel().getColumn(1);
+    	secondColoumn.setPreferredWidth(450);
+    	secondColoumn.setMinWidth(450);
+    	secondColoumn.setMaxWidth(450);
+    	TableColumn thirdColoumn = tbTeamRecord.getColumnModel().getColumn(2);
+    	thirdColoumn.setPreferredWidth(150);
+    	thirdColoumn.setMinWidth(150);
+    	thirdColoumn.setMaxWidth(150);
     	
-    	add(teamRecord_Pane1);
+ 
     	
-    	//ÆÇ³Ú2
-    	//ÆÇ³Ú2 - ¼³Á¤
-
-    	teamRecord_Pane2 = new JPanel();
-    	teamRecord_Pane2.setBounds(PANEL_X, PANEL2_Y, PANEL2_WIDTH, PANEL2_HEIGHT);
-    	teamRecord_Pane2.setLayout(null);
-    	teamRecord_Pane2.setBorder(BorderFactory.createLineBorder(Color.BLUE));
     	
-    	//ÆÇ³Ú2 - ÄÄÆ÷³ÍÆ®
-    	teamRecord_Pane2_List1 = new JList<>();
-    	teamRecord_Pane2_List1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
-    	teamRecord_Pane2_List2 = new JList<>();
-    	teamRecord_Pane2_List2.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-    	
-    	//ÆÇ³Ú2 - ½ºÅ©·Ñ ÆÇ³Ú
-    	teamRecord_Pane2_Scroll1 = new JScrollPane(teamRecord_Pane2_List1, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+    	//ÆÀ·¹ÄÚµåÆÇ³Ú - ½ºÅ©·Ñ ÆÇ³Ú
+    	scrollPane = new JScrollPane(tbTeamRecord, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-    	teamRecord_Pane2_Scroll1.setBounds(5, 5, 295, 290);
-    	teamRecord_Pane2_Scroll1.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-    	
-    	teamRecord_Pane2_Scroll2 = new JScrollPane(teamRecord_Pane2_List2,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-    	teamRecord_Pane2_Scroll2.setBounds(302, 5, 675, 290);
-    	teamRecord_Pane2_Scroll2.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+    	scrollPane.setBounds(5, 5, 970, 340);
+    	scrollPane.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+	
 
     	
-    	teamRecord_Pane2.add(teamRecord_Pane2_Scroll1);
-    	teamRecord_Pane2.add(teamRecord_Pane2_Scroll2);
-    	add(teamRecord_Pane2);
+    	tablePane.add(scrollPane);
+    	add(tablePane);
     	
     		
-    	//ÆÇ³Ú3
-    	//ÆÇ³Ú3 - ¼³Á¤
+    	//ÀÎÇ²ÆÇ³Ú
+    	//ÀÎÇ²ÆÇ³Ú - ¼³Á¤
     	
-    	teamRecord_Pane3 = new JPanel();
-    	teamRecord_Pane3.setBounds(PANEL_X, PANEL3_Y, PANEL3_WIDTH, PANEL3_HEIGHT);
-    	teamRecord_Pane3.setLayout(null);
-    	teamRecord_Pane3.setBorder(BorderFactory.createLineBorder(Color.BLUE));
+    	inputPane = new JPanel();
+    	inputPane.setBounds(PANEL_X, inputPane_Y, inputPane_WIDTH, inputPane_HEIGHT);
+    	inputPane.setLayout(null);
+    	inputPane.setBorder(BorderFactory.createLineBorder(Color.BLUE));
     	
     	
-    	//ÆÇ³Ú 3 - ÄÄÆ÷³ÍÆ®
+    	//ÀÎÇ²ÆÇ³Ú - ÄÄÆ÷³ÍÆ®
     	
-    	teamRecord_Pane3_Label1 = new JLabel("ºÎ ¼­");
-    	teamRecord_Pane3_Label1.setFont(teamRecord_Pane3_Label1.getFont().deriveFont(18.0f));
-    	teamRecord_Pane3_Label1.setBounds(new Rectangle(5, 5, 140, 45));
-    	teamRecord_Pane3_Label1.setHorizontalAlignment(JLabel.CENTER);
-    	teamRecord_Pane3_Label1.setBorder(BorderFactory.createLineBorder(Color.BLUE));   	
+    	lblTeam = new JLabel("ºÎ ¼­");
+    	lblTeam.setFont(lblTeam.getFont().deriveFont(18.0f));
+    	lblTeam.setBounds(new Rectangle(5, 5, 140, 45));
+    	lblTeam.setHorizontalAlignment(JLabel.CENTER);
+    	lblTeam.setBorder(BorderFactory.createLineBorder(Color.BLUE));   	
     	
-    	teamRecord_Pane3_Label2 = new JLabel("Role");
-    	teamRecord_Pane3_Label2.setFont(teamRecord_Pane3_Label2.getFont().deriveFont(18.0f));
-    	teamRecord_Pane3_Label2.setBounds(new Rectangle(5, 55, 140, 45));
-    	teamRecord_Pane3_Label2.setHorizontalAlignment(JLabel.CENTER);
-    	teamRecord_Pane3_Label2.setBorder(BorderFactory.createLineBorder(Color.BLUE));   	
+    	lblRole = new JLabel("Role");
+    	lblRole.setFont(lblRole.getFont().deriveFont(18.0f));
+    	lblRole.setBounds(new Rectangle(5, 55, 140, 45));
+    	lblRole.setHorizontalAlignment(JLabel.CENTER);
+    	lblRole.setBorder(BorderFactory.createLineBorder(Color.BLUE));   	
     	
-    	teamRecord_Pane3_Label3 = new JLabel("Leader");
-       	teamRecord_Pane3_Label3.setFont(teamRecord_Pane3_Label3.getFont().deriveFont(18.0f));
-    	teamRecord_Pane3_Label3.setBounds(new Rectangle(5, 105, 140, 45));
-    	teamRecord_Pane3_Label3.setHorizontalAlignment(JLabel.CENTER);
-    	teamRecord_Pane3_Label3.setBorder(BorderFactory.createLineBorder(Color.BLUE));   	
+    	lblLeader = new JLabel("Leader");
+    	lblLeader.setFont(lblLeader.getFont().deriveFont(18.0f));
+    	lblLeader.setBounds(new Rectangle(5, 105, 140, 45));
+    	lblLeader.setHorizontalAlignment(JLabel.CENTER);
+    	lblLeader.setBorder(BorderFactory.createLineBorder(Color.BLUE));   	
     	
-    	teamRecord_Pane3_TextField1 = new JTextField();
-    	teamRecord_Pane3_TextField1.setBounds(150, 5, 500, 45);
-       	teamRecord_Pane3_TextField1.setFont(teamRecord_Pane3_Label1.getFont());
-		teamRecord_Pane3_TextField1.setEditable(true);
-		teamRecord_Pane3_TextField1.setBackground(Color.white);
-		teamRecord_Pane3_TextField1.setForeground(Color.BLACK);
+    	txtTeam = new JTextField();
+    	txtTeam.setBounds(150, 5, 500, 45);
+    	txtTeam.setFont(lblTeam.getFont());
+    	txtTeam.setEditable(true);
+    	txtTeam.setBackground(Color.white);
+    	txtTeam.setForeground(Color.BLACK);
     	
-    	teamRecord_Pane3_TextField2 = new JTextField();
-    	teamRecord_Pane3_TextField2.setBounds(150, 55, 500, 45);
-       	teamRecord_Pane3_TextField2.setFont(teamRecord_Pane3_Label2.getFont());
-		teamRecord_Pane3_TextField2.setEditable(true);
-		teamRecord_Pane3_TextField2.setBackground(Color.white);
-		teamRecord_Pane3_TextField2.setForeground(Color.BLACK);
+    	txtRole = new JTextField();
+    	txtRole.setBounds(150, 55, 500, 45);
+    	txtRole.setFont(lblRole.getFont());
+    	txtRole.setEditable(true);
+    	txtRole.setBackground(Color.white);
+    	txtRole.setForeground(Color.BLACK);
     	
-    	teamRecord_Pane3_TextField3 = new JTextField();
-    	teamRecord_Pane3_TextField3.setBounds(150, 105, 500, 45);
-       	teamRecord_Pane3_TextField3.setFont(teamRecord_Pane3_Label3.getFont());
-		teamRecord_Pane3_TextField3.setEditable(true);
-		teamRecord_Pane3_TextField3.setBackground(Color.white);
-		teamRecord_Pane3_TextField3.setForeground(Color.BLACK);
+    	txtLeader = new JTextField();
+    	txtLeader.setBounds(150, 105, 500, 45);
+    	txtLeader.setFont(lblLeader.getFont());
+    	txtLeader.setEditable(true);
+    	txtLeader.setBackground(Color.white);
+    	txtLeader.setForeground(Color.BLACK);
     	
 
     	
-    	teamRecord_Pane3.add(teamRecord_Pane3_Label1);
-    	teamRecord_Pane3.add(teamRecord_Pane3_Label2);
-    	teamRecord_Pane3.add(teamRecord_Pane3_Label3);
-    	teamRecord_Pane3.add(teamRecord_Pane3_TextField1);
-    	teamRecord_Pane3.add(teamRecord_Pane3_TextField2);
-    	teamRecord_Pane3.add(teamRecord_Pane3_TextField3);
+    	inputPane.add(lblTeam);
+    	inputPane.add(lblRole);
+    	inputPane.add(lblLeader);
+    	inputPane.add(txtTeam);
+    	inputPane.add(txtRole);
+    	inputPane.add(txtLeader);
 
 
-    	add(teamRecord_Pane3);
+    	add(inputPane);
     	
-    	//ÆÇ³Ú4
-    	//ÆÇ³Ú4 - ¼³Á¤
-       	teamRecord_Pane4 = new JPanel();
-    	teamRecord_Pane4.setBounds(PANEL4_X, PANEL4_Y, PANEL4_WIDTH, PANEL4_HEIGHT);
-    	teamRecord_Pane4.setLayout(null);
-    	teamRecord_Pane4.setBorder(BorderFactory.createLineBorder(Color.BLUE));  	
+    	//¹öÆ°ÆÇ³Ú
+    	//¹öÆ°ÆÇ³Ú - ¼³Á¤
+       	btnPane = new JPanel();
+    	btnPane.setBounds(btnPane_X, btnPane_Y, btnPane_WIDTH, btnPane_HEIGHT);
+    	btnPane.setLayout(null);
+    	btnPane.setBorder(BorderFactory.createLineBorder(Color.BLUE));  	
     	
     	
-    	//ÆÇ³Ú4 - ÄÄÆ÷³ÍÆ®
-    	teamRecord_Pane4_Button1 = new JButton("»ý¼º/¼öÁ¤");
-    	teamRecord_Pane4_Button1.setBounds(5, 5, 150, 70);
-    	teamRecord_Pane4_Button2 = new JButton("Ãë¼Ò");
-    	teamRecord_Pane4_Button2.setBounds(5, 80, 150, 70);
+    	//¹öÆ°ÆÇ³Ú - ÄÄÆ÷³ÍÆ®
+    	btnInsert = new JButton("»ý¼º/¼öÁ¤");
+    	btnInsert.setBounds(5, 5, 150, 70);
+    	btncancel = new JButton("Ãë¼Ò");
+    	btncancel.setBounds(5, 80, 150, 70);
 
-    	teamRecord_Pane4.add(teamRecord_Pane4_Button1);
-    	teamRecord_Pane4.add(teamRecord_Pane4_Button2);
+    	btnPane.add(btnInsert);
+    	btnPane.add(btncancel);
     	
-    	add(teamRecord_Pane4);
+    	add(btnPane);
    	
     	
 	}
