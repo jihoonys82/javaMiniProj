@@ -14,8 +14,8 @@ import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
  
 /**
-+ * ThreeViewPanel 
-+ * Show 3 employee Inforamtion 
++ * TemaViewPanel 
++ * employee Information by team 
 + * @since 2018-07-05
 + * @author Changhwan Bae
 + *
