@@ -11,7 +11,8 @@ import javax.swing.table.DefaultTableModel;
 
 /*
  * 작성 일자 : 2018.07.01
- * 수정 일자 :
+ * 수정 일자 : 2018.07.05
+ * 	- 테이블 셀(내용) 수정 방지
  * 
  * 작성자 : 권미현
  * 
@@ -19,7 +20,7 @@ import javax.swing.table.DefaultTableModel;
  */
 
 public class WholeView extends JFrame{
-
+	
 	private JPanel panelWholeView;	// 전체보기 Panel
 	
 	// -- JTable 설정 ---
@@ -58,7 +59,13 @@ public class WholeView extends JFrame{
 				{"가나다", "생산부", "사원", "생산부사원", "ccc@naver.com", "222-2222-2222"},
 		};
 		
-		tableModel = new DefaultTableModel(sample, tableAttribute);
+		tableModel = new DefaultTableModel(sample, tableAttribute) {
+			@Override
+			public boolean isCellEditable(int row, int column) { // 테이블 내용 수정 불가로 만들기
+				return false;
+			}
+		};
+		
 		tableView = new JTable(tableModel); // JTable에 DefaultTableModel 설정
 
 		for(int i = 0; i <50; i++) {
