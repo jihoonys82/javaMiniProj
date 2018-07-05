@@ -11,6 +11,10 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
 
+/*
+ * 
+ */
+
 public class photoViewPanel extends JPanel {
 	
 	private JPanel photoViewPane = new JPanel();	// 사진보기 판넬 
