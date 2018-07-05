@@ -1,4 +1,4 @@
-package injung.dto;
+package injung.model;
 
 import java.sql.Date;
 
