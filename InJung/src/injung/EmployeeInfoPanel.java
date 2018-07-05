@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.ImageIcon;
+import javax.swing.border.EtchedBorder;
 
 
 /**
@@ -116,6 +117,7 @@ public class EmployeeInfoPanel extends JPanel {
 	 * setup detailInfoPane
 	 */
 	private void initDetailInfo() {
+		detailInfoPane.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
 		//detailInfoPane setting
 		detailInfoPane.setBounds(224, 10, 455, 300);
 		detailInfoPane.setLayout(null);
