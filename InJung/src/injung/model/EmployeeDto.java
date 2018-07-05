@@ -7,22 +7,18 @@ public class EmployeeDto {
 	private int employeeId;
 	private String name;
 	private Date birth;
-	private int team;
+	private String team;
 	private String level;
 	private String role;
-	private int mobile;
-	private int workPhone;
+	private String mobile;
+	private String workPhone;
 	private String eMail;
 	private String location;
 	private String password;
 	private String photo;
 	private String lostIdQuestion;
 	private String lostIdAnswer;
-	
-	
-	
-	
-	
+
 	
 	public int getEmployeeId() {
 		return employeeId;
@@ -42,10 +38,10 @@ public class EmployeeDto {
 	public void setBirth(Date birth) {
 		this.birth = birth;
 	}
-	public int getTeam() {
+	public String getTeam() {
 		return team;
 	}
-	public void setTeam(int team) {
+	public void setTeam(String team) {
 		this.team = team;
 	}
 	public String getLevel() {
@@ -60,16 +56,16 @@ public class EmployeeDto {
 	public void setRole(String role) {
 		this.role = role;
 	}
-	public int getMobile() {
+	public String getMobile() {
 		return mobile;
 	}
-	public void setMobile(int mobile) {
+	public void setMobile(String mobile) {
 		this.mobile = mobile;
 	}
-	public int getWorkPhone() {
+	public String getWorkPhone() {
 		return workPhone;
 	}
-	public void setWorkPhone(int workPhone) {
+	public void setWorkPhone(String workPhone) {
 		this.workPhone = workPhone;
 	}
 	public String geteMail() {
