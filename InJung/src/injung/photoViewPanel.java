@@ -12,7 +12,9 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
 
 /*
+ * 업로드 날짜 : 2018.07.05
  * 
+ * 작성자 : 송주현
  */
 
 public class photoViewPanel extends JPanel {
