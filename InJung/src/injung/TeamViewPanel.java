@@ -1,12 +1,13 @@
- package injung;
- 
+package injung;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.util.Vector;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -19,7 +20,7 @@ import javax.swing.border.EtchedBorder;
 + * @author Changhwan Bae
 + *
 + */
- public class ThreeViewPanel extends JPanel {
+ public class TeamViewPanel extends JPanel {
 	 
  	private static final long serialVersionUID = -1740434906725933696L;
 
@@ -29,7 +30,8 @@ import javax.swing.border.EtchedBorder;
 	// person Panes 
 	private JPanel[] personPane = new JPanel[idx];
 	
-	// sub panes for personPane - infoPane, buttonPane
+	// sub panes for personPane - comboPane, infoPane, buttonPane
+	private JPanel comboPane 		= new JPanel();
 	private JPanel[] infoPane   = new JPanel[idx];
 	private JPanel[] buttonPane = new JPanel[idx];
 	
@@ -48,7 +50,6 @@ import javax.swing.border.EtchedBorder;
 	// sub panes for priv,next button
 	private JPanel pagePane 		= new JPanel();
 	
- 
 	// declare memberField
 	// Labels 
 	private JLabel[] lblName 	  = new JLabel[idx];
@@ -58,6 +59,9 @@ import javax.swing.border.EtchedBorder;
 	private JLabel[] lblWorkPhone = new JLabel[idx];
 	private JLabel[] lblEmail	  = new JLabel[idx];
 	private JLabel[] lblPhoto	  = new JLabel[idx];
+	
+	private JLabel lblTeamName 	  = new JLabel("ÆÀ¸í");
+	
 	
 	// Text Fields
 	private JTextField[] txtName	  = new JTextField[idx];
@@ -71,20 +75,39 @@ import javax.swing.border.EtchedBorder;
 	private JButton[] btnDetailView = new JButton[idx];
 	private JButton  btnPrivView	= new JButton("ÀÌÀü");
 	private JButton  btnNextView	= new JButton("´ÙÀ½");
+	
+	// ComboBox
+	Vector<String> teamList = new Vector<>();
+	private JComboBox<String> cbTeam;
 		
  	/**
  	 * constructor
  	 */
- 	public ThreeViewPanel() {
+ 	public TeamViewPanel() {
  		
  		setLayout(null);
  		setBounds(10, 5, 990, 580);
  		
+ 		// set combo box
+		comboPane.setBounds(25,5,300,35);
+		comboPane.setLayout(new FlowLayout(FlowLayout.LEFT));
+		
+		//Test data
+		teamList.add("°³¹ßÆÀ");
+		teamList.add("¿µ¾÷Áö¿øÆÀ");
+		teamList.add("½Ã¼³°ü¸®ÆÀ");
+		cbTeam = new JComboBox<>(teamList);
+		
+		comboPane.add(lblTeamName);
+		comboPane.add(cbTeam);
+ 		
+		add(comboPane);
+ 		
 		for(int i=0;i<idx;i++) {
 			//set personPane 
 			personPane[i] = new JPanel();
-			personPane[i].setBounds(12,35 + i*160, 936, 160); 
-			personPane[i].setLayout(null);
+			personPane[i].setBounds(12,40 + i*160, 936, 160);
+			personPane[i].setLayout(null);		
 			
 			//set infoPane
 			infoPane[i] = new JPanel();
@@ -92,12 +115,10 @@ import javax.swing.border.EtchedBorder;
 			infoPane[i].setLayout(null);
 			infoPane[i].setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
 			
-			
 			// set photoPane
 			photoPane[i] = new JPanel();
 			photoPane[i].setBounds(12, 10, 140, 120);
 			lblPhoto[i] = new JLabel("Photo");
-			
 			
 			// set personInfoPane
 			personInfoPane[i] = new JPanel();
@@ -186,7 +207,7 @@ import javax.swing.border.EtchedBorder;
 			personInfoPane[i].add(workphonePane[i]);
 			personInfoPane[i].add(emailPane[i]);
 			
-			// add lbl,txt for subPanes
+			// add lbl, txt for subPanes
 			namePane[i].add(lblName[i]);
 			namePane[i].add(txtName[i]);
 			teamPane[i].add(lblTeam[i]);
@@ -203,29 +224,17 @@ import javax.swing.border.EtchedBorder;
 			// add subPane(button)
 			personPane[i].add(buttonPane[i]);
 			
-			
 			// add buttons for subPane(button)
 			buttonPane[i].add(btnDetailView[i], BorderLayout.SOUTH);
-			
 		}
 		
-		
 		// set pagePane  
-		pagePane.setBounds(330,510,200,35);
+		pagePane.setBounds(330,520,200,35);
 		pagePane.setLayout(new FlowLayout());
-		
+						
 		pagePane.add(btnPrivView);
 		pagePane.add(btnNextView);
-			
+							
 		add(pagePane);
 	}
-	
-	public static void main(String[] args) {
-		JFrame frame = new JFrame();
-		frame.setBounds(10, 10, 1000, 600);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.add(new ThreeViewPanel());
- 		
-		frame.setVisible(true);
- 	}
  }
