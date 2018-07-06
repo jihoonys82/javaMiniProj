@@ -1,5 +1,6 @@
 package injung;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Rectangle;
 
@@ -14,7 +15,10 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 
 
@@ -25,12 +29,12 @@ public class TeamRecordPanel extends JPanel{
 	private static final int tablePane_HEIGHT=350;
 	private static final int tablePane_WIDTH=980;
 
-	private static final int inputPane_Y=360;
+	private static final int inputPane_Y=355;
 	private static final int inputPane_HEIGHT=155;
 	private static final int inputPane_WIDTH=660;
 	
-	private static final int btnPane_X=670;
-	private static final int btnPane_Y=360;
+	private static final int btnPane_X=665;
+	private static final int btnPane_Y=355;
 	private static final int btnPane_HEIGHT=155;
 	private static final int btnPane_WIDTH=310;
 			
@@ -56,7 +60,9 @@ public class TeamRecordPanel extends JPanel{
     //버튼 판넬
     private JPanel btnPane;
     private JButton btnInsert;
-    private JButton btncancel;
+    private JButton btnCancel;
+    private JButton btnEdit;
+    private JButton btnDelete;
     
     
     public TeamRecordPanel() {
@@ -74,43 +80,57 @@ public class TeamRecordPanel extends JPanel{
     	
     	//팀레코드 판넬 - 컴포넌트
     	//		데이터
-    	String[] columnNames = {"부서","Role","Leader","수정","취소"};
+    	String[] columnNames = {"부 서","Role","Leader"};
     	Object[][] rowData = {
     			{"사장실","사장","홍길동"},
-    			{"재무경영팀","재무경영 총괄","이순신"},
-    			{"인사관리팀","인사관리","제주쓰"},
-    			{"개발1팀","프로그램 개발","윌리암"},
-    			{"개발2팀","프로그램 개발","오초아"},
-    			{"기획팀","프로그램 기획","네이마르"}
+    			{"재무경영팀","재무경영 총괄","정지훈"},
+    			{"인사관리팀","인사관리","권미현"},
+    			{"개발1팀","프로그램 개발","배창환"},
+    			{"개발2팀","프로그램 개발","송영준"},
+    			{"기획팀","프로그램 기획","송주현"},
+    			{"영업팀","프로그램 마케팅","이현우"}
     	};
     	
     	//		테이블 설정
     	DefaultTableModel tbDefault = new DefaultTableModel(rowData, columnNames); 
     	tbTeamRecord = new JTable(tbDefault);
     	tbTeamRecord.setFont(new Font("고딕",Font.BOLD,20));
-    	tbTeamRecord.setRowHeight(30);
+    	tbTeamRecord.setRowHeight(40);
+    	tbTeamRecord.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
+    	// 테이블 렌더
+    	DefaultTableCellRenderer render = new DefaultTableCellRenderer();
+    	render.setHorizontalAlignment(SwingConstants.CENTER);
+    	
+    	// 테이블 헤더 설정
+    	JTableHeader header = tbTeamRecord.getTableHeader();
+    	header.setPreferredSize(new Dimension(970, 40));
+    	header.setFont(new Font("고딕",Font.BOLD,20));
+    	header.setBackground(Color.cyan);
+
+    	// 테이블 컬럼 설정
     	TableColumn firstColoumn = tbTeamRecord.getColumnModel().getColumn(0);
     	firstColoumn.setPreferredWidth(200);
     	firstColoumn.setMinWidth(200);
     	firstColoumn.setMaxWidth(200);
+    	firstColoumn.setCellRenderer(render);
     	TableColumn secondColoumn = tbTeamRecord.getColumnModel().getColumn(1);
-    	secondColoumn.setPreferredWidth(450);
-    	secondColoumn.setMinWidth(450);
-    	secondColoumn.setMaxWidth(450);
+    	secondColoumn.setPreferredWidth(600);
+    	secondColoumn.setMinWidth(600);
+    	secondColoumn.setMaxWidth(600);
     	TableColumn thirdColoumn = tbTeamRecord.getColumnModel().getColumn(2);
-    	thirdColoumn.setPreferredWidth(150);
-    	thirdColoumn.setMinWidth(150);
-    	thirdColoumn.setMaxWidth(150);
-    	
- 
-    	
+    	thirdColoumn.setPreferredWidth(170);
+    	thirdColoumn.setMinWidth(170);
+    	thirdColoumn.setMaxWidth(170);
+    	thirdColoumn.setCellRenderer(render);
+    	 
+ 	
     	
     	//팀레코드판넬 - 스크롤 판넬
     	scrollPane = new JScrollPane(tbTeamRecord, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
     	scrollPane.setBounds(5, 5, 970, 340);
-    	scrollPane.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+    	scrollPane.setBorder(BorderFactory.createLineBorder(Color.BLUE));
 	
 
     	
@@ -168,7 +188,6 @@ public class TeamRecordPanel extends JPanel{
     	txtLeader.setBackground(Color.white);
     	txtLeader.setForeground(Color.BLACK);
     	
-
     	
     	inputPane.add(lblTeam);
     	inputPane.add(lblRole);
@@ -189,13 +208,23 @@ public class TeamRecordPanel extends JPanel{
     	
     	
     	//버튼판넬 - 컴포넌트
-    	btnInsert = new JButton("생성/수정");
-    	btnInsert.setBounds(5, 5, 150, 70);
-    	btncancel = new JButton("취소");
-    	btncancel.setBounds(5, 80, 150, 70);
+    	btnInsert = new JButton("생성");
+    	btnInsert.setFont(new Font("고딕",Font.BOLD,16));
+    	btnInsert.setBounds(5, 5, 147, 70);
+    	btnCancel = new JButton("취소");
+    	btnCancel.setFont(new Font("고딕",Font.BOLD,16));
+    	btnCancel.setBounds(5, 80, 147, 70);
+    	btnEdit = new JButton("수정");
+    	btnEdit.setFont(new Font("고딕",Font.BOLD,16));
+    	btnEdit.setBounds(158, 5, 147, 70);
+    	btnDelete = new JButton("삭제");
+    	btnDelete.setFont(new Font("고딕",Font.BOLD,16));
+    	btnDelete.setBounds(158, 80, 147, 70);		
 
     	btnPane.add(btnInsert);
-    	btnPane.add(btncancel);
+    	btnPane.add(btnCancel);
+    	btnPane.add(btnEdit);
+    	btnPane.add(btnDelete);
     	
     	add(btnPane);
    	
