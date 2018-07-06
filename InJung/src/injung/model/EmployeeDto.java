@@ -1,12 +1,10 @@
 package injung.model;
 
-import java.sql.Date;
-
 public class EmployeeDto {
 
 	private int employeeId;
 	private String name;
-	private Date birth;
+	private String birth;
 	private String team;
 	private String level;
 	private String role;
@@ -32,10 +30,10 @@ public class EmployeeDto {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Date getBirth() {
+	public String getBirth() {
 		return birth;
 	}
-	public void setBirth(Date birth) {
+	public void setBirth(String birth) {
 		this.birth = birth;
 	}
 	public String getTeam() {

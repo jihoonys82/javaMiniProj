@@ -3,13 +3,16 @@ package injung;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.ImageIcon;
 import javax.swing.border.EtchedBorder;
+
+import injung.model.EmployeeDto;
+import injung.model.InJungDao;
 
 
 /**
@@ -77,6 +80,36 @@ public class EmployeeInfoPanel extends JPanel {
 		
 		//disable all JTextFields
 		disabledTxtFields();
+	}
+	
+	public EmployeeInfoPanel(int employeeId) {
+		this();
+		
+		InJungDao dao = InJungDao.getInstance();
+		EmployeeDto dto = new EmployeeDto();
+		
+		dto = dao.getEmployee(employeeId);
+		
+		setEmployeeInfo(dto);
+		
+	}
+
+	private void setEmployeeInfo(EmployeeDto dto) {
+		lblTeam.setText(dto.getTeam());
+		lblLevel.setText(dto.getLevel());
+		lblName.setText(dto.getName());
+		txtEmployeeId.setText(((Integer)dto.getEmployeeId()).toString());
+		txtMobile.setText(dto.getMobile());
+		txtWorkPhone.setText(dto.getWorkPhone());
+		txtEmail.setText(dto.geteMail());
+		txtLocation.setText(dto.getLocation());
+		txtRole.setText(dto.getRole());
+		txtBirth.setText(dto.getBirth());
+		
+		lblPhoto.setIcon(new ImageIcon("./Photo/"+dto.getPhoto()));
+		
+		validate();
+		repaint();
 	}
 
 	/**

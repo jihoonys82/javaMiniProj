@@ -29,7 +29,7 @@ public class InJungDao {
 			pstmt = connection.prepareStatement(query);
 //			pstmt.setInt(1, dto.getEmployeeId()); // ID is auto-increment col. 
 			pstmt.setString(1, dto.getName());
-			pstmt.setDate(2, dto.getBirth());
+			pstmt.setString(2, dto.getBirth());
 			pstmt.setString(3, dto.getTeam());
 			pstmt.setString(4, dto.getLevel());
 			pstmt.setString(5, dto.getRole());
@@ -71,16 +71,16 @@ public class InJungDao {
 				dto = new EmployeeDto();
 				dto.setEmployeeId(set.getInt("employeeId"));
 				dto.setName(set.getString("employeeName"));
-				dto.setBirth(set.getDate("birth"));
+				dto.setBirth(set.getString("birthdate"));
 				dto.setTeam(set.getString("team"));
-				dto.setLevel(set.getString("level"));
+				dto.setLevel(set.getString("employlevel"));
 				dto.setRole(set.getString("role"));
 				dto.setMobile(set.getString("mobile"));
 				dto.setWorkPhone(set.getString("workphone"));
 				dto.seteMail(set.getString("email"));
 				dto.setLocation(set.getString("location"));
 				dto.setPassword(set.getString("password"));
-				dto.setPhoto(set.getString("photo"));
+				dto.setPhoto(set.getString("photopath"));
 				dto.setLostIdQuestion(set.getString("lostIdQuestion"));
 				dto.setLostIdAnswer(set.getString("lostIdAnswer"));
 			}
@@ -113,7 +113,7 @@ public class InJungDao {
 			set = pstmt.executeQuery();
 			
 			if(set.next()) {
-				cnt = set.getInt(0);
+				cnt = set.getInt("c");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
