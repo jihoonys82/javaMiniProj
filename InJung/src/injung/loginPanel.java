@@ -13,9 +13,12 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 /*
- * 2018.07.05 
+ * 작성 일자 : 2018.07.05 
+ * 수정 일자 : 2018.07.08
+ * 	- 로그인 성공 메시지 뜬 후, 확인 누를시 dialog 종료
  * 
- * 작성자: 송주현 
+ * 작성자 : 송주현 
+ * 수정자 : 권미현
  */
 
 class loginPanel extends JDialog implements ActionListener {
@@ -106,6 +109,8 @@ class loginPanel extends JDialog implements ActionListener {
 		if(txtEmail.getText().equals("test@gmail.com") && new String(txtPw.getPassword()).equals("0000")) {
             JOptionPane.showMessageDialog(null, "로그인 성공");
             bLoginCheck = true;
+//			System.out.println(bLoginCheck);
+            dispose();
             
 		} else {
 			JOptionPane.showMessageDialog(null, "로그인 실패");
