@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Vector;
 
 import javax.swing.JButton;
@@ -20,7 +22,7 @@ import javax.swing.border.EtchedBorder;
 + * @author Changhwan Bae
 + *
 + */
- public class TeamViewPanel extends JPanel {
+ public class TeamViewPanel extends JPanel implements ActionListener {
 	 
  	private static final long serialVersionUID = -1740434906725933696L;
 
@@ -231,10 +233,31 @@ import javax.swing.border.EtchedBorder;
 		// set pagePane  
 		pagePane.setBounds(330,520,200,35);
 		pagePane.setLayout(new FlowLayout());
-						
+		
+		btnPrivView.addActionListener(this);
+		btnNextView.addActionListener(this);
+		
 		pagePane.add(btnPrivView);
 		pagePane.add(btnNextView);
 							
 		add(pagePane);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource().equals(cbTeam)) {
+			
+		} else if (e.getSource().equals(btnDetailView[0])) {
+			
+		} else if(e.getSource().equals(btnDetailView[1])) {
+			
+		} else if(e.getSource().equals(btnDetailView[2])) {
+		
+		} else if(e.getSource().equals(btnPrivView)) {
+			
+		} else if(e.getSource().equals(btnNextView)) {
+			
+		}
+		
 	}
  }

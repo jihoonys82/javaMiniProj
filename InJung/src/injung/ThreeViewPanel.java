@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -19,7 +21,7 @@ import javax.swing.border.EtchedBorder;
 + * @author Changhwan Bae
 + *
 + */
- public class ThreeViewPanel extends JPanel {
+ public class ThreeViewPanel extends JPanel implements ActionListener {
 	 
  	private static final long serialVersionUID = -1740434906725933696L;
 
@@ -214,12 +216,15 @@ import javax.swing.border.EtchedBorder;
 		pagePane.setBounds(330,510,200,35);
 		pagePane.setLayout(new FlowLayout());
 		
+		btnPrivView.addActionListener(this);
+		btnNextView.addActionListener(this);
+		
 		pagePane.add(btnPrivView);
 		pagePane.add(btnNextView);
 			
 		add(pagePane);
 	}
-	
+ 	
 	public static void main(String[] args) {
 		JFrame frame = new JFrame();
 		frame.setBounds(10, 10, 1000, 600);
@@ -228,4 +233,19 @@ import javax.swing.border.EtchedBorder;
  		
 		frame.setVisible(true);
  	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource().equals(btnDetailView[0])) {
+			
+		} else if(e.getSource().equals(btnDetailView[1])) {
+			
+		} else if(e.getSource().equals(btnDetailView[2])) {
+		
+		} else if(e.getSource().equals(btnPrivView)) {
+			
+		} else if(e.getSource().equals(btnNextView)) {
+			
+		}
+	}
  }
