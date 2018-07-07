@@ -1,10 +1,11 @@
 package injung.model;
 
-public class teamDTO {
+public class TeamDto {
 	private String teamName;
 	private String teamRole;
 	private String teamLeaderId;
-
+	private String teamLeaderName; // it is not in Team table at Database
+	
 	public String getTeamName() {
 		return teamName;
 	}
@@ -34,8 +35,16 @@ public class teamDTO {
 		this.teamLeaderId = teamLeaderId;
 	}
 	
-	
-	public teamDTO() {	// teamDTO 持失切 
+	public String getTeamLeaderName() {
+		return teamLeaderName;
+	}
+
+
+	public void setTeamLeaderName(String teamLeaderName) {
+		this.teamLeaderName = teamLeaderName;
+	}
+
+	public TeamDto() {	// teamDTO 持失切 
 		
 	}
 }

@@ -17,6 +17,19 @@ public class EmployeeDto {
 	private String lostIdQuestion;
 	private String lostIdAnswer;
 
+	public EmployeeDto() {
+		setEmployeeId(0);
+		setName("-");
+		setBirth("-");
+		setTeam("-");
+		setLevel("-");
+		setRole("-");
+		setMobile("-");
+		setWorkPhone("-");
+		seteMail("-");
+		setLocation("-");
+		setPhoto("no_avatar.jpg");
+	}
 	
 	public int getEmployeeId() {
 		return employeeId;
@@ -102,6 +115,5 @@ public class EmployeeDto {
 	public void setLostIdAnswer(String lostIdAnswer) {
 		this.lostIdAnswer = lostIdAnswer;
 	}
-	
 	
 }
