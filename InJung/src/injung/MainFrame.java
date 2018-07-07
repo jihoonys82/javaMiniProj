@@ -16,7 +16,7 @@ import javax.swing.KeyStroke;
  * 
  * 수정자 : 권미현
  * 
- * - 메인 프레임과 다른 스윙들 연결(JMenuItem)
+ * - 메인 프레임과 다른 스윙들 연결(JMenuItem) - 1차(미완)
  */
 
 public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 상속
