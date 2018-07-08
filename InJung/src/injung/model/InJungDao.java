@@ -143,7 +143,7 @@ public class InJungDao {
 		String query = "select * from "
 				+ "(SELECT * FROM employee "
 				+ "WHERE employeeId > ? )"
-				+ "where rownum <= ?";
+				+ "where rownum <= ?"; // Sub Query
 		ArrayList<EmployeeDto> dtos = new ArrayList<>();
 		EmployeeDto dto = new EmployeeDto();
 		

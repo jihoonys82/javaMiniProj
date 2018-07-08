@@ -2,16 +2,24 @@ package injung;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+
+import injung.model.EmployeeDto;
+import injung.model.InJungDao;
+import injung.model.TeamDto;
 
 /**
  * Employee Add and Edit Panel
@@ -19,7 +27,7 @@ import javax.swing.SwingConstants;
  * @author Jihoon Jeong
  *
  */
-public class EditEmployeePanel extends JPanel {
+public class EditEmployeePanel extends JPanel implements ActionListener {
 	private static final long serialVersionUID = -8685746161617403122L;
 	
 		//main panels
@@ -86,6 +94,15 @@ public class EditEmployeePanel extends JPanel {
 		JButton btnConfirm		= new JButton("확인");
 		JButton btnCancel 		= new JButton("취소");
 		
+		// DTOs
+		private InJungDao dao = InJungDao.getInstance();
+		private EmployeeDto eDto; 
+		private ArrayList<TeamDto> tDtos;
+		private final String[] level = {"인턴", "사원", "대리", "과장", "차장", "부장", "이사", "대표이사"};
+		
+		/**
+		 * Edit Employ Panel for new employee
+		 */
 		public EditEmployeePanel() {
 			
 			// set up main Panel
@@ -98,7 +115,17 @@ public class EditEmployeePanel extends JPanel {
 			initEditInfo();
 			
 			// Initialize buttonPane
-			initButton();		
+			initButton();	
+			
+			// Initialize cbTeam, cbLevel
+			initCheckBoxes();
+		}
+
+		public EditEmployeePanel(int empId) {
+			// set up Panel
+			this();
+			
+			displayEmpInfo(empId);
 			
 		}
 
@@ -140,7 +167,7 @@ public class EditEmployeePanel extends JPanel {
 			lblEmployeeId.setHorizontalAlignment(SwingConstants.RIGHT);
 			lblEmployeeId.setPreferredSize(new Dimension(80,12));
 			txtEmployeeId.setColumns(30);
-			
+			txtEmployeeId.setEditable(false);
 			
 			//passwordPane
 			passwordPane.setBounds(12, 51, 430, 31);
@@ -322,10 +349,14 @@ public class EditEmployeePanel extends JPanel {
 			txtWarning.setLineWrap(true);
 			txtWarning.setWrapStyleWord(true);
 			txtWarning.setEditable(false);
+			txtWarning.append("모든 필드는 필수 항목입니다.");
 			
 			// buttons
 			btnConfirm.setBounds(12, 514, 158, 23);
 			btnCancel.setBounds(12, 547, 158, 23);
+			
+			btnConfirm.addActionListener(this);
+			btnCancel.addActionListener(this);
 			
 			// add components
 			buttonPane.add(txtWarning);
@@ -333,5 +364,138 @@ public class EditEmployeePanel extends JPanel {
 			buttonPane.add(btnCancel);
 			add(buttonPane);
 		}
+		
+		/*
+		 * setup Check boxes
+		 */
+		private void initCheckBoxes() {
+			//set Team
+			tDtos = dao.getAllTeam();
+			for(int i=0;i<tDtos.size();i++) {
+				cbTeam.addItem(tDtos.get(i).getTeamName());
+			}
+			
+			//set Level
+			for(String lv: level) {
+				cbLevel.addItem(lv);
+			}
+		}
+		
+		/**
+		 * Get Data from DAO and Set to panel
+		 * @param empId
+		 */
+		private void displayEmpInfo(int empId) {
+			eDto = dao.getEmployee(empId);
+			
+			txtEmployeeId.setText(((Integer)eDto.getEmployeeId()).toString());
+			txtPassword.setText("");
+			txtPwConfirm.setText("");
+			txtLostQuestion.setText(eDto.getLostIdQuestion());
+			txtLostAnswer.setText(eDto.getLostIdAnswer());
+			txtName.setText(eDto.getName());
+			txtBirth.setText(eDto.getBirth());
+			txtRole.setText(eDto.getRole());
+			txtMobile.setText(eDto.getMobile());
+			txtWorkPhone.setText(eDto.getWorkPhone());
+			txtEmail.setText(eDto.geteMail());
+			txtLocation.setText(eDto.getLocation());
+			
+			cbTeam.setSelectedItem(eDto.getTeam());
+			cbLevel.setSelectedItem(eDto.getLevel());
+			
+			lblPhoto.setText(eDto.getPhoto());
+			lblPhoto.setIcon(new ImageIcon("./Photo/"+eDto.getPhoto()));
+		}
+		
+		/**
+		 * Clear All textField
+		 */
+		private void claearField() {
+			txtEmployeeId.setText("");
+			txtPassword.setText("");
+			txtPwConfirm.setText("");
+			txtLostQuestion.setText("");
+			txtLostAnswer.setText("");
+			txtName.setText("");
+			txtBirth.setText("");
+			txtRole.setText("");
+			txtMobile.setText("");
+			txtWorkPhone.setText("");
+			txtEmail.setText("");
+			txtLocation.setText("");
+			lblPhoto.setIcon(new ImageIcon("./Photo/no_avatar.jpg"));
+		}
 	
+		/**
+		 * Declare Button Actions
+		 */
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if(e.getSource().equals(btnConfirm)) {
+				
+				//Check PW
+				if(txtPassword.getPassword().toString()!=txtPwConfirm.getPassword().toString() || txtPassword.getPassword().toString()!=eDto.getPassword()) {
+					JOptionPane.showMessageDialog(btnConfirm, "패스워드가 일치하지 않습니다.", "패스워드 확인", JOptionPane.ERROR_MESSAGE);
+				} else {
+					// field data validation 
+					int valid  = fieldValidation();
+					
+					if(valid==0 && txtEmployeeId.getText().trim()=="") {
+						// Create (If empID is NOT exist)	
+					} else if(valid==0 && txtEmployeeId.getText().trim()!="") {
+						// Update (If empId is exist)	
+					}
+					 
+					// TODO: Photo Upload function
+				}
+				 
+				
+			} else if(e.getSource().equals(btnCancel)) {
+				String[] options = {"확인", "취소"}; 
+				int selected =JOptionPane.showOptionDialog(buttonPane, "모든 필드의 내용이 지워집니다. 진행하시겠습니까?", "Confirm", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
+				if(selected==0) claearField();
+			}
+			
+		}
+
+		/**
+		 * Field Validation 
+		 * @return If all field are valid return 0. <br> The figure means the number of invalid items 
+		 */
+		private int fieldValidation() {
+			int valid = 0; 
+			
+			if(lblPhoto.getText()=="Photo") {
+				txtWarning.append("사진이 없습니다.");
+				valid++;
+			}
+			if(txtName.getText().length()<3 || txtName.getText().length()>20) {
+				txtWarning.append("이름이 너무 짧거나 깁니다. 2~10자 내로 입력하세요.");
+				valid++;
+			}
+			if(txtPassword.getPassword().length<6) {
+				txtWarning.append("패스워드는 반드시 6자 이상이어야 합니다.");
+				valid++;
+			}
+			if(txtLostQuestion.getText().trim()=="" || txtLostAnswer.getText().trim()=="" ) {
+				txtWarning.append("패스워드 분실 질문과 대답을 입력해 주세요.");
+				valid++;
+			}
+			
+//			txtPassword.setText("");
+//			txtPwConfirm.setText("");
+//			txtLostQuestion.setText("");
+//			txtLostAnswer.setText("");
+//			txtName.setText("");
+//			txtBirth.setText("");
+//			txtRole.setText("");
+//			txtMobile.setText("");
+//			txtWorkPhone.setText("");
+//			txtEmail.setText("");
+//			txtLocation.setText("");
+//			lblPhoto.setIcon(new ImageIcon("./Photo/no_avatar.jpg"));
+			
+			return valid;
+		}
 }
