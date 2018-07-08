@@ -1,6 +1,8 @@
 package injung;
 
 import java.awt.Container;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JFrame;
@@ -9,7 +11,15 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
-public class MainFrame extends JFrame {
+/*
+ * 수정일자 : 2018.07.08
+ * 
+ * 수정자 : 권미현
+ * 
+ * - 메인 프레임과 다른 스윙들 연결(JMenuItem) - 1차(미완)
+ */
+
+public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 상속
 
 	/**
 	 * 
@@ -100,6 +110,14 @@ public class MainFrame extends JFrame {
 		file.addSeparator(); //경계선추가
 		file.add(file_Close);
 		
+		// ActionListener //
+		file_LogInOut.addActionListener(this);
+		file_Import.addActionListener(this);
+		file_Export.addActionListener(this);
+		file_Config.addActionListener(this);
+		file_Close.addActionListener(this);
+		////////////////////
+		
 		menuBar.add(file);
 		
 		
@@ -112,6 +130,11 @@ public class MainFrame extends JFrame {
 		record.add(record_NewEmployee);
 		record.addSeparator(); //경계선추가
 		record.add(record_NewTeamManage);
+		
+		// ActionListener //
+		record_NewEmployee.addActionListener(this);
+		record_NewTeamManage.addActionListener(this);
+		////////////////////
 		
 		menuBar.add(record);
 		
@@ -129,6 +152,12 @@ public class MainFrame extends JFrame {
 		view.add(view_WholeView);
 		view.add(view_TeamView);
 		
+		// ActionListener //
+		view_3View.addActionListener(this);
+		view_PhotoView.addActionListener(this);
+		view_WholeView.addActionListener(this);
+		view_TeamView.addActionListener(this);
+		////////////////////
 		
 		menuBar.add(view);
 		
@@ -144,6 +173,12 @@ public class MainFrame extends JFrame {
 		calendar.add(calendar_TeamView);
 		calendar.addSeparator(); //경계선추가
 		calendar.add(calendar_WholeView);
+		
+		// ActionListener //
+		calendar_PersonView.addActionListener(this);
+		calendar_TeamView.addActionListener(this);
+		calendar_WholeView.addActionListener(this);
+		////////////////////
 		
 		menuBar.add(calendar);
 		
@@ -161,6 +196,13 @@ public class MainFrame extends JFrame {
 		help.add(help_Help);
 		help.add(help_Credit);
 		help.add(help_About);
+		
+		// ActionListener //
+		help_Quiz.addActionListener(this);
+		help_Help.addActionListener(this);
+		help_Credit.addActionListener(this);
+		help_About.addActionListener(this);
+		////////////////////
 		
 		menuBar.add(help);
 		
@@ -217,17 +259,183 @@ public class MainFrame extends JFrame {
 		
 	}
 	
-	private void initRootContainer() {
-		
+	private void initRootContainer() {	
+		root = getContentPane();
 		
 	}
 	
+	// JMenuItem 동작 설정
+	@Override
+	public void actionPerformed(ActionEvent e) {
+
+		// file 메뉴 이벤트
+		// 로그인/로그아웃
+		if(e.getSource() == file_LogInOut) {
+//			System.out.println("로그인/로그아웃 누름");
+
+			loginPanel logPan ;
+			logPan = new loginPanel(this,"Login Dialog",true,getX()+50,getY()+50);
+			logPan.setVisible(true);
+
+			boolean logckeck = logPan.isLogin();
+			if(logckeck) {
+//				System.out.println("loginPanel.isLogin() : " + logckeck);
+
+				root.add(new EmployeeInfoPanel());
+				setTitle("내 정보");
+
+				root.validate(); // 컴포넌트 검증 (메모리 상태 확인) - 메모리 확실하게
+				root.repaint(); // 다시 그리기
+			}
+
+		} 
+		// 가져오기
+		else if (e.getSource() == file_Import){
+			root.removeAll();
+			//				root.add(comp); // 컨테이너 넣기
+			setTitle("가져오기");
+			root.validate(); // 컴포넌트 검증 (메모리 상태 확인) - 메모리 확실하게
+			root.repaint(); // 다시 그리기
+		}
+		// 내보내기
+		else if (e.getSource() == file_Export) {
+			root.removeAll();
+			//				root.add(comp); // 컨테이너 넣기
+			setTitle("내보내기");
+			root.validate(); // 컴포넌트 검증 (메모리 상태 확인) - 메모리 확실하게
+			root.repaint(); // 다시 그리기
+		} 
+		// 환경설정
+		else if (e.getSource() == file_Config) {
+			root.removeAll();
+			//				root.add(comp); // 컨테이너 넣기
+			setTitle("환경설정");
+			root.validate(); // 컴포넌트 검증 (메모리 상태 확인) - 메모리 확실하게
+			root.repaint(); // 다시 그리기
+		} 
+		// 종료
+		else if (e.getSource() == file_Close) {
+//			System.out.println("프로그램 종료");
+			System.exit(0);
+		} 
+
+		// Record 메뉴 이벤트
+		// 신규등록
+		else if (e.getSource() == record_NewEmployee) {
+			root.removeAll();
+			//				root.add(comp); // 컨테이너 넣기
+			setTitle("신규등록");
+			root.validate(); // 컴포넌트 검증 (메모리 상태 확인) - 메모리 확실하게
+			root.repaint(); // 다시 그리기
+		}
+		// 조직관리
+		else if (e.getSource() == record_NewTeamManage) {
+			root.removeAll();
+			//				root.add(comp); // 컨테이너 넣기
+			setTitle("조직관리");
+			root.validate(); // 컴포넌트 검증 (메모리 상태 확인) - 메모리 확실하게
+			root.repaint(); // 다시 그리기
+		}
+
+		// View 메뉴 이벤트
+		// 3명 보기
+		else if (e.getSource() == view_3View) {
+			root.removeAll();
+			//				root.add(comp); // 컨테이너 넣기
+			setTitle("3명 보기");
+			root.validate(); // 컴포넌트 검증 (메모리 상태 확인) - 메모리 확실하게
+			root.repaint(); // 다시 그리기
+		}
+		// 사진 보기
+		else if (e.getSource() == view_PhotoView) {
+			root.removeAll();
+			//				root.add(comp); // 컨테이너 넣기
+			setTitle("사진 보기");
+			root.validate(); // 컴포넌트 검증 (메모리 상태 확인) - 메모리 확실하게
+			root.repaint(); // 다시 그리기
+		}
+		// 전체리스트 보기
+		else if (e.getSource() == view_WholeView) {
+			root.removeAll();
+			//				root.add(comp); // 컨테이너 넣기
+			setTitle("전체리스트 보기");
+			root.validate(); // 컴포넌트 검증 (메모리 상태 확인) - 메모리 확실하게
+			root.repaint(); // 다시 그리기
+		}
+		// 팀별 보기
+		else if (e.getSource() == view_TeamView) {
+			root.removeAll();
+			//				root.add(comp); // 컨테이너 넣기
+			setTitle("팀별 보기");
+			root.validate(); // 컴포넌트 검증 (메모리 상태 확인) - 메모리 확실하게
+			root.repaint(); // 다시 그리기
+		}
+
+		// Calendar 메뉴 이벤트
+		// 개인 일정보기
+		else if (e.getSource() == calendar_PersonView) {
+			root.removeAll();
+			//				root.add(comp); // 컨테이너 넣기
+			setTitle("개인 일정보기");
+			root.validate(); // 컴포넌트 검증 (메모리 상태 확인) - 메모리 확실하게
+			root.repaint(); // 다시 그리기
+		}
+		// 팀 일정보기
+		else if (e.getSource() == calendar_TeamView) {
+			root.removeAll();
+			//				root.add(comp); // 컨테이너 넣기
+			setTitle("팀 일정보기");
+			root.validate(); // 컴포넌트 검증 (메모리 상태 확인) - 메모리 확실하게
+			root.repaint(); // 다시 그리기
+		}
+		// 모든 일정보기
+		else if (e.getSource() == calendar_WholeView) {
+			root.removeAll();
+			//				root.add(comp); // 컨테이너 넣기
+			setTitle("모든 일정보기");
+			root.validate(); // 컴포넌트 검증 (메모리 상태 확인) - 메모리 확실하게
+			root.repaint(); // 다시 그리기
+		}
+
+		// Help 메뉴 이벤트
+		// 퀴즈!
+		else if (e.getSource() == help_Quiz) {
+			root.removeAll();
+			//				root.add(comp); // 컨테이너 넣기
+			setTitle("퀴즈!");
+			root.validate(); // 컴포넌트 검증 (메모리 상태 확인) - 메모리 확실하게
+			root.repaint(); // 다시 그리기
+		}
+		// 도움말
+		else if (e.getSource() == help_Help) {
+			root.removeAll();
+			//				root.add(comp); // 컨테이너 넣기
+			setTitle("도움말");
+			root.validate(); // 컴포넌트 검증 (메모리 상태 확인) - 메모리 확실하게
+			root.repaint(); // 다시 그리기
+		}
+		// 크레딧
+		else if (e.getSource() == help_Credit) {
+			root.removeAll();
+			//				root.add(comp); // 컨테이너 넣기
+			setTitle("크레딧");
+			root.validate(); // 컴포넌트 검증 (메모리 상태 확인) - 메모리 확실하게
+			root.repaint(); // 다시 그리기
+		}
+		// 인정?어인정에 대하여
+		else if (e.getSource() == help_About) {
+			root.removeAll();
+			//				root.add(comp); // 컨테이너 넣기
+			setTitle("인정?어인정에 대하여");
+			root.validate(); // 컴포넌트 검증 (메모리 상태 확인) - 메모리 확실하게
+			root.repaint(); // 다시 그리기
+		}
+
+	} // actionPerformed end
 	
 	public static void main(String[] args) {
 		new MainFrame();
 		
 	}
 			
-	
-
 }
