@@ -13,15 +13,15 @@ import javax.swing.table.DefaultTableModel;
  * 작성 일자 : 2018.07.01
  * 수정 일자 : 2018.07.05
  * 	- 테이블 셀(내용) 수정 방지
+ * 수정 일자 : 2018.07.09
+ *  - 상속 : JFram → JPanel
  * 
  * 작성자 : 권미현
  * 
  * 레코드 조회기능 - 전체보기
  */
 
-public class WholeView extends JFrame{
-	
-	private JPanel panelWholeView;	// 전체보기 Panel
+public class WholeView extends JPanel{
 	
 	// -- JTable 설정 ---
 	private JTable tableView; // 전체보기 Table
@@ -36,10 +36,6 @@ public class WholeView extends JFrame{
 	
 	// 생성자
 	public WholeView() {
-		//메인 프레임 설정
-		setTitle("전체보기");
-		setBounds(300, 100, 1000, 600);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 		setLayout(new FlowLayout(FlowLayout.CENTER, 0, 30));	// 레이아웃
 		
