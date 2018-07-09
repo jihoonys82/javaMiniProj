@@ -243,6 +243,71 @@ public class InJungDao {
 		return dtos;
 	}
 	
+	/**
+	 * Get team employees data
+	 * @param teamName
+	 * @param lastEmpId - previous last employeeNum 
+	 * @param idx - the number of employee get from database  
+	 * @return
+	 */
+	public ArrayList<EmployeeDto> getTeamEmployee(String teamName, int lastEmpId, int idx) {
+		Connection connection = null;
+		PreparedStatement pstmt = null;
+		ResultSet set = null;
+		String query = "select * from "
+				+ "(SELECT * FROM employee "
+				+ "WHERE teamName = ? AND employeeId > ? )"
+				+ "where rownum <= ?"; 
+		ArrayList<EmployeeDto> dtos = new ArrayList<>();
+		EmployeeDto dto = new EmployeeDto();
+		
+		try {
+			connection = getConnection();
+			pstmt = connection.prepareStatement(query);
+			pstmt.setString(1, teamName);
+			pstmt.setInt(2, lastEmpId);
+			pstmt.setInt(3, idx);
+			set = pstmt.executeQuery();
+			
+			while(set.next()) {
+				dto.setEmployeeId(set.getInt("employeeId"));
+				dto.setName(set.getString("employeeName"));
+				dto.setBirth(set.getString("birthdate"));
+				dto.setTeam(set.getString("team"));
+				dto.setLevel(set.getString("employlevel"));
+				dto.setRole(set.getString("role"));
+				dto.setMobile(set.getString("mobile"));
+				dto.setWorkPhone(set.getString("workphone"));
+				dto.seteMail(set.getString("email"));
+				dto.setLocation(set.getString("location"));
+				dto.setPassword(set.getString("password"));
+				dto.setPhoto(set.getString("photopath"));
+				dto.setLostIdQuestion(set.getString("lostIdQuestion"));
+				dto.setLostIdAnswer(set.getString("lostIdAnswer"));
+				dtos.add(dto);
+			}
+			
+			// if data is not exist, add dump employee data. 
+			for(int i=0;i<idx;i++) {
+				if(dtos.size()<i) {
+					dtos.add(new EmployeeDto());
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(set!=null) set.close();
+				if(pstmt!=null) pstmt.close();
+				if(connection!=null) connection.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		
+		return dtos;
+	}
+	
 	public int countEmployee() {
 		int cnt = -1;
 		Connection connection = null;
@@ -345,7 +410,6 @@ public class InJungDao {
 		}
 		return dtos;
 	}
-	
 	
 	private Connection getConnection() {
 		Connection connection = null;
