@@ -4,11 +4,16 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.text.ParseException;
 import java.util.ArrayList;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -16,6 +21,8 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.text.MaskFormatter;
 
 import injung.model.EmployeeDto;
 import injung.model.InJungDao;
@@ -76,12 +83,17 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 		private JTextField txtLostQuestion	= new JTextField();
 		private JTextField txtLostAnswer	= new JTextField();
 		private JTextField txtName			= new JTextField();
-		private JTextField txtBirth 		= new JTextField();
 		private JTextField txtRole 			= new JTextField();
-		private JTextField txtMobile 		= new JTextField();
-		private JTextField txtWorkPhone 	= new JTextField();
-		private JTextField txtEmail 		= new JTextField();
 		private JTextField txtLocation 		= new JTextField();
+		private JFormattedTextField txtBirth	 = new JFormattedTextField();
+		private JFormattedTextField txtMobile 	 = new JFormattedTextField();
+		private JFormattedTextField txtWorkPhone = new JFormattedTextField();
+		private JFormattedTextField txtEmail 	 = new JFormattedTextField();
+		
+		private MaskFormatter birthFormat 		= null;
+		private MaskFormatter mobileFormat 		= null;
+		private MaskFormatter workPhoneFormat 	= null;
+		private MaskFormatter emailFormat 		= null;
 		
 		private JTextArea txtWarning		= new JTextArea("모든 정보를 빠짐없이 기입해 주세요.");
 		
@@ -89,10 +101,14 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 		private JComboBox<String> cbTeam 	= new JComboBox<>();
 		private JComboBox<String> cbLevel	= new JComboBox<>();
 		
+		// FileChooser(for photo upload)
+		private JFileChooser fileChooser = new JFileChooser();
+		private File photoFile;
+		
 		// Buttons
-		JButton btnPhotoUpload	= new JButton("사진 업로드...");
-		JButton btnConfirm		= new JButton("확인");
-		JButton btnCancel 		= new JButton("취소");
+		private JButton btnPhotoUpload	= new JButton("사진 업로드...");
+		private JButton btnConfirm		= new JButton("확인");
+		private JButton btnCancel 		= new JButton("취소");
 		
 		// DTOs
 		private InJungDao dao = InJungDao.getInstance();
@@ -134,7 +150,7 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 		 */
 		private void initPhoto() {
 			//photoNamePane setting
-			photoPane.setBounds(12, 10, 200, 580);
+			photoPane.setBounds(12, 5, 200, 520);
 			photoPane.setLayout(null);
 			lblPhoto.setHorizontalAlignment(SwingConstants.CENTER);
 			
@@ -144,6 +160,7 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 			
 			//btnPhotoUpload
 			btnPhotoUpload.setBounds(12, 220, 176, 23);
+			btnPhotoUpload.addActionListener(this);
 			
 			//add components
 			photoPane.add(lblPhoto);
@@ -157,7 +174,7 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 		 */
 		private void initEditInfo() {
 			//detailInfoPane setting
-			editInfoPane.setBounds(224, 10, 455, 580);
+			editInfoPane.setBounds(224, 5, 455, 520);
 			editInfoPane.setLayout(null);
 			
 			//employeeIdPane
@@ -170,7 +187,7 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 			txtEmployeeId.setEditable(false);
 			
 			//passwordPane
-			passwordPane.setBounds(12, 51, 430, 31);
+			passwordPane.setBounds(12, 46, 430, 31);
 			passwordPane.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 			
 			lblPassword.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -178,7 +195,7 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 			txtPassword.setColumns(30);
 			
 			//pwConfirmPane
-			pwConfirmPane.setBounds(12, 92, 430, 31);
+			pwConfirmPane.setBounds(12, 82, 430, 31);
 			pwConfirmPane.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 			
 			lblPwConfirm.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -186,7 +203,7 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 			txtPwConfirm.setColumns(30);
 			
 			//pwLostQuestionPane
-			pwLostQeustionPane.setBounds(12, 133, 430, 31);
+			pwLostQeustionPane.setBounds(12, 118, 430, 31);
 			pwLostQeustionPane.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 			
 			lblLostQuestion.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -194,7 +211,7 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 			txtLostQuestion.setColumns(30);
 			
 			//pwLostAnswerPane
-			pwLostAnswerPane.setBounds(12, 174, 430, 31);
+			pwLostAnswerPane.setBounds(12, 154, 430, 31);
 			pwLostAnswerPane.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 			
 			lblLostAnswer.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -202,7 +219,7 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 			txtLostAnswer.setColumns(30);
 			
 			//namePane
-			namePane.setBounds(12, 215, 430, 31);
+			namePane.setBounds(12, 190, 430, 31);
 			namePane.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 			
 			lblName.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -210,7 +227,7 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 			txtName.setColumns(30);
 			
 			//birthPane
-			birthPane.setBounds(12, 256, 430, 31);
+			birthPane.setBounds(12, 226, 430, 31);
 			birthPane.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 			
 			lblBirth.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -218,25 +235,25 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 			txtBirth.setColumns(30);
 			
 			//teamPane
-			teamPane.setBounds(12, 297, 430, 31);
+			teamPane.setBounds(12, 262, 430, 31);
 			teamPane.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 			
 			lblTeam.setHorizontalAlignment(SwingConstants.RIGHT);
 			lblTeam.setPreferredSize(new Dimension(80, 12));
-			cbTeam.setBounds(97, 297, 250, 15); // TODO : it needs to be adjust!!
+			cbTeam.setBounds(97, 297, 250, 15); 
 			cbTeam.addItem("");
 			
 			//levelPane
-			levelPane.setBounds(12, 338, 430, 31);
+			levelPane.setBounds(12, 298, 430, 31);
 			levelPane.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 			
 			lblLevel.setHorizontalAlignment(SwingConstants.RIGHT);
 			lblLevel.setPreferredSize(new Dimension(80, 12));
-			cbLevel.setBounds(97, 338, 250, 15); // TODO : it needs to be adjust!!
+			cbLevel.setBounds(97, 338, 250, 15); 
 			cbLevel.addItem("");
 			
 			//rolePane
-			rolePane.setBounds(12, 379, 430, 31);
+			rolePane.setBounds(12, 334, 430, 31);
 			rolePane.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 			
 			lblRole.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -244,7 +261,7 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 			txtRole.setColumns(30);
 			
 			//mobilePane
-			mobilePane.setBounds(12, 420, 430, 31);
+			mobilePane.setBounds(12, 370, 430, 31);
 			mobilePane.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 			
 			lblMobile.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -252,7 +269,7 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 			txtMobile.setColumns(30);
 			
 			//workPhonePane
-			workPhonePane.setBounds(12, 461, 430, 31);
+			workPhonePane.setBounds(12, 406, 430, 31);
 			workPhonePane.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 			
 			lblWorkPhone.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -260,7 +277,7 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 			txtWorkPhone.setColumns(30);
 			
 			//emailPane
-			emailPane.setBounds(12, 501, 430, 31);
+			emailPane.setBounds(12, 441, 430, 31);
 			emailPane.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 			
 			lblEmail.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -268,12 +285,26 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 			txtEmail.setColumns(30);
 			
 			//locationPane
-			locationPane.setBounds(12, 542, 430, 31);
+			locationPane.setBounds(12, 477, 430, 31);
 			locationPane.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 			
 			lblLocation.setHorizontalAlignment(SwingConstants.RIGHT);
 			lblLocation.setPreferredSize(new Dimension(80, 12));
 			txtLocation.setColumns(30);
+			
+			// set MaskFormatter
+			try {
+				birthFormat = new MaskFormatter("####.##.##"); //yy.mm.dd
+				mobileFormat = new MaskFormatter("###-####-####");
+				workPhoneFormat = new MaskFormatter("##-####-####");
+				emailFormat = new MaskFormatter("?@?");
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			txtBirth.setValue(birthFormat);
+			txtMobile.setValue(mobileFormat);
+			txtWorkPhone.setValue(workPhoneFormat);
+			txtEmail.setValue(emailFormat);
 			
 			//add components
 			employeeIdPane.add(lblEmployeeId);
@@ -341,7 +372,7 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 		 */
 		private void initButton() {
 			// setup buttonPane
-			buttonPane.setBounds(691, 10, 277, 580);
+			buttonPane.setBounds(691, 5, 277, 520);
 			buttonPane.setLayout(null);
 			
 			// txtWarning 
@@ -352,8 +383,8 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 			txtWarning.append("모든 필드는 필수 항목입니다.");
 			
 			// buttons
-			btnConfirm.setBounds(12, 514, 158, 23);
-			btnCancel.setBounds(12, 547, 158, 23);
+			btnConfirm.setBounds(12, 454, 158, 23);
+			btnCancel.setBounds(12, 487, 158, 23);
 			
 			btnConfirm.addActionListener(this);
 			btnCancel.addActionListener(this);
@@ -435,28 +466,47 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 			if(e.getSource().equals(btnConfirm)) {
 				
 				//Check PW
-				if(txtPassword.getPassword().toString()!=txtPwConfirm.getPassword().toString() || txtPassword.getPassword().toString()!=eDto.getPassword()) {
-					JOptionPane.showMessageDialog(btnConfirm, "패스워드가 일치하지 않습니다.", "패스워드 확인", JOptionPane.ERROR_MESSAGE);
+				if(txtPassword.getPassword().toString()!=txtPwConfirm.getPassword().toString() || 
+						txtPassword.getPassword().toString()!=eDto.getPassword()) {
+					JOptionPane.showMessageDialog(
+							btnConfirm, 
+							"패스워드가 일치하지 않습니다.", 
+							"패스워드 확인", 
+							JOptionPane.ERROR_MESSAGE
+					);
 				} else {
 					// field data validation 
 					int valid  = fieldValidation();
 					
 					if(valid==0 && txtEmployeeId.getText().trim()=="") {
-						// Create (If empID is NOT exist)	
+						// Create (If empID is NOT exist)
+						
 					} else if(valid==0 && txtEmployeeId.getText().trim()!="") {
 						// Update (If empId is exist)	
 					}
 					 
 					// TODO: Photo Upload function
 				}
-				 
-				
 			} else if(e.getSource().equals(btnCancel)) {
 				String[] options = {"확인", "취소"}; 
-				int selected =JOptionPane.showOptionDialog(buttonPane, "모든 필드의 내용이 지워집니다. 진행하시겠습니까?", "Confirm", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
+				int selected =JOptionPane.showOptionDialog(
+						buttonPane, 
+						"모든 필드의 내용이 지워집니다. 진행하시겠습니까?", 
+						"Confirm", 
+						JOptionPane.OK_CANCEL_OPTION, 
+						JOptionPane.QUESTION_MESSAGE, 
+						null, options, options[1]
+				);
 				if(selected==0) claearField();
-			}
-			
+			} else if(e.getSource().equals(btnPhotoUpload)) {
+				fileChooser.setFileFilter(new FileNameExtensionFilter("ImageFiles", ImageIO.getReaderFileSuffixes()));
+				int returnVal = fileChooser.showOpenDialog(EditEmployeePanel.this);
+				
+				if(returnVal==JFileChooser.APPROVE_OPTION) {
+					photoFile = fileChooser.getSelectedFile();
+					lblPhoto.setIcon(new ImageIcon(photoFile.getPath()));
+				}
+			}	
 		}
 
 		/**
@@ -481,21 +531,7 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 			if(txtLostQuestion.getText().trim()=="" || txtLostAnswer.getText().trim()=="" ) {
 				txtWarning.append("패스워드 분실 질문과 대답을 입력해 주세요.");
 				valid++;
-			}
-			
-//			txtPassword.setText("");
-//			txtPwConfirm.setText("");
-//			txtLostQuestion.setText("");
-//			txtLostAnswer.setText("");
-//			txtName.setText("");
-//			txtBirth.setText("");
-//			txtRole.setText("");
-//			txtMobile.setText("");
-//			txtWorkPhone.setText("");
-//			txtEmail.setText("");
-//			txtLocation.setText("");
-//			lblPhoto.setIcon(new ImageIcon("./Photo/no_avatar.jpg"));
-			
+			}			
 			return valid;
 		}
 }
