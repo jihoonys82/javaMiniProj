@@ -145,7 +145,7 @@ public class InJungDao {
 				+ "WHERE employeeId > ? )"
 				+ "where rownum <= ?"; // Sub Query
 		ArrayList<EmployeeDto> dtos = new ArrayList<>();
-		EmployeeDto dto = new EmployeeDto();
+		EmployeeDto dto = null;
 		
 		try {
 			connection = getConnection();
@@ -155,6 +155,7 @@ public class InJungDao {
 			set = pstmt.executeQuery();
 			
 			while(set.next()) {
+				dto = new EmployeeDto();
 				dto.setEmployeeId(set.getInt("employeeId"));
 				dto.setName(set.getString("employeeName"));
 				dto.setBirth(set.getString("birthdate"));
@@ -204,7 +205,7 @@ public class InJungDao {
 		ResultSet set = null;
 		String query = "select * from employee";
 		ArrayList<EmployeeDto> dtos = new ArrayList<>();
-		EmployeeDto dto = new EmployeeDto();
+		EmployeeDto dto = null;
 		
 		try {
 			connection = getConnection();
@@ -212,6 +213,8 @@ public class InJungDao {
 			set = pstmt.executeQuery();
 			
 			while(set.next()) {
+				dto = new EmployeeDto();
+				
 				dto.setEmployeeId(set.getInt("employeeId"));
 				dto.setName(set.getString("employeeName"));
 				dto.setBirth(set.getString("birthdate"));
@@ -259,7 +262,7 @@ public class InJungDao {
 				+ "WHERE teamName = ? AND employeeId > ? )"
 				+ "where rownum <= ?"; 
 		ArrayList<EmployeeDto> dtos = new ArrayList<>();
-		EmployeeDto dto = new EmployeeDto();
+		EmployeeDto dto = null;
 		
 		try {
 			connection = getConnection();
@@ -270,6 +273,8 @@ public class InJungDao {
 			set = pstmt.executeQuery();
 			
 			while(set.next()) {
+				dto = new EmployeeDto();
+				
 				dto.setEmployeeId(set.getInt("employeeId"));
 				dto.setName(set.getString("employeeName"));
 				dto.setBirth(set.getString("birthdate"));
@@ -308,6 +313,10 @@ public class InJungDao {
 		return dtos;
 	}
 	
+	/**
+	 * get Employee Count
+	 * @return total employee count, -1 means error.
+	 */
 	public int countEmployee() {
 		int cnt = -1;
 		Connection connection = null;
@@ -372,6 +381,42 @@ public class InJungDao {
 	}
 	
 	/**
+	 * Update Team
+	 * @param dto - TeamDto, want to be changed. 
+	 * @param privTeamName - previous teamName
+	 * @return result code 1: success, 0: failed
+	 */
+	public int updateTeam(TeamDto dto, String prevTeamName) {
+		int results = INSERT_DATA_FAILED;
+		
+		Connection connection = null;
+		PreparedStatement pstmt = null;
+		String query = "update team set teamname=?, teamrole=?, teamleaderId=? where teamname=?";
+		
+		try {
+			connection = getConnection();
+			pstmt = connection.prepareStatement(query); 
+			pstmt.setString(1, dto.getTeamName());
+			pstmt.setString(2, dto.getTeamRole());
+			pstmt.setString(3, dto.getTeamLeaderId());
+			pstmt.setString(4, prevTeamName);
+			pstmt.executeUpdate();
+			
+			results = INSERT_DATA_SUCCESS; 
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(pstmt!=null)		 pstmt.close();
+				if(connection!=null) connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return results;
+	}
+	
+	/**
 	 * Get all team list with team leader name.
 	 * @return ArrayList
 	 */
@@ -391,6 +436,7 @@ public class InJungDao {
 			
 			while(set.next()) {
 				dto = new TeamDto();
+				
 				dto.setTeamName(set.getString("teamName"));
 				dto.setTeamRole(set.getString("teamRole"));
 				dto.setTeamLeaderId(set.getString("teamLeaderId"));
@@ -410,6 +456,110 @@ public class InJungDao {
 		}
 		return dtos;
 	}
+	
+	/**
+	 * get employee password
+	 * @param empId - employeeId
+	 * @return employee id
+	 */
+	public String getPassword(int empId) {
+		String password = null; 
+		Connection connection = null;
+		PreparedStatement pstmt = null;
+		ResultSet set = null;
+		String query = "select password from employee where employeeId=?";
+		
+		try {
+			connection = getConnection();
+			pstmt = connection.prepareStatement(query);
+			pstmt.setInt(1, empId);
+			set = pstmt.executeQuery();
+		
+			if(set.next()) {
+				password = set.getString("password");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(set!=null) set.close();
+				if(pstmt!=null) pstmt.close();
+				if(connection!=null) connection.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return password;
+	}
+	
+	/**
+	 * Get Lost ID Question
+	 * @param empId - employee Id 
+	 * @return Lost ID Question
+	 */
+	public String getLostIdQuestion(int empId) {
+		String question = null; 
+		Connection connection = null;
+		PreparedStatement pstmt = null;
+		ResultSet set = null;
+		String query = "select lostIdQuestion from employee where employeeId=?";
+		
+		try {
+			connection = getConnection();
+			pstmt = connection.prepareStatement(query);
+			pstmt.setInt(1, empId);
+			set = pstmt.executeQuery();
+		
+			if(set.next()) {
+				question = set.getString("lostIdQuestion");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(set!=null) set.close();
+				if(pstmt!=null) pstmt.close();
+				if(connection!=null) connection.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return question;
+	}
+	
+	/**
+	 * Set New password 
+	 * @param empId - employee ID 
+	 * @param newPw - new Password
+	 * @return results code -1: failed, 1: success 
+	 */
+	public int setNewPassword (int empId, String newPw) {
+		int results = -1 ; 
+		Connection connection = null;
+		PreparedStatement pstmt = null;
+		String query = "update employee set password = ? where employeeID=?";
+		
+		try {
+			connection = getConnection();
+			pstmt = connection.prepareStatement(query);
+			pstmt.setString(1, newPw);
+			pstmt.setInt(2, empId);
+			pstmt.executeUpdate();
+		
+			results = 1;	
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(pstmt!=null) pstmt.close();
+				if(connection!=null) connection.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return results;
+	}
+	
 	
 	private Connection getConnection() {
 		Connection connection = null;
