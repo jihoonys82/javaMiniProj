@@ -2,14 +2,19 @@ package injung;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.ImageIcon;
 import javax.swing.border.EtchedBorder;
+
+import injung.model.EmployeeDto;
+import injung.model.InJungDao;
 
 
 /**
@@ -18,7 +23,7 @@ import javax.swing.border.EtchedBorder;
  * @author Jihoon Jeong
  *
  */
-public class EmployeeInfoPanel extends JPanel {
+public class EmployeeInfoPanel extends JPanel implements ActionListener {
 	private static final long serialVersionUID = -8738983467475324121L;
 
 	//main panels
@@ -78,6 +83,36 @@ public class EmployeeInfoPanel extends JPanel {
 		//disable all JTextFields
 		disabledTxtFields();
 	}
+	
+	public EmployeeInfoPanel(int employeeId) {
+		this();
+		
+		InJungDao dao = InJungDao.getInstance();
+		EmployeeDto dto = new EmployeeDto();
+		
+		dto = dao.getEmployee(employeeId);
+		
+		setEmployeeInfo(dto);
+		
+	}
+
+	private void setEmployeeInfo(EmployeeDto dto) {
+		lblTeam.setText(dto.getTeam());
+		lblLevel.setText(dto.getLevel());
+		lblName.setText(dto.getName());
+		txtEmployeeId.setText(((Integer)dto.getEmployeeId()).toString());
+		txtMobile.setText(dto.getMobile());
+		txtWorkPhone.setText(dto.getWorkPhone());
+		txtEmail.setText(dto.geteMail());
+		txtLocation.setText(dto.getLocation());
+		txtRole.setText(dto.getRole());
+		txtBirth.setText(dto.getBirth());
+		
+		lblPhoto.setIcon(new ImageIcon("./Photo/"+dto.getPhoto()));
+		
+		validate();
+		repaint();
+	}
 
 	/**
 	 * setup photoNamePane
@@ -97,11 +132,11 @@ public class EmployeeInfoPanel extends JPanel {
 		
 		//lblLevel
 		lblLevel.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblLevel.setBounds(12, 245, 82, 15);
+		lblLevel.setBounds(12, 245, 52, 15);
 		
 		//lblName
-		lblName.setHorizontalAlignment(SwingConstants.LEFT);
-		lblName.setBounds(106, 245, 82, 15);
+		lblName.setHorizontalAlignment(SwingConstants.CENTER);
+		lblName.setBounds(76, 245, 112, 15);
 		
 		//add components
 		photoNamePane.add(lblPhoto);
@@ -127,63 +162,62 @@ public class EmployeeInfoPanel extends JPanel {
 		employeeIdPane.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 		
 		lblEmployeeId.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblEmployeeId.setPreferredSize(new Dimension(50,12));
+		lblEmployeeId.setPreferredSize(new Dimension(70,12));
 		txtEmployeeId.setText("10000");
-		txtEmployeeId.setColumns(30);
+		txtEmployeeId.setColumns(25);
 		
 		//mobilePane setting
 		molbilePane.setBounds(12, 51, 430, 31);
 		molbilePane.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 		
 		lblMobile.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblMobile.setPreferredSize(new Dimension(50, 12));
+		lblMobile.setPreferredSize(new Dimension(70, 12));
 		txtMobile.setText("010-0000-0000");
-		txtMobile.setColumns(30);
+		txtMobile.setColumns(25);
 		
 		//workPhonePane
 		workPhonePane.setBounds(12, 92, 430, 31);
 		workPhonePane.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 		
 		lblWorkPhone.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblWorkPhone.setPreferredSize(new Dimension(50, 12));
+		lblWorkPhone.setPreferredSize(new Dimension(70, 12));
 		txtWorkPhone.setText("02-000-0000");
-		txtWorkPhone.setColumns(30);
+		txtWorkPhone.setColumns(25);
 		
 		//emailPane
 		emailPane.setBounds(12, 133, 430, 31);
 		emailPane.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 		
 		lblEmail.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblEmail.setPreferredSize(new Dimension(50, 12));
+		lblEmail.setPreferredSize(new Dimension(70, 12));
 		txtEmail.setText("tester@ddbros.com");
-		txtEmail.setColumns(30);
+		txtEmail.setColumns(25);
 		
 		//locationPane
 		locationPane.setBounds(12, 174, 430, 31);
 		locationPane.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 		
 		lblLocation.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblLocation.setPreferredSize(new Dimension(50, 12));
+		lblLocation.setPreferredSize(new Dimension(70, 12));
 		txtLocation.setText("KH 정보교육원 B강의실");
-		txtLocation.setColumns(30);
+		txtLocation.setColumns(25);
 		
 		//rolePane
 		rolePane.setBounds(12, 215, 430, 31);
 		rolePane.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
-		
 		lblRole.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblRole.setPreferredSize(new Dimension(50, 12));
-		txtRole.setText("\uAC04\uC2DD\uB2F4\uB2F9");
-		txtRole.setColumns(30);
+		lblRole.setPreferredSize(new Dimension(70, 12));
+		txtRole.setText("간식담당");
+		txtRole.setColumns(25);
 		
 		//birthPane
 		birthPane.setBounds(12, 256, 430, 31);
 		birthPane.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 		
 		lblBirth.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblBirth.setPreferredSize(new Dimension(50, 12));
+		lblBirth.setPreferredSize(new Dimension(70, 12));
 		txtBirth.setText("1990.01.01");
-		txtBirth.setColumns(30);
+		txtBirth.setColumns(25);
 		
 		//add components
 		employeeIdPane.add(lblEmployeeId);
@@ -230,6 +264,10 @@ public class EmployeeInfoPanel extends JPanel {
 		btnEditInfo.setBounds(12, 234, 158, 23);
 		btnPasswordChange.setBounds(12, 267, 158, 23);
 		
+		// button actions
+		btnEditInfo.addActionListener(this);
+		btnPasswordChange.addActionListener(this);
+		
 		// add components
 		buttonPane.add(btnEditInfo);
 		buttonPane.add(btnPasswordChange);
@@ -251,7 +289,16 @@ public class EmployeeInfoPanel extends JPanel {
 		txtBirth.setEditable(false);
 		
 		// Refresh main panel ( just in case :) )
-		validate();
-		repaint();
+//		validate();
+//		repaint();
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource().equals(btnEditInfo)) {
+			
+		} else if(e.getSource().equals(btnPasswordChange)) {
+			
+		}
 	}
 }
