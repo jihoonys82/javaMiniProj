@@ -382,7 +382,7 @@ public class InJungDao {
 		String query = "select teamname, teamrole, teamleaderId, employeeName from team T, employee E "
 				+ "where T.teamleaderId = E.employeeId"; // EQUI JOIN 
 		ArrayList<TeamDto> dtos = new ArrayList<>();		
-		TeamDto dto = new TeamDto();
+		TeamDto dto = null;
 		
 		try {
 			connection = getConnection();
@@ -390,11 +390,11 @@ public class InJungDao {
 			set = pstmt.executeQuery();
 			
 			while(set.next()) {
+				dto = new TeamDto();
 				dto.setTeamName(set.getString("teamName"));
 				dto.setTeamRole(set.getString("teamRole"));
 				dto.setTeamLeaderId(set.getString("teamLeaderId"));
 				dto.setTeamLeaderName(set.getString("employeeName"));
-
 				dtos.add(dto);
 			}			
 		} catch (Exception e) {
