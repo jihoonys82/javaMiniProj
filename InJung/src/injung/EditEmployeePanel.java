@@ -182,8 +182,8 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 			employeeIdPane.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 			
 			lblEmployeeId.setHorizontalAlignment(SwingConstants.RIGHT);
-			lblEmployeeId.setPreferredSize(new Dimension(80,12));
-			txtEmployeeId.setColumns(30);
+			lblEmployeeId.setPreferredSize(new Dimension(100,12));
+			txtEmployeeId.setColumns(25);
 			txtEmployeeId.setEditable(false);
 			
 			//passwordPane
@@ -191,55 +191,55 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 			passwordPane.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 			
 			lblPassword.setHorizontalAlignment(SwingConstants.RIGHT);
-			lblPassword.setPreferredSize(new Dimension(80, 12));
-			txtPassword.setColumns(30);
+			lblPassword.setPreferredSize(new Dimension(100, 12));
+			txtPassword.setColumns(25);
 			
 			//pwConfirmPane
 			pwConfirmPane.setBounds(12, 82, 430, 31);
 			pwConfirmPane.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 			
 			lblPwConfirm.setHorizontalAlignment(SwingConstants.RIGHT);
-			lblPwConfirm.setPreferredSize(new Dimension(80, 12));
-			txtPwConfirm.setColumns(30);
+			lblPwConfirm.setPreferredSize(new Dimension(100, 12));
+			txtPwConfirm.setColumns(25);
 			
 			//pwLostQuestionPane
 			pwLostQeustionPane.setBounds(12, 118, 430, 31);
 			pwLostQeustionPane.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 			
 			lblLostQuestion.setHorizontalAlignment(SwingConstants.RIGHT);
-			lblLostQuestion.setPreferredSize(new Dimension(80, 12));
-			txtLostQuestion.setColumns(30);
+			lblLostQuestion.setPreferredSize(new Dimension(100, 12));
+			txtLostQuestion.setColumns(25);
 			
 			//pwLostAnswerPane
 			pwLostAnswerPane.setBounds(12, 154, 430, 31);
 			pwLostAnswerPane.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 			
 			lblLostAnswer.setHorizontalAlignment(SwingConstants.RIGHT);
-			lblLostAnswer.setPreferredSize(new Dimension(80, 12));
-			txtLostAnswer.setColumns(30);
+			lblLostAnswer.setPreferredSize(new Dimension(100, 12));
+			txtLostAnswer.setColumns(25);
 			
 			//namePane
 			namePane.setBounds(12, 190, 430, 31);
 			namePane.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 			
 			lblName.setHorizontalAlignment(SwingConstants.RIGHT);
-			lblName.setPreferredSize(new Dimension(80, 12));
-			txtName.setColumns(30);
+			lblName.setPreferredSize(new Dimension(100, 12));
+			txtName.setColumns(25);
 			
 			//birthPane
 			birthPane.setBounds(12, 226, 430, 31);
 			birthPane.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 			
 			lblBirth.setHorizontalAlignment(SwingConstants.RIGHT);
-			lblBirth.setPreferredSize(new Dimension(80, 12));
-			txtBirth.setColumns(30);
+			lblBirth.setPreferredSize(new Dimension(100, 12));
+			txtBirth.setColumns(25);
 			
 			//teamPane
 			teamPane.setBounds(12, 262, 430, 31);
 			teamPane.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 			
 			lblTeam.setHorizontalAlignment(SwingConstants.RIGHT);
-			lblTeam.setPreferredSize(new Dimension(80, 12));
+			lblTeam.setPreferredSize(new Dimension(100, 12));
 			cbTeam.setBounds(97, 297, 250, 15); 
 			cbTeam.addItem("");
 			
@@ -248,7 +248,7 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 			levelPane.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 			
 			lblLevel.setHorizontalAlignment(SwingConstants.RIGHT);
-			lblLevel.setPreferredSize(new Dimension(80, 12));
+			lblLevel.setPreferredSize(new Dimension(100, 12));
 			cbLevel.setBounds(97, 338, 250, 15); 
 			cbLevel.addItem("");
 			
@@ -257,40 +257,40 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 			rolePane.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 			
 			lblRole.setHorizontalAlignment(SwingConstants.RIGHT);
-			lblRole.setPreferredSize(new Dimension(80, 12));
-			txtRole.setColumns(30);
+			lblRole.setPreferredSize(new Dimension(100, 12));
+			txtRole.setColumns(25);
 			
 			//mobilePane
 			mobilePane.setBounds(12, 370, 430, 31);
 			mobilePane.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 			
 			lblMobile.setHorizontalAlignment(SwingConstants.RIGHT);
-			lblMobile.setPreferredSize(new Dimension(80, 12));
-			txtMobile.setColumns(30);
+			lblMobile.setPreferredSize(new Dimension(100, 12));
+			txtMobile.setColumns(25);
 			
 			//workPhonePane
 			workPhonePane.setBounds(12, 406, 430, 31);
 			workPhonePane.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 			
 			lblWorkPhone.setHorizontalAlignment(SwingConstants.RIGHT);
-			lblWorkPhone.setPreferredSize(new Dimension(80, 12));
-			txtWorkPhone.setColumns(30);
+			lblWorkPhone.setPreferredSize(new Dimension(100, 12));
+			txtWorkPhone.setColumns(25);
 			
 			//emailPane
 			emailPane.setBounds(12, 441, 430, 31);
 			emailPane.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 			
 			lblEmail.setHorizontalAlignment(SwingConstants.RIGHT);
-			lblEmail.setPreferredSize(new Dimension(80, 12));
-			txtEmail.setColumns(30);
+			lblEmail.setPreferredSize(new Dimension(100, 12));
+			txtEmail.setColumns(25);
 			
 			//locationPane
 			locationPane.setBounds(12, 477, 430, 31);
 			locationPane.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 			
 			lblLocation.setHorizontalAlignment(SwingConstants.RIGHT);
-			lblLocation.setPreferredSize(new Dimension(80, 12));
-			txtLocation.setColumns(30);
+			lblLocation.setPreferredSize(new Dimension(100, 12));
+			txtLocation.setColumns(25);
 			
 			// set MaskFormatter
 			try {
@@ -402,10 +402,9 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 		private void initCheckBoxes() {
 			//set Team
 			tDtos = dao.getAllTeam();
-			for(int i=0;i<tDtos.size();i++) {
-				cbTeam.addItem(tDtos.get(i).getTeamName());
+			for(TeamDto dto : tDtos) {
+				cbTeam.addItem(dto.getTeamName());
 			}
-			
 			//set Level
 			for(String lv: level) {
 				cbLevel.addItem(lv);
