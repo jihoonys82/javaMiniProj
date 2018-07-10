@@ -45,7 +45,22 @@ public class InJungDao {
 		
 		Connection connection = null;
 		PreparedStatement pstmt = null;
-		String query = "insert into employee value (EMP_SEQ.NEXTVAL,?,?,?,?,?,?,?,?,?,?,?)";
+		String query = "insert into employee("
+				+ "employeeId, employeeName, birthDate, team, employLevel, role, mobile, workPhone, email, location, password, photoPath, lostIdQuestion, lostIdAnswer) "
+				+ " value (EMP_SEQ.NEXTVAL,"
+				+ "?," //1. employName
+				+ "?," //2. birthDate
+				+ "?," //3. team
+				+ "?," //4. employLevel
+				+ "?," //5. role
+				+ "?," //6. mobile
+				+ "?," //7. workPhone
+				+ "?," //8. email
+				+ "?," //9. location
+				+ "?," //10. password
+				+ "?," //11. photoPath
+				+ "?," //12. lostIdQuestion
+				+ "?)"; //13. lostIdAnswer
 		
 		try {
 			connection = getConnection();
@@ -60,8 +75,10 @@ public class InJungDao {
 			pstmt.setString(7, dto.getWorkPhone());
 			pstmt.setString(8, dto.geteMail());
 			pstmt.setString(9, dto.getLocation());
-			pstmt.setString(10, dto.getLostIdQuestion());
-			pstmt.setString(11, dto.getLostIdAnswer());
+			pstmt.setString(10, dto.getPassword());
+			pstmt.setString(11, dto.getPhoto());
+			pstmt.setString(12, dto.getLostIdQuestion());
+			pstmt.setString(13, dto.getLostIdAnswer());
 			pstmt.executeUpdate();
 			
 			results = INSERT_DATA_SUCCESS; 
@@ -98,20 +115,20 @@ public class InJungDao {
 			
 			if(set.next()) {
 				dto = new EmployeeDto();
-				dto.setEmployeeId(set.getInt("employeeId"));
-				dto.setName(set.getString("employeeName"));
-				dto.setBirth(set.getString("birthdate"));
-				dto.setTeam(set.getString("team"));
-				dto.setLevel(set.getString("employlevel"));
-				dto.setRole(set.getString("role"));
-				dto.setMobile(set.getString("mobile"));
-				dto.setWorkPhone(set.getString("workphone"));
-				dto.seteMail(set.getString("email"));
-				dto.setLocation(set.getString("location"));
-				dto.setPassword(set.getString("password"));
-				dto.setPhoto(set.getString("photopath"));
-				dto.setLostIdQuestion(set.getString("lostIdQuestion"));
-				dto.setLostIdAnswer(set.getString("lostIdAnswer"));
+				dto.setEmployeeId(set.getInt("employeeId")); 	//1
+				dto.setName(set.getString("employeeName")); 	//2
+				dto.setBirth(set.getString("birthdate"));  		//3
+				dto.setTeam(set.getString("team")); 			//4
+				dto.setLevel(set.getString("employlevel")); 	//5
+				dto.setRole(set.getString("role")); 			//6
+				dto.setMobile(set.getString("mobile")); 		//7
+				dto.setWorkPhone(set.getString("workphone")); 	//8
+				dto.seteMail(set.getString("email"));			//9
+				dto.setLocation(set.getString("location"));		//10
+				dto.setPassword(set.getString("password"));		//11
+				dto.setPhoto(set.getString("photopath"));		//12
+				dto.setLostIdQuestion(set.getString("lostIdQuestion")); //13
+				dto.setLostIdAnswer(set.getString("lostIdAnswer")); 	//14
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -156,20 +173,20 @@ public class InJungDao {
 			
 			while(set.next()) {
 				dto = new EmployeeDto();
-				dto.setEmployeeId(set.getInt("employeeId"));
-				dto.setName(set.getString("employeeName"));
-				dto.setBirth(set.getString("birthdate"));
-				dto.setTeam(set.getString("team"));
-				dto.setLevel(set.getString("employlevel"));
-				dto.setRole(set.getString("role"));
-				dto.setMobile(set.getString("mobile"));
-				dto.setWorkPhone(set.getString("workphone"));
-				dto.seteMail(set.getString("email"));
-				dto.setLocation(set.getString("location"));
-				dto.setPassword(set.getString("password"));
-				dto.setPhoto(set.getString("photopath"));
-				dto.setLostIdQuestion(set.getString("lostIdQuestion"));
-				dto.setLostIdAnswer(set.getString("lostIdAnswer"));
+				dto.setEmployeeId(set.getInt("employeeId")); 	//1
+				dto.setName(set.getString("employeeName")); 	//2
+				dto.setBirth(set.getString("birthdate"));  		//3
+				dto.setTeam(set.getString("team")); 			//4
+				dto.setLevel(set.getString("employlevel")); 	//5
+				dto.setRole(set.getString("role")); 			//6
+				dto.setMobile(set.getString("mobile")); 		//7
+				dto.setWorkPhone(set.getString("workphone")); 	//8
+				dto.seteMail(set.getString("email"));			//9
+				dto.setLocation(set.getString("location"));		//10
+				dto.setPassword(set.getString("password"));		//11
+				dto.setPhoto(set.getString("photopath"));		//12
+				dto.setLostIdQuestion(set.getString("lostIdQuestion")); //13
+				dto.setLostIdAnswer(set.getString("lostIdAnswer")); 	//14
 				dtos.add(dto);
 			}
 			
@@ -215,20 +232,20 @@ public class InJungDao {
 			while(set.next()) {
 				dto = new EmployeeDto();
 				
-				dto.setEmployeeId(set.getInt("employeeId"));
-				dto.setName(set.getString("employeeName"));
-				dto.setBirth(set.getString("birthdate"));
-				dto.setTeam(set.getString("team"));
-				dto.setLevel(set.getString("employlevel"));
-				dto.setRole(set.getString("role"));
-				dto.setMobile(set.getString("mobile"));
-				dto.setWorkPhone(set.getString("workphone"));
-				dto.seteMail(set.getString("email"));
-				dto.setLocation(set.getString("location"));
-				dto.setPassword(set.getString("password"));
-				dto.setPhoto(set.getString("photopath"));
-				dto.setLostIdQuestion(set.getString("lostIdQuestion"));
-				dto.setLostIdAnswer(set.getString("lostIdAnswer"));
+				dto.setEmployeeId(set.getInt("employeeId")); 	//1
+				dto.setName(set.getString("employeeName")); 	//2
+				dto.setBirth(set.getString("birthdate"));  		//3
+				dto.setTeam(set.getString("team")); 			//4
+				dto.setLevel(set.getString("employlevel")); 	//5
+				dto.setRole(set.getString("role")); 			//6
+				dto.setMobile(set.getString("mobile")); 		//7
+				dto.setWorkPhone(set.getString("workphone")); 	//8
+				dto.seteMail(set.getString("email"));			//9
+				dto.setLocation(set.getString("location"));		//10
+				dto.setPassword(set.getString("password"));		//11
+				dto.setPhoto(set.getString("photopath"));		//12
+				dto.setLostIdQuestion(set.getString("lostIdQuestion")); //13
+				dto.setLostIdAnswer(set.getString("lostIdAnswer")); 	//14
 				dtos.add(dto);
 			}			
 		} catch (Exception e) {
@@ -275,20 +292,20 @@ public class InJungDao {
 			while(set.next()) {
 				dto = new EmployeeDto();
 				
-				dto.setEmployeeId(set.getInt("employeeId"));
-				dto.setName(set.getString("employeeName"));
-				dto.setBirth(set.getString("birthdate"));
-				dto.setTeam(set.getString("team"));
-				dto.setLevel(set.getString("employlevel"));
-				dto.setRole(set.getString("role"));
-				dto.setMobile(set.getString("mobile"));
-				dto.setWorkPhone(set.getString("workphone"));
-				dto.seteMail(set.getString("email"));
-				dto.setLocation(set.getString("location"));
-				dto.setPassword(set.getString("password"));
-				dto.setPhoto(set.getString("photopath"));
-				dto.setLostIdQuestion(set.getString("lostIdQuestion"));
-				dto.setLostIdAnswer(set.getString("lostIdAnswer"));
+				dto.setEmployeeId(set.getInt("employeeId")); 	//1
+				dto.setName(set.getString("employeeName")); 	//2
+				dto.setBirth(set.getString("birthdate"));  		//3
+				dto.setTeam(set.getString("team")); 			//4
+				dto.setLevel(set.getString("employlevel")); 	//5
+				dto.setRole(set.getString("role")); 			//6
+				dto.setMobile(set.getString("mobile")); 		//7
+				dto.setWorkPhone(set.getString("workphone")); 	//8
+				dto.seteMail(set.getString("email"));			//9
+				dto.setLocation(set.getString("location"));		//10
+				dto.setPassword(set.getString("password"));		//11
+				dto.setPhoto(set.getString("photopath"));		//12
+				dto.setLostIdQuestion(set.getString("lostIdQuestion")); //13
+				dto.setLostIdAnswer(set.getString("lostIdAnswer")); 	//14
 				dtos.add(dto);
 			}
 			
@@ -493,41 +510,6 @@ public class InJungDao {
 	}
 	
 	/**
-	 * Get Lost ID Question
-	 * @param empId - employee Id 
-	 * @return Lost ID Question
-	 */
-	public String getLostIdQuestion(int empId) {
-		String question = null; 
-		Connection connection = null;
-		PreparedStatement pstmt = null;
-		ResultSet set = null;
-		String query = "select lostIdQuestion from employee where employeeId=?";
-		
-		try {
-			connection = getConnection();
-			pstmt = connection.prepareStatement(query);
-			pstmt.setInt(1, empId);
-			set = pstmt.executeQuery();
-		
-			if(set.next()) {
-				question = set.getString("lostIdQuestion");
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if(set!=null) set.close();
-				if(pstmt!=null) pstmt.close();
-				if(connection!=null) connection.close();
-			} catch (Exception e2) {
-				e2.printStackTrace();
-			}
-		}
-		return question;
-	}
-	
-	/**
 	 * Set New password 
 	 * @param empId - employee ID 
 	 * @param newPw - new Password
@@ -560,7 +542,7 @@ public class InJungDao {
 		return results;
 	}
 	
-	
+
 	private Connection getConnection() {
 		Connection connection = null;
 		
