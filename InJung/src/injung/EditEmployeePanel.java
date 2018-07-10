@@ -85,10 +85,10 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 		private JTextField txtName			= new JTextField();
 		private JTextField txtRole 			= new JTextField();
 		private JTextField txtLocation 		= new JTextField();
-		private JFormattedTextField txtBirth	 = new JFormattedTextField();
-		private JFormattedTextField txtMobile 	 = new JFormattedTextField();
-		private JFormattedTextField txtWorkPhone = new JFormattedTextField();
-		private JFormattedTextField txtEmail 	 = new JFormattedTextField();
+		private JFormattedTextField txtBirth;
+		private JFormattedTextField txtMobile;
+		private JFormattedTextField txtWorkPhone;
+		private JFormattedTextField txtEmail;
 		
 		private MaskFormatter birthFormat 		= null;
 		private MaskFormatter mobileFormat 		= null;
@@ -173,6 +173,20 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 		 * setup editInfoPane
 		 */
 		private void initEditInfo() {
+			// set MaskFormatter
+			try {
+				birthFormat = new MaskFormatter("####.##.##"); //yy.mm.dd
+				mobileFormat = new MaskFormatter("###-####-####");
+				workPhoneFormat = new MaskFormatter("##-####-####");
+				emailFormat = new MaskFormatter("?@?");
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			txtBirth 	= new JFormattedTextField(birthFormat);
+			txtMobile 	= new JFormattedTextField(mobileFormat);
+			txtWorkPhone= new JFormattedTextField(workPhoneFormat);
+			txtEmail 	= new JFormattedTextField(emailFormat);
+			
 			//detailInfoPane setting
 			editInfoPane.setBounds(224, 5, 455, 520);
 			editInfoPane.setLayout(null);
@@ -291,20 +305,6 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 			lblLocation.setHorizontalAlignment(SwingConstants.RIGHT);
 			lblLocation.setPreferredSize(new Dimension(100, 12));
 			txtLocation.setColumns(25);
-			
-			// set MaskFormatter
-			try {
-				birthFormat = new MaskFormatter("####.##.##"); //yy.mm.dd
-				mobileFormat = new MaskFormatter("###-####-####");
-				workPhoneFormat = new MaskFormatter("##-####-####");
-				emailFormat = new MaskFormatter("?@?");
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
-			txtBirth.setValue(birthFormat);
-			txtMobile.setValue(mobileFormat);
-			txtWorkPhone.setValue(workPhoneFormat);
-			txtEmail.setValue(emailFormat);
 			
 			//add components
 			employeeIdPane.add(lblEmployeeId);

@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Data Access Object for InJung a InJung.
@@ -540,6 +541,53 @@ public class InJungDao {
 			}
 		}
 		return results;
+	}
+	
+	public ArrayList<EmployeeDto> getQuizData() {
+		int tot = countEmployee();
+		int[] selectedIndex = new int[3]; 
+		Random rand = new Random();
+		for(int i=0;i<3;i++) {
+			selectedIndex[i]=rand.nextInt(tot+1);
+		}
+		
+		Connection connection = null;
+		PreparedStatement pstmt = null;
+		ResultSet set = null;
+		String query = "SELECT * FROM(" + 
+				"Select employeename, photopath, rownum r FROM employee)" + 
+				"WHERE r IN (?, ?, ?);"; 
+		ArrayList<EmployeeDto> dtos = new ArrayList<>();
+		EmployeeDto dto = null;
+		
+		try {
+			connection = getConnection();
+			pstmt = connection.prepareStatement(query);
+			for(int i=1;i<selectedIndex.length+1;i++) {
+				pstmt.setInt(i, selectedIndex[i]);
+			}
+			set = pstmt.executeQuery();
+			
+			while(set.next()) {
+				dto = new EmployeeDto();
+				
+				dto.setName(set.getString("employeeName"));
+				dto.setPhoto(set.getString("photopath"));
+				dtos.add(dto);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(set!=null) set.close();
+				if(pstmt!=null) pstmt.close();
+				if(connection!=null) connection.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		
+		return dtos;
 	}
 	
 
