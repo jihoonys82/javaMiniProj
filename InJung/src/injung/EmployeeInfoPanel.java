@@ -95,6 +95,11 @@ public class EmployeeInfoPanel extends JPanel implements ActionListener {
 		setEmployeeInfo(dto);
 		
 	}
+	
+	public EmployeeInfoPanel(EmployeeDto eDto) {
+		this();
+		setEmployeeInfo(eDto);
+	}
 
 	private void setEmployeeInfo(EmployeeDto dto) {
 		lblTeam.setText(dto.getTeam());

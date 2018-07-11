@@ -7,7 +7,6 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -87,12 +86,8 @@ class loginPanel extends JDialog implements ActionListener {
 		loginPane.add(btnLogin);		
 		loginPane.add(btnFindInfo);
 		getContentPane().add(loginPane);
-		
-		
+
 	}
-	
-
-
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -112,9 +107,6 @@ class loginPanel extends JDialog implements ActionListener {
 		   findIddialog.setVisible(true);
 		   
 		}
-		
-		
-		
 	}
 	
 	public int isLoginCheck(int empId) {
@@ -122,7 +114,7 @@ class loginPanel extends JDialog implements ActionListener {
 		eDto = dao.getEmployee(empId);	
 		int login_result = LOGIN_FAILED;
 	
-		if (txtEmployeeId.getText().equals(eDto.getEmployeeId())){
+		if (txtEmployeeId.getText().equals(((Integer)eDto.getEmployeeId()).toString())){
 
 			if (txtPw.getPassword().toString().equals(eDto.getPassword())) {
 			
@@ -138,9 +130,7 @@ class loginPanel extends JDialog implements ActionListener {
 				
 		}	
 			return login_result;	
-		
 	}
-	
 	
 //	public boolean isLogin() {     
 //		return bLoginCheck;

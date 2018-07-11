@@ -17,7 +17,7 @@ import javax.swing.border.EtchedBorder;
  * 작성자 : 송주현
  */
 
-public class photoViewPanel extends JPanel {
+public class PhotoViewPanel extends JPanel {
 	
 	private JPanel photoViewPane = new JPanel();	// 사진보기 판넬 
 	
@@ -29,7 +29,7 @@ public class photoViewPanel extends JPanel {
 	
 	
 	
-	public photoViewPanel() {
+	public PhotoViewPanel() {
 		setLayout(null);
 		
 		photoViewPane.setBounds(12, 10, 892, 479);		
@@ -84,7 +84,7 @@ public class photoViewPanel extends JPanel {
 		frame.setBounds(200,300,1000,600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		frame.getContentPane().add(new photoViewPanel());	
+		frame.getContentPane().add(new PhotoViewPanel());	
 		frame.setVisible(true);
 		
 	}

@@ -356,7 +356,7 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 		else if (e.getSource() == view_PhotoView) {
 			root.removeAll();
 			
-			root.add(new photoViewPanel()); // 컨테이너 넣기
+			root.add(new PhotoViewPanel()); // 컨테이너 넣기
 			setTitle("사진 보기");
 			
 			root.validate(); // 컴포넌트 검증 (메모리 상태 확인) - 메모리 확실하게
