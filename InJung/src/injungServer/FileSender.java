@@ -1,4 +1,4 @@
-package injung;
+package injungServer;
 
 import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
@@ -19,6 +19,7 @@ import java.nio.file.Files;
 public class FileSender extends Thread {
 	
 	private File file;
+	private File dir = new File("./server_photo");
 	
 	private Socket sock; 
 	
@@ -32,8 +33,8 @@ public class FileSender extends Thread {
 	 * File Sender Constructor
 	 * @param file : Source file
 	 */
-	public FileSender(File file) {
-		this.file = file;
+	public FileSender(String filename) {
+		this.file = new File(dir, filename);
 		
 	}
 	

@@ -163,47 +163,47 @@ public class FileServer extends JFrame implements ActionListener {
 	} // end of startServer() 
 	
 	
-	public class FileReceiver extends Thread { 
-		
-		private Socket sock; 
-		private BufferedInputStream bis;
-		private DataInputStream dis;
-		
-		public FileReceiver(Socket sock) {
-			this.sock = sock;
-		}
-		
-		@Override
-		public void run() {
-			try {
-				bis = new BufferedInputStream(sock.getInputStream());
-				dis = new DataInputStream(bis);
-				
-				txtConsole.append("File Receiving.../n");
-				
-				String fileName = dis.readUTF();
-				file = new File(dir, fileName);
-				Files.copy(dis, file.toPath());
-				
-				txtConsole.append(file.getName() + " has been transfered to Server/n");
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			} finally {
-				try {
-					if(dis !=null) dis.close();
-					if(bis !=null) bis.close();
-					if(sock!=null) sock.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			
-			}
-		} // end of run() method 
-		
-		
-	}
+//	public class FileReceiver extends Thread { 
+//		
+//		private Socket sock; 
+//		private BufferedInputStream bis;
+//		private DataInputStream dis;
+//		
+//		public FileReceiver(Socket sock) {
+//			this.sock = sock;
+//		}
+//		
+//		@Override
+//		public void run() {
+//			try {
+//				bis = new BufferedInputStream(sock.getInputStream());
+//				dis = new DataInputStream(bis);
+//				
+//				txtConsole.append("File Receiving.../n");
+//				
+//				String fileName = dis.readUTF();
+//				file = new File(dir, fileName);
+//				Files.copy(dis, file.toPath());
+//				
+//				txtConsole.append(file.getName() + " has been transfered to Server/n");
+//			} catch (FileNotFoundException e) {
+//				e.printStackTrace();
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			} finally {
+//				try {
+//					if(dis !=null) dis.close();
+//					if(bis !=null) bis.close();
+//					if(sock!=null) sock.close();
+//				} catch (IOException e) {
+//					e.printStackTrace();
+//				}
+//			
+//			}
+//		} // end of run() method 
+//		
+//		
+//	}
 
 	public static void main(String[] args) {
 		new FileServer();
