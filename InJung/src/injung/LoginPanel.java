@@ -7,6 +7,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -23,7 +24,7 @@ import injung.model.InJungDao;
  * 수정자 : 권미현
  */
 
-class loginPanel extends JDialog implements ActionListener {
+class LoginPanel extends JDialog implements ActionListener {
 
 	private static final long serialVersionUID = 1393142801124421909L;
 	
@@ -43,10 +44,10 @@ class loginPanel extends JDialog implements ActionListener {
 	
 //	private boolean bLoginCheck;
 	
-	public loginPanel(JFrame frame, String title, boolean modal,int x,int y) {
+	public LoginPanel(JFrame frame, String title, boolean modal) {
 		super(frame,title,true);
 		setTitle("Login");
-		setLocation(300,200);
+		setLocation(550,250);
 		setSize(450,300);
 		setResizable(false);
 		
@@ -86,14 +87,19 @@ class loginPanel extends JDialog implements ActionListener {
 		loginPane.add(btnLogin);		
 		loginPane.add(btnFindInfo);
 		getContentPane().add(loginPane);
-
+		
+		
 	}
+	
+
+
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
 		if (e.getSource().equals(btnLogin)) {
 			
+			System.out.println("로그인 버튼 누름");
 			String strId = txtEmployeeId.getText();
 			int toIntId = Integer.parseInt(strId); 
 			
@@ -101,39 +107,52 @@ class loginPanel extends JDialog implements ActionListener {
 			
 		} else if (e.getSource().equals(btnFindInfo)) {
 			
-		   findIdPanel_1 findIddialog = new findIdPanel_1(this,"Create new password", true);	// 비밀번호 변경 다이얼로그로 이동 
-		   findIddialog.setLocation(200, 300);
+		   FindIdPanel findIddialog = new FindIdPanel(this,"Create new password", true);	// 비밀번호 변경 다이얼로그로 이동 
+		   findIddialog.setLocation(470, 300);
 		   findIddialog.setSize(500,300);
 		   findIddialog.setVisible(true);
 		   
 		}
+		
+		
+		
 	}
+	
+	// for문 
 	
 	public int isLoginCheck(int empId) {
 		
 		eDto = dao.getEmployee(empId);	
 		int login_result = LOGIN_FAILED;
-	
-		if (txtEmployeeId.getText().equals(((Integer)eDto.getEmployeeId()).toString())){
-
-			if (txtPw.getPassword().toString().equals(eDto.getPassword())) {
-			
-				// 로그인 성공 
-				// TODO 모든 기능 활성화 -> 추가 
-
-				login_result = LOGIN_SUCCESSED;
-			
-			} else if( !(txtPw.getPassword().toString() == eDto.getPassword()) ) {
-				// 로그인 실패
+		
+		if (txtEmployeeId.getText().equals(Integer.toString(eDto.getEmployeeId()))){		// 1. 입력 사번과 DB사번이 같다면			
+			String str = String.valueOf(txtPw.getPassword());
+//				System.out.println("DB Id: " + eDto.getEmployeeId());
+//				System.out.println("DB pw: "+ eDto.getPassword());
+//				
+//				System.out.println("id: " + txtEmployeeId.getText().toString());
+//				System.out.println("pw: "+ str);
+					
+			if (str.equals(eDto.getPassword())) {	// 	2. 입력 패스워드와 DB 패스워드가 같다면
+				login_result = LOGIN_SUCCESSED;		//	2-1. 로그인 성공 		
+				dispose();
+			} else if( !(str.equals(eDto.getPassword()))) { 		// 2-2. 입력패스워드와 DB 패스워드가 다르면  
+				
 				lblWarn.setText("<html> 로그인 정보가 일치하지 않습니다 <br/> 패스워드 찾기 버튼을 눌러주세요 </html>");
 			}
 				
-		}	
+		} // 첫번째 if 	
 			return login_result;	
+		
+		
+	}	// isLoginCheck 메소드 
+
+	// MainFram에 넘길 ID값
+	public int getTxtEmployeeId() {
+		int id = Integer.parseInt(txtEmployeeId.getText());
+		return id;
 	}
 	
-//	public boolean isLogin() {     
-//		return bLoginCheck;
-//	}
+	
  }
 	

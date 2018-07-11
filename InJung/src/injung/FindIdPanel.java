@@ -13,13 +13,8 @@ import javax.swing.JTextField;
 import injung.model.EmployeeDto;
 import injung.model.InJungDao;
 
-/**
- *  2018.07.05 
- *  작성자: 송주현 
- */
-public class findIdPanel_1 extends JDialog implements ActionListener {
-
-	private static final long serialVersionUID = -1581889542704938075L;
+public class FindIdPanel extends JDialog implements ActionListener {
+private static final long serialVersionUID = -1581889542704938075L;
 	
 	private JTextField txtEmployeeId;
 	private JTextField txtQuestion;
@@ -34,7 +29,7 @@ public class findIdPanel_1 extends JDialog implements ActionListener {
 	private InJungDao dao = InJungDao.getInstance();
 	private EmployeeDto eDto;
 	
-	public findIdPanel_1(JDialog dialog, String title, boolean modal) {
+	public FindIdPanel(JDialog dialog, String title, boolean modal) {
 		super(dialog,title,true);
 		
 		getContentPane().setLayout(null);
@@ -118,44 +113,46 @@ public class findIdPanel_1 extends JDialog implements ActionListener {
 			//  1-3. 새비밀번호와 비밀번호확인 텍스트필드가 일치하면 비밀번호 변경 
 			// 2. 확인버튼 눌렀을 때 값이 불일치하면 "일치x" 메세지 띄우기 
 			
-			if ((txtEmployeeId.getText().equals(((Integer)eDto.getEmployeeId()).toString())) 
-					&& (txtQuestion.getText().equals(eDto.getPassword()))
-					&& (txtAnswer.getText().equals(eDto.getLostIdAnswer()) 
-				))  {		
-						CreatePw(toIntId);		
-			} else if ( !(txtEmployeeId.getText().equals(((Integer)eDto.getEmployeeId()).toString())) 
-					|| !(txtQuestion.getText().equals(eDto.getLostIdQuestion()))		// 정보가 일치하지 않으면 관리자문의 메세지 
+			if ( (txtEmployeeId.getText().equals(eDto.getEmployeeId())) && (txtQuestion.getText().equals(eDto.getPassword()))
+					&& (txtAnswer.getText().equals(eDto.getLostIdAnswer()) ))  {		
+			
+						CreatePw(toIntId);
+		
+				
+			} else if ( !(txtEmployeeId.getText().equals(eDto.getEmployeeId())) || !(txtQuestion.getText().equals(eDto.getLostIdQuestion()))		// 정보가 일치하지 않으면 관리자문의 메세지 
 					|| !(txtAnswer.getText().equals(eDto.getLostIdAnswer())) ) {	
 				JOptionPane.showMessageDialog(null, "정보가 일치하지 않습니다 \n 관리자에게 문의하세요");
-			} 
+			}
 			
 		} else if (e.getSource().equals(btnCancel)) {	// 취소버튼 클릭시 닫기 
-			dispose();
-		} // btnOk Action
+				dispose();
+		}
 		
-	} // actionPerformed method
-	
+		
+	}
 	
 	private void CreatePw(int empId) {
 		eDto = dao.getEmployee(empId);
 			
-		if( ( (txtNewPw.getText().equals("")) && (txtVerifyPw.getText().equals("")))){	// 두 텍스트필드를 공백으로 두었을 때  
-			JOptionPane.showMessageDialog(null, "변경할 비밀번호를 입력하세요");	
-			
-		} else if ( (txtNewPw.getText().equals("")) || (txtVerifyPw.getText().equals(""))) {
-			JOptionPane.showMessageDialog(null, "변경할 비밀번호를 입력하세요");	// 하나의 텍스트필드만 공백으로 두었을 때 
-			
-		} else if (!(txtNewPw.getText().equals(txtVerifyPw.getText()))) {
-			JOptionPane.showMessageDialog(null, "비밀번호가 일치하지 않습니다 \n 다시 입력하세요"); // 새비밀번호와 비밀번호확인이 일치하지 않을 때 
-			
-		} else if ((txtNewPw.getText().equals(txtVerifyPw.getText()))) {	// 비밀번호 변경 가능
-			JOptionPane.showMessageDialog(null, "비밀번호가 변경되었습니다");
+					if( ( (txtNewPw.getText().equals("")) && (txtVerifyPw.getText().equals("")))){	// 두 텍스트필드를 공백으로 두었을 때  
+						JOptionPane.showMessageDialog(null, "변경할 비밀번호를 입력하세요");	
+						
+					} else if ( (txtNewPw.getText().equals("")) || (txtVerifyPw.getText().equals(""))) {
+						JOptionPane.showMessageDialog(null, "변경할 비밀번호를 입력하세요");	// 하나의 텍스트필드만 공백으로 두었을 때 
+						
+					} else if (!(txtNewPw.getText().equals(txtVerifyPw.getText()))) {
+						JOptionPane.showMessageDialog(null, "비밀번호가 일치하지 않습니다 \n 다시 입력하세요"); // 새비밀번호와 비밀번호확인이 일치하지 않을 때 
+						
+					} else if ((txtNewPw.getText().equals(txtVerifyPw.getText()))) {	// 비밀번호 변경 가능
+						JOptionPane.showMessageDialog(null, "비밀번호가 변경되었습니다");
+	
+						eDto.setPassword(txtNewPw.getText()); // 변경된 값 DB로 전송 
+						dispose();	// 변경 후 닫기 
+						
+					}
+		
 
-			eDto.setPassword(txtNewPw.getText()); // 변경된 값 DB로 전송 
-			dispose();	// 변경 후 닫기 
 			
-		}
-
-	} // CreatePw method
-
+		
+	}
 }
