@@ -274,18 +274,18 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 			logPan = new loginPanel(this,"Login Dialog",true,getX()+50,getY()+50);
 			logPan.setVisible(true);
 
-			boolean logckeck = logPan.isLogin();
-			if(logckeck) {
-//				System.out.println("loginPanel.isLogin() : " + logckeck);
-
-				root.removeAll();
-				
-				root.add(new EmployeeInfoPanel());
-				setTitle("내 정보");
-
-				root.validate(); // 컴포넌트 검증 (메모리 상태 확인) - 메모리 확실하게
-				root.repaint(); // 다시 그리기
-			}
+//			int logckeck = logPan.isLoginCheck(); // NEED TO FIX !!! UNTIL 2018-07-11 
+//			if(logckeck==loginPanel.LOGIN_SUCCESSED) {
+////				System.out.println("loginPanel.isLogin() : " + logckeck);
+//
+//				root.removeAll();
+//				
+//				root.add(new EmployeeInfoPanel());
+//				setTitle("내 정보");
+//
+//				root.validate(); // 컴포넌트 검증 (메모리 상태 확인) - 메모리 확실하게
+//				root.repaint(); // 다시 그리기
+//			}
 
 		} 
 		// 가져오기
