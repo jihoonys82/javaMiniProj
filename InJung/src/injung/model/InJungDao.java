@@ -590,6 +590,60 @@ public class InJungDao {
 		return dtos;
 	}
 	
+	/**
+	 * Get Employee who are on birthday at selected month
+	 * @param month 
+	 * @return - Employ ArrayList
+	 */
+	public ArrayList<EmployeeDto> getEmpBirth(int month) {
+		Connection connection = null;
+		PreparedStatement pstmt = null;
+		ResultSet set = null;
+		String query = "SELECT * FROM employee" + 
+				"WHERE TO_CHAR(TO_DATE(birthdate), 'mm') = ?"; 
+		ArrayList<EmployeeDto> dtos = new ArrayList<>();
+		EmployeeDto dto = null;
+		
+		try {
+			connection = getConnection();
+			pstmt = connection.prepareStatement(query);
+			pstmt.setInt(1, month);
+			set = pstmt.executeQuery();
+			
+			while(set.next()) {
+				dto = new EmployeeDto();
+				
+				dto.setEmployeeId(set.getInt("employeeId")); 	//1
+				dto.setName(set.getString("employeeName")); 	//2
+				dto.setBirth(set.getString("birthdate"));  		//3
+				dto.setTeam(set.getString("team")); 			//4
+				dto.setLevel(set.getString("employlevel")); 	//5
+				dto.setRole(set.getString("role")); 			//6
+				dto.setMobile(set.getString("mobile")); 		//7
+				dto.setWorkPhone(set.getString("workphone")); 	//8
+				dto.seteMail(set.getString("email"));			//9
+				dto.setLocation(set.getString("location"));		//10
+				dto.setPassword(set.getString("password"));		//11
+				dto.setPhoto(set.getString("photopath"));		//12
+				dto.setLostIdQuestion(set.getString("lostIdQuestion")); //13
+				dto.setLostIdAnswer(set.getString("lostIdAnswer")); 	//14
+				dtos.add(dto);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(set!=null) set.close();
+				if(pstmt!=null) pstmt.close();
+				if(connection!=null) connection.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		
+		return dtos;
+	}
+	
 
 	private Connection getConnection() {
 		Connection connection = null;

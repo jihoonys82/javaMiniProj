@@ -30,7 +30,7 @@ import javax.swing.SwingUtilities;
  * @author Ji
  *
  */
-public class FileServer extends JFrame implements ActionListener {
+public class FileServer extends JFrame implements ActionListener, Runnable {
 	private static final long serialVersionUID = -8924679077451955255L;
 
 	//Frame member 
@@ -207,6 +207,13 @@ public class FileServer extends JFrame implements ActionListener {
 
 	public static void main(String[] args) {
 		new FileServer();
+		
+	}
+
+
+	@Override
+	public void run() {
+		
 		
 	}
 
