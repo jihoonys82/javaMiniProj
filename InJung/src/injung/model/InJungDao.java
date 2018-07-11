@@ -193,7 +193,7 @@ public class InJungDao {
 			
 			// if data is not exist, add dump employee data. 
 			for(int i=0;i<idx;i++) {
-				if(dtos.size()<i) {
+				if(dtos.size()<=i) {
 					dtos.add(new EmployeeDto());
 				}
 			}
