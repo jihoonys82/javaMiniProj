@@ -9,12 +9,17 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import injung.model.EmployeeDto;
+import injung.model.InJungDao;
+
 /*
  * 작성 일자 : 2018.07.01
  * 수정 일자 : 2018.07.05
  * 	- 테이블 셀(내용) 수정 방지
  * 수정 일자 : 2018.07.09
  *  - 상속 : JFram → JPanel
+ * 수정 일자 : 2018.07.10
+ *  - 패널 추가, 레이아웃 변경
  * 
  * 작성자 : 권미현
  * 
@@ -22,6 +27,9 @@ import javax.swing.table.DefaultTableModel;
  */
 
 public class WholeView extends JPanel{
+
+	// WholeView Panel
+	private JPanel wholePanel;
 	
 	// -- JTable 설정 ---
 	private JTable tableView; // 전체보기 Table
@@ -37,17 +45,29 @@ public class WholeView extends JPanel{
 	// 생성자
 	public WholeView() {
 		
-		setLayout(new FlowLayout(FlowLayout.CENTER, 0, 30));	// 레이아웃
+		setLayout(null);	// 레이아웃
 		
 		// --- 프레임 구성 작업 ---
-		initTable(); // 전체보기 리스트(테이블) 설정
+		initTablePanel(); // 전체보기 리스트(테이블) 설정
 		// ------------------
 		
-		setVisible(true);
-		
 	}
+	
+//	public WholeView(int employeeId) { // DTO에서 데이터를 받아올 메소드
+//		this();
+//		
+//		InJungDao dao = InJungDao.getInstance();
+//		EmployeeDto dto = new EmployeeDto();
+//		
+//		dto = dao.getEmployee(employeeId);
+//		
+//		
+//	}
 
-	private void initTable() {
+	private void initTablePanel() {
+		wholePanel = new JPanel();
+		wholePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 20));
+		wholePanel.setBounds(0, 0, 1000, 600);
 		
 		String[][] sample = {
 				{"홍길동", "관리부", "과장", "관리부과장", "aaa@naver.com", "000-0000-0000"},
@@ -56,6 +76,7 @@ public class WholeView extends JPanel{
 		};
 		
 		tableModel = new DefaultTableModel(sample, tableAttribute) {
+
 			@Override
 			public boolean isCellEditable(int row, int column) { // 테이블 내용 수정 불가로 만들기
 				return false;
@@ -73,18 +94,16 @@ public class WholeView extends JPanel{
 		tableView.getColumnModel().getColumn(1).setPreferredWidth(10);
 		tableView.getColumnModel().getColumn(2).setPreferredWidth(10);
 		
-		tableView.setSize(500, 500);	// 변경X
+//		tableView.setSize(500, 500);	// 변경X
 		
 		jScrollPane = new JScrollPane(tableView);
 		
 //		jScrollPane.setSize(500,500);
 		jScrollPane.setPreferredSize(new Dimension(900, 450));
 		
-		add(jScrollPane);
-	}
-	
-	public static void main(String[] args) {
-		new WholeView();	// 생성자 호출
+		wholePanel.add(jScrollPane); // wholeView Panel에 추가
+		
+		add(wholePanel); // wholeView Panel 추가
 	}
 	
 }
