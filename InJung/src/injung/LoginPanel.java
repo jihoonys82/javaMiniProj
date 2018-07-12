@@ -2,6 +2,8 @@ package injung;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -24,7 +26,7 @@ import injung.model.InJungDao;
  * 수정자 : 권미현
  */
 
-class LoginPanel extends JDialog implements ActionListener {
+class LoginPanel extends JDialog implements ActionListener, KeyListener {
 
 	private static final long serialVersionUID = 1393142801124421909L;
 	
@@ -41,6 +43,7 @@ class LoginPanel extends JDialog implements ActionListener {
 	
 	public static final int LOGIN_SUCCESSED = 0;
 	public static final int LOGIN_FAILED = 1;
+	
 	
 //	private boolean bLoginCheck;
 	
@@ -67,6 +70,7 @@ class LoginPanel extends JDialog implements ActionListener {
 		txtPw = new JPasswordField(); // 패스워드 텍스트 생성 
 		txtPw.setBounds(152, 90, 154, 21);
 		txtPw.setEditable(true);
+		txtPw.addKeyListener(this);	// 패스워드 필드에서 엔터 입력시 로그인 
 		
 		btnLogin = new JButton("Login"); // 로그인 버튼 생성 
 		btnLogin.setBounds(325, 89, 97, 23);
@@ -98,8 +102,6 @@ class LoginPanel extends JDialog implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		
 		if (e.getSource().equals(btnLogin)) {
-			
-			System.out.println("로그인 버튼 누름");
 			String strId = txtEmployeeId.getText();
 			int toIntId = Integer.parseInt(strId); 
 			
@@ -112,11 +114,12 @@ class LoginPanel extends JDialog implements ActionListener {
 		   findIddialog.setSize(500,300);
 		   findIddialog.setVisible(true);
 		   
-		}
-		
-		
+		} 
 		
 	}
+		
+		
+	
 	
 	// for문 
 	
@@ -124,35 +127,70 @@ class LoginPanel extends JDialog implements ActionListener {
 		
 		eDto = dao.getEmployee(empId);	
 		int login_result = LOGIN_FAILED;
+		String strPW = String.valueOf(txtPw.getPassword());	// 패스워드필드에서 가져온 값 string에 담기 
+//		String str = new String(txtPw.getPassword());
 		
-		if (txtEmployeeId.getText().equals(Integer.toString(eDto.getEmployeeId()))){		// 1. 입력 사번과 DB사번이 같다면			
-			String str = String.valueOf(txtPw.getPassword());
-//				System.out.println("DB Id: " + eDto.getEmployeeId());
+		if ( (txtEmployeeId.getText().equals(Integer.toString(eDto.getEmployeeId()))) 
+				&& (strPW.equals(eDto.getPassword()))){		//  1. 입력 사번과 DB사번이 같고, 입력 패스워드와 DB 패스워드가 같다면	
+			
+//				System.out.println("DB Id: " + eDto.getEmployeeId());			// DB걊 확인 
 //				System.out.println("DB pw: "+ eDto.getPassword());
 //				
 //				System.out.println("id: " + txtEmployeeId.getText().toString());
 //				System.out.println("pw: "+ str);
-					
-			if (str.equals(eDto.getPassword())) {	// 	2. 입력 패스워드와 DB 패스워드가 같다면
-				login_result = LOGIN_SUCCESSED;		//	2-1. 로그인 성공 		
-				dispose();
-			} else if( !(str.equals(eDto.getPassword()))) { 		// 2-2. 입력패스워드와 DB 패스워드가 다르면  
+			
+				login_result = LOGIN_SUCCESSED;		// 로그인 성공 		
+				dispose();							// 로그인창 종료 
 				
-				lblWarn.setText("<html> 로그인 정보가 일치하지 않습니다 <br/> 패스워드 찾기 버튼을 눌러주세요 </html>");
-			}
+		} else if ( !(txtEmployeeId.getText().equals(Integer.toString(eDto.getEmployeeId()))) 
+				|| !(strPW.equals(eDto.getPassword()))){	// 2. 입력 사번과 DB사번이 다르거나, 입력 패스워드와 DB 패스워드가 다르다면 
+			
+			lblWarn.setText("<html> 로그인 정보가 일치하지 않습니다 <br/> 다시 입력해주세요 </html>");		// 경고레이블 출력 
+			
+			for(int i = 0; i<3; i++) {	// for문을 통해 사번과 패스워드 입력을 3번 받고 
+//				System.out.println(i + "번 반복중");
 				
-		} // 첫번째 if 	
-			return login_result;	
-		
-		
-	}	// isLoginCheck 메소드 
-
-	// MainFram에 넘길 ID값
-	public int getTxtEmployeeId() {
+				if((txtEmployeeId.getText().equals(Integer.toString(eDto.getEmployeeId()))) 
+						&& (strPW.equals(eDto.getPassword()))) {		// 2-1. 3번 안에 입력 사번과 DB사번이 같고, 입력 패스워드와 DB패스워드가 같다면
+						login_result = LOGIN_SUCCESSED;		// 로그인 성공 
+						break;								// for문 종료 
+						
+				} else if  ( !(txtEmployeeId.getText().equals(Integer.toString(eDto.getEmployeeId()))) ||
+						!(strPW.equals(eDto.getPassword()))) {	// 2-2. 3번 이상 입력 사번과 DB 사번이 같지 않거나, 입력 패스워드와 DB패스워드가 같지 않다면 
+						JOptionPane.showMessageDialog(null, "<html> 로그인 정보가 일치하지 않습니다 <br/> 패스워드 찾기 버튼을 눌러주세요 </html>");	// 패스워드찾기 버튼 권유 다이어로그 출력 
+				}	// 작은 if문 끝 				
+			}	// for문 끝 
+			
+		}	// 큰 if문 끝 
+			return login_result;	// 로그인 성공 결과 리턴 
+	}	// isLoginCheck 메소드  
+	
+	
+	public int getTxtEmployeeId() {		// MainFram에 넘길 ID값
 		int id = Integer.parseInt(txtEmployeeId.getText());
 		return id;
 	}
+
 	
+	@Override
+	public void keyTyped(KeyEvent e) {
+	}
+
 	
+	@Override
+	public void keyPressed(KeyEvent e) {	// 엔터를 누를 때 로그인 체크 메소드 실행 
+		if ( e.getKeyCode() == KeyEvent.VK_ENTER) {
+			String strId = txtEmployeeId.getText();
+			int toIntId = Integer.parseInt(strId); 
+			
+			isLoginCheck(toIntId);	
+		}	
+	}
+
+	
+	@Override
+	public void keyReleased(KeyEvent e) {
+	}
+
  }
 	
