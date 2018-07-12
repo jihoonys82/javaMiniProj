@@ -134,25 +134,22 @@ private static final long serialVersionUID = -1581889542704938075L;
 	private void CreatePw(int empId) {
 		eDto = dao.getEmployee(empId);
 			
-					if( ( (txtNewPw.getText().equals("")) && (txtVerifyPw.getText().equals("")))){	// 두 텍스트필드를 공백으로 두었을 때  
-						JOptionPane.showMessageDialog(null, "변경할 비밀번호를 입력하세요");	
+			if( ( (txtNewPw.getText().equals("")) && (txtVerifyPw.getText().equals("")))){	// 두 텍스트필드를 공백으로 두었을 때  
+					JOptionPane.showMessageDialog(null, "변경할 비밀번호를 입력하세요");	
 						
-					} else if ( (txtNewPw.getText().equals("")) || (txtVerifyPw.getText().equals(""))) {
-						JOptionPane.showMessageDialog(null, "변경할 비밀번호를 입력하세요");	// 하나의 텍스트필드만 공백으로 두었을 때 
+				} else if ( (txtNewPw.getText().equals("")) || (txtVerifyPw.getText().equals(""))) {
+					JOptionPane.showMessageDialog(null, "변경할 비밀번호를 입력하세요");	// 하나의 텍스트필드만 공백으로 두었을 때 
 						
-					} else if (!(txtNewPw.getText().equals(txtVerifyPw.getText()))) {
-						JOptionPane.showMessageDialog(null, "비밀번호가 일치하지 않습니다 \n 다시 입력하세요"); // 새비밀번호와 비밀번호확인이 일치하지 않을 때 
+				} else if (!(txtNewPw.getText().equals(txtVerifyPw.getText()))) {
+					JOptionPane.showMessageDialog(null, "비밀번호가 일치하지 않습니다 \n 다시 입력하세요"); // 새비밀번호와 비밀번호확인이 일치하지 않을 때 
 						
-					} else if ((txtNewPw.getText().equals(txtVerifyPw.getText()))) {	// 비밀번호 변경 가능
-						JOptionPane.showMessageDialog(null, "비밀번호가 변경되었습니다");
+				} else if ((txtNewPw.getText().equals(txtVerifyPw.getText()))) {	// 비밀번호 변경 가능
+					JOptionPane.showMessageDialog(null, "비밀번호가 변경되었습니다");
 	
-						eDto.setPassword(txtNewPw.getText()); // 변경된 값 DB로 전송 
-						dispose();	// 변경 후 닫기 
+					eDto.setPassword(txtNewPw.getText()); // 변경된 값 DB로 전송 
+					dispose();	// 변경 후 닫기 
 						
-					}
-		
-
-			
+				}
 		
 	}
 }
