@@ -18,6 +18,12 @@ import javax.swing.KeyStroke;
  * 
  * - 메인 프레임과 다른 스윙들 연결(JMenuItem) - 1차
  * - 메인 프레임과 다른 스윙들 연결(JMenuItem) - 2차
+ * 
+ * 수정일자 : 2018.07.12
+ * 
+ * 수정자 : 권미현, 송주현
+ * 
+ *  - 로그인/로그아웃 : LoginPanel 에서 ID값 받아오기
  */
 
 public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 상속
@@ -273,19 +279,20 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 			LoginPanel logPan ;
 			logPan = new LoginPanel(this,"Login Dialog",true);
 			logPan.setVisible(true);
+			
+			int id = logPan.getTxtEmployeeId(); // LoginPanel에서 받아온 ID 값
 
-//			int logckeck = logPan.isLoginCheck(); // NEED TO FIX !!! UNTIL 2018-07-11 
-//			if(logckeck==loginPanel.LOGIN_SUCCESSED) {
-////				System.out.println("loginPanel.isLogin() : " + logckeck);
-//
-//				root.removeAll();
-//				
-//				root.add(new EmployeeInfoPanel());
-//				setTitle("내 정보");
-//
-//				root.validate(); // 컴포넌트 검증 (메모리 상태 확인) - 메모리 확실하게
-//				root.repaint(); // 다시 그리기
-//			}
+			int logckeck = logPan.isLoginCheck(id);
+			if(logckeck==LoginPanel.LOGIN_SUCCESSED) {
+
+				root.removeAll();
+				
+				root.add(new EmployeeInfoPanel());
+				setTitle("내 정보");
+
+				root.validate(); // 컴포넌트 검증 (메모리 상태 확인) - 메모리 확실하게
+				root.repaint(); // 다시 그리기
+			}
 
 		} 
 		// 가져오기
