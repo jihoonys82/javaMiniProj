@@ -270,8 +270,8 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 		if(e.getSource() == file_LogInOut) {
 //			System.out.println("로그인/로그아웃 누름");
 
-			loginPanel logPan ;
-			logPan = new loginPanel(this,"Login Dialog",true,getX()+50,getY()+50);
+			LoginPanel logPan ;
+			logPan = new LoginPanel(this,"Login Dialog",true);
 			logPan.setVisible(true);
 
 //			int logckeck = logPan.isLoginCheck(); // NEED TO FIX !!! UNTIL 2018-07-11 
