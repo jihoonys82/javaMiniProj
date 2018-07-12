@@ -1,18 +1,24 @@
  package injung;
  
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
+
+import injung.model.EmployeeDto;
+import injung.model.InJungDao;
  
 /**
 + * ThreeViewPanel 
@@ -73,11 +79,72 @@ import javax.swing.border.EtchedBorder;
 	private JButton[] btnDetailView = new JButton[idx];
 	private JButton  btnPrivView	= new JButton("이전");
 	private JButton  btnNextView	= new JButton("다음");
+	private JLabel lblCurIdx = new JLabel("00");
+	private JLabel lblMaxIdx = new JLabel("/00"); 
+
+	// Page indexing
+	private InJungDao dao = InJungDao.getInstance();
+	private EmployeeDto dto; 
+	private ArrayList<EmployeeDto> dtos; 
+	private int CountPage;
+	private int Max_Page;
+	private int[] lastEmpIds;
+	
+	private String photoPath = "./Photo/";
+
+	
+	
 		
  	/**
  	 * constructor
  	 */
+ 	
+ 	
  	public ThreeViewPanel() {
+		ViewPanel();
+
+		setPageIndex();
+		
+		setPageLoad(lastEmpIds[0]);
+	}
+ 	
+ 	private void setPageIndex() {
+		int EmpNum = dao.countEmployee();
+		if(EmpNum%idx==0) {
+			Max_Page = EmpNum/idx;
+		} else {
+			Max_Page = (EmpNum/idx)+1;
+		}
+		CountPage = 1;
+		lblCurIdx.setText( ((Integer)CountPage).toString() );
+		lblMaxIdx.setText( "/" + ((Integer)Max_Page).toString() );
+		
+		lastEmpIds = new int[Max_Page];
+		lastEmpIds[0] = 1;
+	}
+ 	
+ 	private void setPageLoad(int lastEmpId) {
+		if(lastEmpId>0) {
+			dtos = dao.getEmployees(lastEmpId, idx);
+			
+			for(int i=0; i<dtos.size() ; i++) {
+				dto = dtos.get(i);
+				txtName[i].setText(dto.getName());
+				txtTeam[i].setText(dto.getTeam());
+				txtRole[i].setText(dto.getRole());
+				txtMobile[i].setText(dto.getMobile());
+				txtWorkPhone[i].setText(dto.getWorkPhone());
+				txtEmail[i].setText(dto.geteMail());
+				
+				lblPhoto[i].setIcon(new ImageIcon(photoPath+dto.getPhoto()));
+			}
+			if(CountPage<Max_Page)
+				lastEmpIds[CountPage] = dtos.get(idx-1).getEmployeeId();
+		}
+	
+	}
+ 	
+ 	public void ViewPanel() {
  		
  		setLayout(null);
  		setBounds(10, 5, 990, 580);
@@ -220,20 +287,29 @@ import javax.swing.border.EtchedBorder;
 		btnNextView.addActionListener(this);
 		
 		pagePane.add(btnPrivView);
+		pagePane.add(lblCurIdx);
+		pagePane.add(lblMaxIdx);
 		pagePane.add(btnNextView);
+		
 			
 		add(pagePane);
 	}
- 	
-	public static void main(String[] args) {
-		JFrame frame = new JFrame();
-		frame.setBounds(10, 10, 1000, 600);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.add(new ThreeViewPanel());
- 		
-		frame.setVisible(true);
- 	}
+ 
 
+	
+	
+	
+	
+//	public static void main(String[] args) {
+//	JFrame frame = new JFrame();
+//	frame.setBounds(10, 10, 1000, 600);
+//	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//	frame.add(new ThreeViewPanel());
+//		
+//	frame.setVisible(true);
+//	}
+	
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource().equals(btnDetailView[0])) {
@@ -243,9 +319,24 @@ import javax.swing.border.EtchedBorder;
 		} else if(e.getSource().equals(btnDetailView[2])) {
 		
 		} else if(e.getSource().equals(btnPrivView)) {
-			
+			if(CountPage>1) {
+				CountPage--;
+				setPageLoad(lastEmpIds[CountPage-1]);
+				lblCurIdx.setText(((Integer)CountPage).toString());
+				
+				this.validate();
+				this.repaint();
+			}
 		} else if(e.getSource().equals(btnNextView)) {
-			
-		}
+			if(CountPage<Max_Page) {
+				CountPage++;
+				setPageLoad(lastEmpIds[CountPage-1]);
+				lblCurIdx.setText(((Integer)CountPage).toString());
+				
+				this.validate();
+				this.repaint();
+				}
+			}
+		}		
 	}
- }
+
