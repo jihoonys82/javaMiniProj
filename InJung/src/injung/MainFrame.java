@@ -11,14 +11,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
-/*
- * 수정일자 : 2018.07.08
- * 
- * 수정자 : 권미현
- * 
- * - 메인 프레임과 다른 스윙들 연결(JMenuItem) - 1차
- * - 메인 프레임과 다른 스윙들 연결(JMenuItem) - 2차
- * 
+/* 
  * 수정일자 : 2018.07.12
  * 
  * 수정자 : 권미현, 송주현
@@ -287,7 +280,7 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 
 				root.removeAll();
 				
-				root.add(new EmployeeInfoPanel());
+				root.add(new EmployeeInfoPanel(id));
 				setTitle("내 정보");
 
 				root.validate(); // 컴포넌트 검증 (메모리 상태 확인) - 메모리 확실하게
