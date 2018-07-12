@@ -84,16 +84,15 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 		private JTextField txtLostAnswer	= new JTextField();
 		private JTextField txtName			= new JTextField();
 		private JTextField txtRole 			= new JTextField();
+		private JTextField txtEmail			= new JTextField();;
 		private JTextField txtLocation 		= new JTextField();
 		private JFormattedTextField txtBirth;
 		private JFormattedTextField txtMobile;
 		private JFormattedTextField txtWorkPhone;
-		private JFormattedTextField txtEmail;
 		
 		private MaskFormatter birthFormat 		= null;
 		private MaskFormatter mobileFormat 		= null;
 		private MaskFormatter workPhoneFormat 	= null;
-		private MaskFormatter emailFormat 		= null;
 		
 		private JTextArea txtWarning		= new JTextArea("모든 정보를 빠짐없이 기입해 주세요.");
 		
@@ -103,6 +102,7 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 		
 		// FileChooser(for photo upload)
 		private JFileChooser fileChooser = new JFileChooser();
+		private File dir = new File("./Photo");
 		private File photoFile;
 		
 		// Buttons
@@ -178,14 +178,12 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 				birthFormat = new MaskFormatter("####.##.##"); //yy.mm.dd
 				mobileFormat = new MaskFormatter("###-####-####");
 				workPhoneFormat = new MaskFormatter("##-####-####");
-				emailFormat = new MaskFormatter("?@?");
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
 			txtBirth 	= new JFormattedTextField(birthFormat);
 			txtMobile 	= new JFormattedTextField(mobileFormat);
 			txtWorkPhone= new JFormattedTextField(workPhoneFormat);
-			txtEmail 	= new JFormattedTextField(emailFormat);
 			
 			//detailInfoPane setting
 			editInfoPane.setBounds(224, 5, 455, 520);
@@ -380,7 +378,7 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 			txtWarning.setLineWrap(true);
 			txtWarning.setWrapStyleWord(true);
 			txtWarning.setEditable(false);
-			txtWarning.append("모든 필드는 필수 항목입니다.");
+			txtWarning.append("\n모든 필드는 필수 항목입니다.");
 			
 			// buttons
 			btnConfirm.setBounds(12, 454, 158, 23);
@@ -435,7 +433,17 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 			cbLevel.setSelectedItem(eDto.getLevel());
 			
 			lblPhoto.setText(eDto.getPhoto());
-			lblPhoto.setIcon(new ImageIcon("./Photo/"+eDto.getPhoto()));
+			
+			photoFile = new File(dir, eDto.getPhoto());
+			
+			//if photo is not exist attempt to download photoFile from server.
+			if(photoFile.exists()) {
+				lblPhoto.setIcon(new ImageIcon("./Photo/"+eDto.getPhoto()));
+			} else {
+				// TODO: FileReceiver 
+			}
+			
+			
 		}
 		
 		/**
@@ -463,29 +471,87 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if(e.getSource().equals(btnConfirm)) {
-				
 				//Check PW
-				if(txtPassword.getPassword().toString()!=txtPwConfirm.getPassword().toString() || 
-						txtPassword.getPassword().toString()!=eDto.getPassword()) {
-					JOptionPane.showMessageDialog(
-							btnConfirm, 
-							"패스워드가 일치하지 않습니다.", 
-							"패스워드 확인", 
-							JOptionPane.ERROR_MESSAGE
-					);
-				} else {
-					// field data validation 
-					int valid  = fieldValidation();
-					
-					if(valid==0 && txtEmployeeId.getText().trim()=="") {
-						// Create (If empID is NOT exist)
-						
-					} else if(valid==0 && txtEmployeeId.getText().trim()!="") {
-						// Update (If empId is exist)	
+				String strPw = String.valueOf(txtEmployeeId.getText());
+				String strPwConfirm = String.valueOf(txtEmployeeId.getText());
+				// 1. Check password for Update  txtPassword==txtPasswordConfirm==eDto.getPassword
+				if(txtEmployeeId.getText()!=null) {
+					if(strPw!=strPwConfirm || 
+							strPw!=eDto.getPassword()) {
+						JOptionPane.showMessageDialog(
+								btnConfirm, 
+								"패스워드가 일치하지 않습니다.", 
+								"패스워드 확인", 
+								JOptionPane.ERROR_MESSAGE
+						);
+					} else {
+						int valid  = fieldValidation();
+						if(valid==0 && txtEmployeeId.getText().trim()!="") {
+							// Upload photo(if it is changed)
+							if(lblPhoto.getText()!= eDto.getPhoto()) {
+								eDto.setPhoto(lblPhoto.getText());
+								photoFile = new File(dir, lblPhoto.getText());
+								FileSender sender = new FileSender(photoFile);
+								sender.start();
+							} 
+							
+							// Update (If empId is exist)
+							eDto.setPassword(txtPassword.getPassword().toString());
+							eDto.setLostIdQuestion(txtLostQuestion.getText());
+							eDto.setLostIdAnswer(txtLostAnswer.getText());
+							eDto.setName(txtName.getText());
+							eDto.setBirth(txtBirth.getText());
+							eDto.setRole(txtRole.getText());
+							eDto.setMobile(txtMobile.getText());
+							eDto.setWorkPhone(txtWorkPhone.getText());
+							eDto.seteMail(txtEmail.getText());
+							eDto.setLocation(txtLocation.getText());
+							eDto.setLevel(cbLevel.getSelectedItem().toString());
+							eDto.setTeam(cbTeam.getSelectedItem().toString());
+
+							dao.updateEmployee(eDto);
+						}
 					}
-					 
-					// TODO: Photo Upload function
+					
+				} else {
+					// 2. new user
+					if(!txtPassword.getPassword().equals(txtPwConfirm.getPassword())) {
+						JOptionPane.showMessageDialog(
+								btnConfirm, 
+								"패스워드가 일치하지 않습니다.", 
+								"패스워드 확인", 
+								JOptionPane.ERROR_MESSAGE
+						);
+					} else {
+						// field data validation 
+						int valid  = fieldValidation();
+						
+						if(valid==0 && txtEmployeeId.getText().trim()=="") {
+							// Upload photo
+							FileSender sender = new FileSender(photoFile);
+							sender.start();
+							
+							// Create (If empID is NOT exist)
+							EmployeeDto newEmpDto = new EmployeeDto();
+							newEmpDto.setPassword(txtPassword.getPassword().toString());
+							newEmpDto.setLostIdQuestion(txtLostQuestion.getText());
+							newEmpDto.setLostIdAnswer(txtLostAnswer.getText());
+							newEmpDto.setName(txtName.getText());
+							newEmpDto.setBirth(txtBirth.getText());
+							newEmpDto.setRole(txtRole.getText());
+							newEmpDto.setMobile(txtMobile.getText());
+							newEmpDto.setWorkPhone(txtWorkPhone.getText());
+							newEmpDto.seteMail(txtEmail.getText());
+							newEmpDto.setLocation(txtLocation.getText());
+							newEmpDto.setLevel(cbLevel.getSelectedItem().toString());
+							newEmpDto.setTeam(cbTeam.getSelectedItem().toString());
+							newEmpDto.setPhoto(lblPhoto.getText());
+							
+							dao.insertEmployee(newEmpDto);
+						}
+					}
 				}
+			//end of btnConfirm Action
 			} else if(e.getSource().equals(btnCancel)) {
 				String[] options = {"확인", "취소"}; 
 				int selected =JOptionPane.showOptionDialog(
@@ -497,6 +563,7 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 						null, options, options[1]
 				);
 				if(selected==0) claearField();
+			//end of btnCancel Action
 			} else if(e.getSource().equals(btnPhotoUpload)) {
 				fileChooser.setFileFilter(new FileNameExtensionFilter("ImageFiles", ImageIO.getReaderFileSuffixes()));
 				int returnVal = fileChooser.showOpenDialog(EditEmployeePanel.this);
@@ -505,7 +572,7 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 					photoFile = fileChooser.getSelectedFile();
 					lblPhoto.setIcon(new ImageIcon(photoFile.getPath()));
 				}
-			}	
+			} //end of btnPhotoUpload action	
 		}
 
 		/**
@@ -516,21 +583,23 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 			int valid = 0; 
 			
 			if(lblPhoto.getText()=="Photo") {
-				txtWarning.append("사진이 없습니다.");
+				txtWarning.append("\n사진이 없습니다.");
 				valid++;
 			}
 			if(txtName.getText().length()<3 || txtName.getText().length()>20) {
-				txtWarning.append("이름이 너무 짧거나 깁니다. 2~10자 내로 입력하세요.");
+				txtWarning.append("\n이름이 너무 짧거나 깁니다. 2~10자 내로 입력하세요.");
 				valid++;
 			}
 			if(txtPassword.getPassword().length<6) {
-				txtWarning.append("패스워드는 반드시 6자 이상이어야 합니다.");
+				txtWarning.append("\n패스워드는 반드시 6자 이상이어야 합니다.");
 				valid++;
 			}
 			if(txtLostQuestion.getText().trim()=="" || txtLostAnswer.getText().trim()=="" ) {
-				txtWarning.append("패스워드 분실 질문과 대답을 입력해 주세요.");
+				txtWarning.append("\n패스워드 분실 질문과 대답을 입력해 주세요.");
 				valid++;
 			}			
 			return valid;
 		}
+		
+
 }

@@ -148,6 +148,65 @@ public class InJungDao {
 	}
 	
 	/**
+	 * updateEmployee Info
+	 * @param dto
+	 * @return result code 1:Success, 0: Fail to update
+	 */
+	public int updateEmployee(EmployeeDto dto) {
+		int results = INSERT_DATA_FAILED; 
+		
+		Connection connection = null;
+		PreparedStatement pstmt = null;
+		String query = "UPDATE employee SET"
+				+ "employeeName = ?," 	//1. employName
+				+ "birthDate = ?," 		//2. birthDate
+				+ "team = ?," 			//3. team
+				+ "employLevel = ?," 	//4. employLevel
+				+ "role = ?," 			//5. role
+				+ "mobile = ?," 		//6. mobile
+				+ "workPhone = ?," 		//7. workPhone
+				+ "email = ?," 			//8. email
+				+ "location = ?," 		//9. location
+				+ "password = ?," 		//10. password
+				+ "photoPath = ?," 		//11. photoPath
+				+ "lostIdQuestion = ?," //12. lostIdQuestion
+				+ "lostIdAnswer = ?"	//13. lostIdAnswer
+				+ "WHERE employeeId = ?"; //14. eployeeId
+		
+		try {
+			connection = getConnection();
+			pstmt = connection.prepareStatement(query);
+			pstmt.setString(1, dto.getName());
+			pstmt.setString(2, dto.getBirth());
+			pstmt.setString(3, dto.getTeam());
+			pstmt.setString(4, dto.getLevel());
+			pstmt.setString(5, dto.getRole());
+			pstmt.setString(6, dto.getMobile());
+			pstmt.setString(7, dto.getWorkPhone());
+			pstmt.setString(8, dto.geteMail());
+			pstmt.setString(9, dto.getLocation());
+			pstmt.setString(10, dto.getPassword());
+			pstmt.setString(11, dto.getPhoto());
+			pstmt.setString(12, dto.getLostIdQuestion());
+			pstmt.setString(13, dto.getLostIdAnswer());
+			pstmt.setInt(14, dto.getEmployeeId());
+			pstmt.executeUpdate();
+			
+			results = INSERT_DATA_SUCCESS; 
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(pstmt!=null)		 pstmt.close();
+				if(connection!=null) connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return results;
+	}
+	
+	/**
 	 * Get multiple employees 
 	 * get employees from the next of lastEmpId
 	 * @param lastEmpId - previous last employeeNum 
@@ -312,7 +371,7 @@ public class InJungDao {
 			
 			// if data is not exist, add dump employee data. 
 			for(int i=0;i<idx;i++) {
-				if(dtos.size()<i) {
+				if(dtos.size()<=i) {
 					dtos.add(new EmployeeDto());
 				}
 			}

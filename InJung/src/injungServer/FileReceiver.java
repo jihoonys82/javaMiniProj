@@ -37,7 +37,6 @@ public class FileReceiver extends Thread {
 			String fileName = dis.readUTF();
 			file = new File(dir, fileName);
 			Files.copy(dis, file.toPath());
-			
 			System.out.println(file.getName() + " has been transfered to Server/n");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

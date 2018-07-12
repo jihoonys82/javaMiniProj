@@ -19,7 +19,6 @@ import java.nio.file.Files;
 public class FileSender extends Thread {
 	
 	private File file;
-	
 	private Socket sock; 
 	
 	private DataOutputStream dos;
@@ -34,7 +33,6 @@ public class FileSender extends Thread {
 	 */
 	public FileSender(File file) {
 		this.file = file;
-		
 	}
 	
 	@Override
@@ -47,6 +45,7 @@ public class FileSender extends Thread {
 			dos.writeUTF(file.getName()); // send file name
 			Files.copy(file.toPath(), dos); // copy file to server
 			
+			dos.flush();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
