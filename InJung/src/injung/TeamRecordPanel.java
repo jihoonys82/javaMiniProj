@@ -3,16 +3,20 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
@@ -21,8 +25,14 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 
+import injung.model.EmployeeDto;
+import injung.model.InJungDao;
+import injung.model.TeamDto;
 
-public class TeamRecordPanel extends JPanel{
+
+
+
+public class TeamRecordPanel extends JPanel implements ActionListener, MouseListener{
 
 	//상수
 	private static final int tablePane_Y=0;
@@ -40,7 +50,13 @@ public class TeamRecordPanel extends JPanel{
 			
 	private static final int PANEL_X=0;
 	
-	  
+	//DAO & DTO
+	private InJungDao dao = null;
+	private TeamDto dto_Team = null;
+	private ArrayList<TeamDto> dtos_Team = null;
+	private ArrayList<EmployeeDto> dtos_Employee = null;
+
+	
     //테이블 판넬
     private JPanel tablePane;
     //테이블 판넬 - 컴포넌트
@@ -55,7 +71,7 @@ public class TeamRecordPanel extends JPanel{
     private JLabel lblLeader;
     private JTextField txtTeam;
     private JTextField txtRole;
-    private JTextField txtLeader;
+    private JComboBox<String> cbLeader;
     
     //버튼 판넬
     private JPanel btnPane;
@@ -78,29 +94,48 @@ public class TeamRecordPanel extends JPanel{
     	tablePane.setLayout(null);
     	tablePane.setBorder(BorderFactory.createLineBorder(Color.BLUE));
     	
-    	//팀레코드 판넬 - 컴포넌트
-    	//		데이터
-    	String[] columnNames = {"부 서","Role","Leader"};
-    	Object[][] rowData = {
-    			{"사장실","사장","홍길동"},
-    			{"재무경영팀","재무경영 총괄","정지훈"},
-    			{"인사관리팀","인사관리","권미현"},
-    			{"개발1팀","프로그램 개발","배창환"},
-    			{"개발2팀","프로그램 개발","송영준"},
-    			{"기획팀","프로그램 기획","송주현"},
-    			{"영업팀","프로그램 마케팅","이현우"}
-    	};
     	
-    	//		테이블 설정
-    	DefaultTableModel tbDefault = new DefaultTableModel(rowData, columnNames); 
+    	//DAO객체 받아오기
+    	dao = InJungDao.getInstance();
+    	
+    	//DAO객체 getAllTeam메소드로 TeamDto LIST 받기
+    	dtos_Team = dao.getAllTeam();
+    	
+ 	
+    	//열 Vector 설정
+    	Vector<String> column = new Vector<>();
+    	column.addElement("부 서");
+    	column.addElement("Role");
+    	column.addElement("Leader");
+    	column.addElement("Leader_id");
+    	
+    	
+    	//테이블 설정
+    	DefaultTableModel tbDefault = new DefaultTableModel(column, 0); 
     	tbTeamRecord = new JTable(tbDefault);
     	tbTeamRecord.setFont(new Font("고딕",Font.BOLD,20));
     	tbTeamRecord.setRowHeight(40);
     	tbTeamRecord.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    	
+    	//
+    	
+    	//행 Vector에 TeamDto들 담기  	
+    	for(int i=0;i< dtos_Team.size();i++) {
+        	Vector<String> row = new Vector<>();
+    		row.addElement(dtos_Team.get(i).getTeamName());
+    		row.addElement(dtos_Team.get(i).getTeamRole());
+    		row.addElement(dtos_Team.get(i).getTeamLeaderName()); 
+    		row.addElement(dtos_Team.get(i).getTeamLeaderId());
+    		tbDefault.addRow(row);
+    	}
+    	
 
     	// 테이블 렌더
     	DefaultTableCellRenderer render = new DefaultTableCellRenderer();
     	render.setHorizontalAlignment(SwingConstants.CENTER);
+    	
+    	// 테이블 셀렉션 모델
+    	tbTeamRecord.addMouseListener(this);
     	
     	// 테이블 헤더 설정
     	JTableHeader header = tbTeamRecord.getTableHeader();
@@ -123,7 +158,11 @@ public class TeamRecordPanel extends JPanel{
     	thirdColoumn.setMinWidth(170);
     	thirdColoumn.setMaxWidth(170);
     	thirdColoumn.setCellRenderer(render);
-    	 
+    	TableColumn FourthColoumn = tbTeamRecord.getColumnModel().getColumn(3);
+    	FourthColoumn.setPreferredWidth(0);
+    	FourthColoumn.setMinWidth(0);
+    	FourthColoumn.setMinWidth(0);
+
  	
     	
     	//팀레코드판넬 - 스크롤 판넬
@@ -181,23 +220,32 @@ public class TeamRecordPanel extends JPanel{
     	txtRole.setBackground(Color.white);
     	txtRole.setForeground(Color.BLACK);
     	
-    	txtLeader = new JTextField();
-    	txtLeader.setBounds(150, 105, 500, 45);
-    	txtLeader.setFont(lblLeader.getFont());
-    	txtLeader.setEditable(true);
-    	txtLeader.setBackground(Color.white);
-    	txtLeader.setForeground(Color.BLACK);
+
+      	//콤보박스에 employee DTO집어넣기
+    	dtos_Employee=dao.getAllEmployee();
+    	String data[] = new String[dtos_Employee.size()];
+
+    	for(int i=0 ; i<dtos_Employee.size() ; i++) {
+    		data[i] = dtos_Employee.get(i).getName()+"_사번:"+dtos_Employee.get(i).getEmployeeId();
+    	}
     	
+    	//콤보박스 설정
+    	cbLeader = new JComboBox<>(data);
+    	cbLeader.setBounds(150, 105, 500, 45);
+    	cbLeader.setFont(lblLeader.getFont());
+    	cbLeader.setEditable(true);
+    	cbLeader.setBackground(Color.white);
+    	cbLeader.setForeground(Color.BLACK);
     	
     	inputPane.add(lblTeam);
     	inputPane.add(lblRole);
     	inputPane.add(lblLeader);
     	inputPane.add(txtTeam);
     	inputPane.add(txtRole);
-    	inputPane.add(txtLeader);
-
-
+    	inputPane.add(cbLeader);
+    	
     	add(inputPane);
+    	
     	
     	//버튼판넬
     	//버튼판넬 - 설정
@@ -205,8 +253,7 @@ public class TeamRecordPanel extends JPanel{
     	btnPane.setBounds(btnPane_X, btnPane_Y, btnPane_WIDTH, btnPane_HEIGHT);
     	btnPane.setLayout(null);
     	btnPane.setBorder(BorderFactory.createLineBorder(Color.BLUE));  	
-    	
-    	
+    		
     	//버튼판넬 - 컴포넌트
     	btnInsert = new JButton("생성");
     	btnInsert.setFont(new Font("고딕",Font.BOLD,16));
@@ -225,11 +272,73 @@ public class TeamRecordPanel extends JPanel{
     	btnPane.add(btnCancel);
     	btnPane.add(btnEdit);
     	btnPane.add(btnDelete);
-    	
+    	 	
     	add(btnPane);
-   	
     	
+    	//리스너 설정
+    	btnInsert.addActionListener(this);
+    	btnCancel.addActionListener(this);
+    	btnEdit.addActionListener(this);
+    	btnDelete.addActionListener(this);
+   	 	
 	}
-	
-	
+
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		
+		if(e.getSource()==btnInsert) {
+			//입력 버튼
+			dto_Team = new TeamDto();
+			String arr[] = new String[2];
+			dto_Team.setTeamName(txtTeam.getText());
+			dto_Team.setTeamRole(txtRole.getText());
+			arr = ((String)cbLeader.getSelectedItem()).split("_사번:"); 
+			dto_Team.setTeamLeaderName(arr[0]);
+			dto_Team.setTeamLeaderId(arr[1]);
+			dao.insertTeam(dto_Team);
+			
+		}
+		if(e.getSource()==btnCancel) {
+			//취소 버튼
+			txtTeam.setText("");
+			txtRole.setText("");
+			cbLeader.setSelectedIndex(0);
+		}
+		if(e.getSource()==btnDelete) {
+			
+		}
+		if(e.getSource()==btnEdit) {
+			//수정 버튼
+			String prevTeam = (String) tbTeamRecord.getValueAt(tbTeamRecord.getSelectedRow(), 1);
+			dto_Team = new TeamDto();
+			String arr[] = new String[2];
+			dto_Team.setTeamName(txtTeam.getText());
+			dto_Team.setTeamRole(txtRole.getText());
+			arr = ((String)cbLeader.getSelectedItem()).split("_사번:"); 
+			dto_Team.setTeamLeaderName(arr[0]);
+			dto_Team.setTeamLeaderId(arr[1]);
+			dao.updateTeam(dto_Team, prevTeam);	
+		}
+	}
+
+
+	@Override
+	//테이블 클릭하면 선택값 띄우기
+	public void mouseClicked(MouseEvent e) {
+		txtTeam.setText((String) tbTeamRecord.getValueAt(tbTeamRecord.getSelectedRow(), 0));
+		txtRole.setText((String) tbTeamRecord.getValueAt(tbTeamRecord.getSelectedRow(), 1));
+		String cb = (String) tbTeamRecord.getValueAt(tbTeamRecord.getSelectedRow(), 2);
+		cb = "_사번:"+tbTeamRecord.getValueAt(tbTeamRecord.getSelectedRow(), 3) ;       
+		cbLeader.setSelectedItem((Object)cb);
+	}
+	@Override
+	public void mousePressed(MouseEvent e) {}
+	@Override
+	public void mouseReleased(MouseEvent e) {}
+	@Override
+	public void mouseEntered(MouseEvent e) {}
+	@Override
+	public void mouseExited(MouseEvent e) {}
+
 }
