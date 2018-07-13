@@ -115,8 +115,9 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
     	//테이블 설정
     	tbDefault = new DefaultTableModel(column, 0); 
     	tbTeamRecord = new JTable(tbDefault);
-    	tbTeamRecord.setFont(new Font("고딕",Font.BOLD,20));
+    	tbTeamRecord.setFont(new Font("고딕",Font.BOLD,16));
     	tbTeamRecord.setRowHeight(40);
+    	tbTeamRecord.setBackground(new Color(235,235,235));
     	tbTeamRecord.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     	
     	//
@@ -142,8 +143,8 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
     	// 테이블 헤더 설정
     	JTableHeader header = tbTeamRecord.getTableHeader();
     	header.setPreferredSize(new Dimension(970, 40));
-    	header.setFont(new Font("고딕",Font.BOLD,20));
-//    	header.setBackground(Color.cyan);
+    	header.setFont(new Font("고딕",Font.BOLD,16));
+    	header.setBackground(new Color(200, 200, 200));
 
     	// 테이블 컬럼 설정
     	TableColumn firstColoumn = tbTeamRecord.getColumnModel().getColumn(0);
@@ -164,17 +165,14 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
     	FourthColoumn.setPreferredWidth(0);
     	FourthColoumn.setMinWidth(0);
     	FourthColoumn.setMinWidth(0);
-
- 	
-    	
+   	
     	//팀레코드판넬 - 스크롤 판넬
     	scrollPane = new JScrollPane(tbTeamRecord, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
     	scrollPane.setBounds(5, 5, 970, 340);
 //    	scrollPane.setBorder(BorderFactory.createLineBorder(Color.BLUE));
 	
-
-    	
+	
     	tablePane.add(scrollPane);
     	add(tablePane);
     	
@@ -186,24 +184,24 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
     	inputPane.setBounds(PANEL_X, inputPane_Y, inputPane_WIDTH, inputPane_HEIGHT);
     	inputPane.setLayout(null);
 //    	inputPane.setBorder(BorderFactory.createLineBorder(Color.BLUE));
-    	
+//    	inputPane.setVisible(false); //권한에 따라 감추기
     	
     	//인풋판넬 - 컴포넌트
     	
     	lblTeam = new JLabel("부 서");
-    	lblTeam.setFont(lblTeam.getFont().deriveFont(18.0f));
+    	lblTeam.setFont(lblTeam.getFont().deriveFont(16.0f));
     	lblTeam.setBounds(new Rectangle(5, 5, 140, 45));
     	lblTeam.setHorizontalAlignment(JLabel.CENTER);
     	lblTeam.setBorder(BorderFactory.createLineBorder(Color.BLACK));   	
     	
     	lblRole = new JLabel("Role");
-    	lblRole.setFont(lblRole.getFont().deriveFont(18.0f));
+    	lblRole.setFont(lblRole.getFont().deriveFont(16.0f));
     	lblRole.setBounds(new Rectangle(5, 55, 140, 45));
     	lblRole.setHorizontalAlignment(JLabel.CENTER);
     	lblRole.setBorder(BorderFactory.createLineBorder(Color.BLACK));   	
     	
     	lblLeader = new JLabel("Leader");
-    	lblLeader.setFont(lblLeader.getFont().deriveFont(18.0f));
+    	lblLeader.setFont(lblLeader.getFont().deriveFont(16.0f));
     	lblLeader.setBounds(new Rectangle(5, 105, 140, 45));
     	lblLeader.setHorizontalAlignment(JLabel.CENTER);
     	lblLeader.setBorder(BorderFactory.createLineBorder(Color.BLACK));   	
@@ -237,7 +235,7 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
     	cbLeader.setBounds(150, 105, 500, 45);
     	cbLeader.setFont(lblLeader.getFont());
     	cbLeader.setEditable(false);
-    	cbLeader.setBackground(Color.white);
+    	cbLeader.setBackground(Color.WHITE);
     	cbLeader.setForeground(Color.BLACK);
     	
     	inputPane.add(lblTeam);
@@ -256,20 +254,21 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
     	btnPane.setBounds(btnPane_X, btnPane_Y, btnPane_WIDTH, btnPane_HEIGHT);
     	btnPane.setLayout(null);
 //    	btnPane.setBorder(BorderFactory.createLineBorder(Color.BLUE));  	
-    		
+//    	btnPane.setVisible(false); //권한에 따라 감추기
+    	
     	//버튼판넬 - 컴포넌트
     	btnInsert = new JButton("생성");
-    	btnInsert.setFont(new Font("고딕",Font.BOLD,16));
-    	btnInsert.setBounds(5, 5, 147, 70);
+    	btnInsert.setFont(new Font("고딕",Font.BOLD,14));
+    	btnInsert.setBounds(5, 80, 130, 30);
     	btnCancel = new JButton("취소");
-    	btnCancel.setFont(new Font("고딕",Font.BOLD,16));
-    	btnCancel.setBounds(5, 80, 147, 70);
+    	btnCancel.setFont(new Font("고딕",Font.BOLD,14));
+    	btnCancel.setBounds(5, 120, 130, 30);
     	btnEdit = new JButton("수정");
-    	btnEdit.setFont(new Font("고딕",Font.BOLD,16));
-    	btnEdit.setBounds(158, 5, 147, 70);
+    	btnEdit.setFont(new Font("고딕",Font.BOLD,14));
+    	btnEdit.setBounds(158, 80, 130, 30);
     	btnDelete = new JButton("삭제");
-    	btnDelete.setFont(new Font("고딕",Font.BOLD,16));
-    	btnDelete.setBounds(158, 80, 147, 70);		
+    	btnDelete.setFont(new Font("고딕",Font.BOLD,14));
+    	btnDelete.setBounds(158, 120, 130, 30);		
 
     	btnPane.add(btnInsert);
     	btnPane.add(btnCancel);
@@ -339,11 +338,9 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
 			
 			dao.updateTeam(dto_Team, prevTeam);
 			
-			//JTABLE
-			
+			//JTABLE			
 		}
 	}
-
 
 	@Override
 	//테이블 클릭하면 선택값 띄우기
@@ -363,5 +360,4 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
 	public void mouseEntered(MouseEvent e) {}
 	@Override
 	public void mouseExited(MouseEvent e) {}
-
 }
