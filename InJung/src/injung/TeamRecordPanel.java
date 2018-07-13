@@ -63,6 +63,8 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
     private JTable tbTeamRecord;
     //테이블 판넬 - 스크롤 판넬
     private JScrollPane scrollPane;
+    //J테이블 디폴트 모델
+    DefaultTableModel tbDefault = null; 
     
     //입력 판넬
     private JPanel inputPane;
@@ -92,7 +94,7 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
     	tablePane = new JPanel();
     	tablePane.setBounds(PANEL_X, tablePane_Y, tablePane_WIDTH, tablePane_HEIGHT);
     	tablePane.setLayout(null);
-    	tablePane.setBorder(BorderFactory.createLineBorder(Color.BLUE));
+//    	tablePane.setBorder(BorderFactory.createLineBorder(Color.BLUE));
     	
     	
     	//DAO객체 받아오기
@@ -111,7 +113,7 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
     	
     	
     	//테이블 설정
-    	DefaultTableModel tbDefault = new DefaultTableModel(column, 0); 
+    	tbDefault = new DefaultTableModel(column, 0); 
     	tbTeamRecord = new JTable(tbDefault);
     	tbTeamRecord.setFont(new Font("고딕",Font.BOLD,20));
     	tbTeamRecord.setRowHeight(40);
@@ -130,18 +132,18 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
     	}
     	
 
-    	// 테이블 렌더
+    	// 테이블 렌더(가운데 정렬)
     	DefaultTableCellRenderer render = new DefaultTableCellRenderer();
     	render.setHorizontalAlignment(SwingConstants.CENTER);
     	
-    	// 테이블 셀렉션 모델
+    	// 테이블 마우스 모델(클릭이벤트)
     	tbTeamRecord.addMouseListener(this);
     	
     	// 테이블 헤더 설정
     	JTableHeader header = tbTeamRecord.getTableHeader();
     	header.setPreferredSize(new Dimension(970, 40));
     	header.setFont(new Font("고딕",Font.BOLD,20));
-    	header.setBackground(Color.cyan);
+//    	header.setBackground(Color.cyan);
 
     	// 테이블 컬럼 설정
     	TableColumn firstColoumn = tbTeamRecord.getColumnModel().getColumn(0);
@@ -169,7 +171,7 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
     	scrollPane = new JScrollPane(tbTeamRecord, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
     	scrollPane.setBounds(5, 5, 970, 340);
-    	scrollPane.setBorder(BorderFactory.createLineBorder(Color.BLUE));
+//    	scrollPane.setBorder(BorderFactory.createLineBorder(Color.BLUE));
 	
 
     	
@@ -183,7 +185,7 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
     	inputPane = new JPanel();
     	inputPane.setBounds(PANEL_X, inputPane_Y, inputPane_WIDTH, inputPane_HEIGHT);
     	inputPane.setLayout(null);
-    	inputPane.setBorder(BorderFactory.createLineBorder(Color.BLUE));
+//    	inputPane.setBorder(BorderFactory.createLineBorder(Color.BLUE));
     	
     	
     	//인풋판넬 - 컴포넌트
@@ -192,19 +194,19 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
     	lblTeam.setFont(lblTeam.getFont().deriveFont(18.0f));
     	lblTeam.setBounds(new Rectangle(5, 5, 140, 45));
     	lblTeam.setHorizontalAlignment(JLabel.CENTER);
-    	lblTeam.setBorder(BorderFactory.createLineBorder(Color.BLUE));   	
+    	lblTeam.setBorder(BorderFactory.createLineBorder(Color.BLACK));   	
     	
     	lblRole = new JLabel("Role");
     	lblRole.setFont(lblRole.getFont().deriveFont(18.0f));
     	lblRole.setBounds(new Rectangle(5, 55, 140, 45));
     	lblRole.setHorizontalAlignment(JLabel.CENTER);
-    	lblRole.setBorder(BorderFactory.createLineBorder(Color.BLUE));   	
+    	lblRole.setBorder(BorderFactory.createLineBorder(Color.BLACK));   	
     	
     	lblLeader = new JLabel("Leader");
     	lblLeader.setFont(lblLeader.getFont().deriveFont(18.0f));
     	lblLeader.setBounds(new Rectangle(5, 105, 140, 45));
     	lblLeader.setHorizontalAlignment(JLabel.CENTER);
-    	lblLeader.setBorder(BorderFactory.createLineBorder(Color.BLUE));   	
+    	lblLeader.setBorder(BorderFactory.createLineBorder(Color.BLACK));   	
     	
     	txtTeam = new JTextField();
     	txtTeam.setBounds(150, 5, 500, 45);
@@ -223,17 +225,18 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
 
       	//콤보박스에 employee DTO집어넣기
     	dtos_Employee=dao.getAllEmployee();
-    	String data[] = new String[dtos_Employee.size()];
+    	String data[] = new String[dtos_Employee.size()+1];
+    	data[0] = "";
 
     	for(int i=0 ; i<dtos_Employee.size() ; i++) {
-    		data[i] = dtos_Employee.get(i).getName()+"_사번:"+dtos_Employee.get(i).getEmployeeId();
+    		data[i+1] = dtos_Employee.get(i).getName()+"_사번:"+dtos_Employee.get(i).getEmployeeId();
     	}
     	
     	//콤보박스 설정
     	cbLeader = new JComboBox<>(data);
     	cbLeader.setBounds(150, 105, 500, 45);
     	cbLeader.setFont(lblLeader.getFont());
-    	cbLeader.setEditable(true);
+    	cbLeader.setEditable(false);
     	cbLeader.setBackground(Color.white);
     	cbLeader.setForeground(Color.BLACK);
     	
@@ -252,7 +255,7 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
        	btnPane = new JPanel();
     	btnPane.setBounds(btnPane_X, btnPane_Y, btnPane_WIDTH, btnPane_HEIGHT);
     	btnPane.setLayout(null);
-    	btnPane.setBorder(BorderFactory.createLineBorder(Color.BLUE));  	
+//    	btnPane.setBorder(BorderFactory.createLineBorder(Color.BLUE));  	
     		
     	//버튼판넬 - 컴포넌트
     	btnInsert = new JButton("생성");
@@ -289,14 +292,26 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
 		
 		if(e.getSource()==btnInsert) {
 			//입력 버튼
+			//DTO
 			dto_Team = new TeamDto();
 			String arr[] = new String[2];
 			dto_Team.setTeamName(txtTeam.getText());
 			dto_Team.setTeamRole(txtRole.getText());
+			
 			arr = ((String)cbLeader.getSelectedItem()).split("_사번:"); 
 			dto_Team.setTeamLeaderName(arr[0]);
 			dto_Team.setTeamLeaderId(arr[1]);
-			dao.insertTeam(dto_Team);
+			
+//			dao.insertTeam(dto_Team);
+			
+			//JTABLE
+			Vector<String> v = new Vector<>();
+			v.addElement(txtTeam.getText());
+			v.addElement(txtRole.getText());
+			v.addElement(arr[0]);
+			v.addElement(arr[1]);
+			tbDefault.addRow(v);
+						
 			
 		}
 		if(e.getSource()==btnCancel) {
@@ -310,15 +325,22 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
 		}
 		if(e.getSource()==btnEdit) {
 			//수정 버튼
+			//DTO
 			String prevTeam = (String) tbTeamRecord.getValueAt(tbTeamRecord.getSelectedRow(), 1);
+			
 			dto_Team = new TeamDto();
-			String arr[] = new String[2];
 			dto_Team.setTeamName(txtTeam.getText());
 			dto_Team.setTeamRole(txtRole.getText());
+			
+			String arr[] = new String[2];
 			arr = ((String)cbLeader.getSelectedItem()).split("_사번:"); 
 			dto_Team.setTeamLeaderName(arr[0]);
 			dto_Team.setTeamLeaderId(arr[1]);
-			dao.updateTeam(dto_Team, prevTeam);	
+			
+			dao.updateTeam(dto_Team, prevTeam);
+			
+			//JTABLE
+			
 		}
 	}
 
@@ -328,8 +350,9 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
 	public void mouseClicked(MouseEvent e) {
 		txtTeam.setText((String) tbTeamRecord.getValueAt(tbTeamRecord.getSelectedRow(), 0));
 		txtRole.setText((String) tbTeamRecord.getValueAt(tbTeamRecord.getSelectedRow(), 1));
+		
 		String cb = (String) tbTeamRecord.getValueAt(tbTeamRecord.getSelectedRow(), 2);
-		cb = "_사번:"+tbTeamRecord.getValueAt(tbTeamRecord.getSelectedRow(), 3) ;       
+		cb += "_사번:"+tbTeamRecord.getValueAt(tbTeamRecord.getSelectedRow(), 3) ;
 		cbLeader.setSelectedItem((Object)cb);
 	}
 	@Override
