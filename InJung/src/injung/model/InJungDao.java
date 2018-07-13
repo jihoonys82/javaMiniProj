@@ -46,22 +46,22 @@ public class InJungDao {
 		
 		Connection connection = null;
 		PreparedStatement pstmt = null;
-		String query = "insert into employee("
-				+ "employeeId, employeeName, birthDate, team, employLevel, role, mobile, workPhone, email, location, password, photoPath, lostIdQuestion, lostIdAnswer) "
-				+ " value (EMP_SEQ.NEXTVAL,"
-				+ "?," //1. employName
-				+ "?," //2. birthDate
-				+ "?," //3. team
-				+ "?," //4. employLevel
-				+ "?," //5. role
-				+ "?," //6. mobile
-				+ "?," //7. workPhone
-				+ "?," //8. email
-				+ "?," //9. location
-				+ "?," //10. password
-				+ "?," //11. photoPath
-				+ "?," //12. lostIdQuestion
-				+ "?)"; //13. lostIdAnswer
+		String query = "INSERT INTO employee("
+				+ " employeeId, employeeName, birthDate, team, employLevel, role, mobile, workPhone, email, location, password, photoPath, lostIdQuestion, lostIdAnswer) "
+				+ " VALUES (EMP_SEQ.NEXTVAL,"
+				+ " ?," //1. employName
+				+ " ?," //2. birthDate
+				+ " ?," //3. team
+				+ " ?," //4. employLevel
+				+ " ?," //5. role
+				+ " ?," //6. mobile
+				+ " ?," //7. workPhone
+				+ " ?," //8. email
+				+ " ?," //9. location
+				+ " ?," //10. password
+				+ " ?," //11. photoPath
+				+ " ?," //12. lostIdQuestion
+				+ " ?)"; //13. lostIdAnswer
 		
 		try {
 			connection = getConnection();
@@ -158,20 +158,20 @@ public class InJungDao {
 		Connection connection = null;
 		PreparedStatement pstmt = null;
 		String query = "UPDATE employee SET"
-				+ "employeeName = ?," 	//1. employName
-				+ "birthDate = ?," 		//2. birthDate
-				+ "team = ?," 			//3. team
-				+ "employLevel = ?," 	//4. employLevel
-				+ "role = ?," 			//5. role
-				+ "mobile = ?," 		//6. mobile
-				+ "workPhone = ?," 		//7. workPhone
-				+ "email = ?," 			//8. email
-				+ "location = ?," 		//9. location
-				+ "password = ?," 		//10. password
-				+ "photoPath = ?," 		//11. photoPath
-				+ "lostIdQuestion = ?," //12. lostIdQuestion
-				+ "lostIdAnswer = ?"	//13. lostIdAnswer
-				+ "WHERE employeeId = ?"; //14. eployeeId
+				+ " employeeName = ?," 	//1. employName
+				+ " birthDate = ?," 	//2. birthDate
+				+ " team = ?," 			//3. team
+				+ " employLevel = ?," 	//4. employLevel
+				+ " role = ?," 			//5. role
+				+ " mobile = ?," 		//6. mobile
+				+ " workPhone = ?," 	//7. workPhone
+				+ " email = ?," 		//8. email
+				+ " location = ?," 		//9. location
+				+ " password = ?," 		//10. password
+				+ " photoPath = ?," 	//11. photoPath
+				+ " lostIdQuestion = ?,"//12. lostIdQuestion
+				+ " lostIdAnswer = ?"	//13. lostIdAnswer
+				+ " WHERE employeeId = ?"; //14. eployeeId
 		
 		try {
 			connection = getConnection();

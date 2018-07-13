@@ -30,12 +30,11 @@ public class FileServerCli {
 			System.out.println("***Starting Server***");
 			serv = new ServerSocket(port);
 			
-			bis = new BufferedInputStream(sock.getInputStream());
-			dis = new DataInputStream(bis);
-			
 			while(true) {
 				System.out.println("Waiting for Client...");
 				sock = serv.accept();
+				bis = new BufferedInputStream(sock.getInputStream());
+				dis = new DataInputStream(bis);
 				System.out.println("Client("+sock.getInetAddress().getHostAddress()+ ") is connected.\n");
 				
 				//check it is request for sending or receiving file.
@@ -46,7 +45,12 @@ public class FileServerCli {
 					FileSender sender = new FileSender(dis.readUTF());
 					sender.start();
 				}
-				
+				try {
+					if(dis!=null)	dis.close();
+					if(bis!=null)	bis.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 				
 			} // end of while
 		} catch (IOException e) {

@@ -112,7 +112,7 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 		
 		// DTOs
 		private InJungDao dao = InJungDao.getInstance();
-		private EmployeeDto eDto; 
+		private EmployeeDto eDto = new EmployeeDto(); 
 		private ArrayList<TeamDto> tDtos;
 		private final String[] level = {"인턴", "사원", "대리", "과장", "차장", "부장", "이사", "대표이사"};
 		
@@ -462,6 +462,7 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 			txtWorkPhone.setText("");
 			txtEmail.setText("");
 			txtLocation.setText("");
+			lblPhoto.setText("");
 			lblPhoto.setIcon(new ImageIcon("./Photo/no_avatar.jpg"));
 		}
 	
@@ -471,13 +472,18 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if(e.getSource().equals(btnConfirm)) {
+				//reset txtWarning
+				txtWarning.setText("");
+				txtWarning.validate();
+				txtWarning.repaint();
+				
 				//Check PW
-				String strPw = String.valueOf(txtEmployeeId.getText());
-				String strPwConfirm = String.valueOf(txtEmployeeId.getText());
+				String strPw = String.valueOf(txtPassword.getPassword());
+				String strPwConfirm = String.valueOf(txtPwConfirm.getPassword());
 				// 1. Check password for Update  txtPassword==txtPasswordConfirm==eDto.getPassword
-				if(txtEmployeeId.getText()!=null) {
-					if(strPw!=strPwConfirm || 
-							strPw!=eDto.getPassword()) {
+				if(txtEmployeeId.getText()!="") {
+					if(!strPw.equals(strPwConfirm) && 
+							!strPw.equals(eDto.getPassword()) ) {
 						JOptionPane.showMessageDialog(
 								btnConfirm, 
 								"패스워드가 일치하지 않습니다.", 
@@ -515,7 +521,8 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 					
 				} else {
 					// 2. new user
-					if(!txtPassword.getPassword().equals(txtPwConfirm.getPassword())) {
+					System.out.println(!strPw.equals(strPwConfirm));
+					if(!strPw.equals(strPwConfirm)) {
 						JOptionPane.showMessageDialog(
 								btnConfirm, 
 								"패스워드가 일치하지 않습니다.", 
@@ -564,6 +571,7 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 				);
 				if(selected==0) claearField();
 			//end of btnCancel Action
+				
 			} else if(e.getSource().equals(btnPhotoUpload)) {
 				fileChooser.setFileFilter(new FileNameExtensionFilter("ImageFiles", ImageIO.getReaderFileSuffixes()));
 				int returnVal = fileChooser.showOpenDialog(EditEmployeePanel.this);
@@ -571,6 +579,7 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 				if(returnVal==JFileChooser.APPROVE_OPTION) {
 					photoFile = fileChooser.getSelectedFile();
 					lblPhoto.setIcon(new ImageIcon(photoFile.getPath()));
+					lblPhoto.setText(photoFile.getName());
 				}
 			} //end of btnPhotoUpload action	
 		}
@@ -583,19 +592,19 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 			int valid = 0; 
 			
 			if(lblPhoto.getText()=="Photo") {
-				txtWarning.append("\n사진이 없습니다.");
+				txtWarning.append("\n***사진이 없습니다.");
 				valid++;
 			}
 			if(txtName.getText().length()<3 || txtName.getText().length()>20) {
-				txtWarning.append("\n이름이 너무 짧거나 깁니다. 2~10자 내로 입력하세요.");
+				txtWarning.append("\n***이름이 너무 짧거나 깁니다. \n2~10자 내로 입력하세요.");
 				valid++;
 			}
 			if(txtPassword.getPassword().length<6) {
-				txtWarning.append("\n패스워드는 반드시 6자 이상이어야 합니다.");
+				txtWarning.append("\n***패스워드는 반드시 6자 이상이어야 합니다.");
 				valid++;
 			}
 			if(txtLostQuestion.getText().trim()=="" || txtLostAnswer.getText().trim()=="" ) {
-				txtWarning.append("\n패스워드 분실 질문과 대답을 입력해 주세요.");
+				txtWarning.append("\n***패스워드 분실 질문과 대답을 입력해 주세요.");
 				valid++;
 			}			
 			return valid;
