@@ -90,7 +90,6 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
     	
     	//팀레코드 판넬
     	//팀레코드 판넬 - 설정
-
     	tablePane = new JPanel();
     	tablePane.setBounds(PANEL_X, tablePane_Y, tablePane_WIDTH, tablePane_HEIGHT);
     	tablePane.setLayout(null);
@@ -104,14 +103,13 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
     	dtos_Team = dao.getAllTeam();
     	
  	
-    	//열 Vector 설정
+    	//테이블 헤더 Vector 설정
     	Vector<String> column = new Vector<>();
     	column.addElement("부 서");
     	column.addElement("Role");
     	column.addElement("Leader");
     	column.addElement("Leader_id");
-    	
-    	
+    	    	
     	//테이블 설정
     	tbDefault = new DefaultTableModel(column, 0); 
     	tbTeamRecord = new JTable(tbDefault);
@@ -120,9 +118,7 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
     	tbTeamRecord.setBackground(new Color(235,235,235));
     	tbTeamRecord.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     	
-    	//
-    	
-    	//행 Vector에 TeamDto들 담기  	
+    	//행 Vector에 TeamDto 데이터 넣기  	
     	for(int i=0;i< dtos_Team.size();i++) {
         	Vector<String> row = new Vector<>();
     		row.addElement(dtos_Team.get(i).getTeamName());
@@ -179,7 +175,6 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
     		
     	//인풋판넬
     	//인풋판넬 - 설정
-    	
     	inputPane = new JPanel();
     	inputPane.setBounds(PANEL_X, inputPane_Y, inputPane_WIDTH, inputPane_HEIGHT);
     	inputPane.setLayout(null);
@@ -187,7 +182,6 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
 //    	inputPane.setVisible(false); //권한에 따라 감추기
     	
     	//인풋판넬 - 컴포넌트
-    	
     	lblTeam = new JLabel("부 서");
     	lblTeam.setFont(lblTeam.getFont().deriveFont(16.0f));
     	lblTeam.setBounds(new Rectangle(5, 5, 140, 45));
@@ -301,7 +295,7 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
 			dto_Team.setTeamLeaderName(arr[0]);
 			dto_Team.setTeamLeaderId(arr[1]);
 			
-//			dao.insertTeam(dto_Team);
+			dao.insertTeam(dto_Team);
 			
 			//JTABLE
 			Vector<String> v = new Vector<>();
@@ -321,12 +315,14 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
 		}
 		if(e.getSource()==btnDelete) {
 			
+			//JTABLE
+			
 		}
 		if(e.getSource()==btnEdit) {
 			//수정 버튼
 			//DTO
-			String prevTeam = (String) tbTeamRecord.getValueAt(tbTeamRecord.getSelectedRow(), 1);
-			
+			String prevTeam = (String) tbTeamRecord.getValueAt(tbTeamRecord.getSelectedRow(), 0);
+			System.out.println(prevTeam);
 			dto_Team = new TeamDto();
 			dto_Team.setTeamName(txtTeam.getText());
 			dto_Team.setTeamRole(txtRole.getText());
@@ -338,7 +334,10 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
 			
 			dao.updateTeam(dto_Team, prevTeam);
 			
-			//JTABLE			
+			//JTABLE
+			tbTeamRecord.setValueAt(txtTeam.getText(), tbTeamRecord.getSelectedRow(), 0);
+			tbTeamRecord.setValueAt(txtRole.getText(), tbTeamRecord.getSelectedRow(), 1);
+			tbTeamRecord.setValueAt(arr[0], tbTeamRecord.getSelectedRow(), 2);				
 		}
 	}
 
