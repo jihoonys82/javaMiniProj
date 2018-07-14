@@ -541,7 +541,7 @@ public class InJungDao {
 		
 		Connection connection = null;
 		PreparedStatement pstmt = null;
-		String query = "DELETE tem WHERE teamname = ?";
+		String query = "DELETE team WHERE teamname = ?";
 		
 		try {
 			connection = getConnection();
