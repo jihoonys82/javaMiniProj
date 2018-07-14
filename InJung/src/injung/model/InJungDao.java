@@ -19,6 +19,9 @@ public class InJungDao {
 	
 	public static final int INSERT_DATA_SUCCESS = 0;
 	public static final int INSERT_DATA_FAILED  = 1;
+	public static final int DELETE_DATA_SUCCESS = 0;
+	public static final int DELETE_DATA_FAILED  = 1;
+	
 	
 	private static InJungDao instance = new InJungDao();
 	
@@ -424,6 +427,41 @@ public class InJungDao {
 	}
 	
 	/**
+	 * get count employee who are in team
+	 * @param teamName
+	 * @return total employee count in team, -1 means error.
+	 */
+	public int countEmployee(String teamName) {
+		int cnt = -1;
+		Connection connection = null;
+		PreparedStatement pstmt = null;
+		ResultSet set = null;
+		String query = "SELECT COUNT(employeeId) AS c FROM employee WHERE team = ? ";
+		
+		try {
+			connection = getConnection();
+			pstmt = connection.prepareStatement(query);
+			pstmt.setString(1, teamName);
+			set = pstmt.executeQuery();
+			
+			if(set.next()) {
+				cnt = set.getInt("c");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(set!=null) set.close();
+				if(pstmt!=null) pstmt.close();
+				if(connection!=null) connection.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return  cnt;
+	}
+	
+	/**
 	 * Insert Team Data in Database
 	 * @param dto
 	 * @return result code 1:Success, 0: Fail to insert
@@ -491,6 +529,32 @@ public class InJungDao {
 			}
 		}
 		return results;
+	}
+	
+	/**
+	 * Delete team from Database
+	 * @param teamName
+	 * @return result code 1: success, 0: failed
+	 */
+	public int deleteTeam(String teamName) {
+		int result = DELETE_DATA_FAILED;
+		
+		Connection connection = null;
+		PreparedStatement pstmt = null;
+		String query = "DELETE tem WHERE teamname = ?";
+		
+		try {
+			connection = getConnection();
+			pstmt = connection.prepareStatement(query);
+			pstmt.setString(1, teamName);
+			pstmt.executeUpdate();
+			
+			result = DELETE_DATA_SUCCESS;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
 	}
 	
 	/**
