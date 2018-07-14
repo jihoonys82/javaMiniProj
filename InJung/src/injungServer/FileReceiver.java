@@ -15,42 +15,40 @@ import java.nio.file.Files;
  */
 public class FileReceiver extends Thread { 
 	
-	private Socket sock; 
+//	private Socket sock; 
 	private BufferedInputStream bis;
 	private DataInputStream dis;
 	
 	private File dir = new File("./server_photo"); // default photo storage folder
 	private File file; 
 	
-	public FileReceiver(Socket sock) {
-		this.sock = sock;
+	public FileReceiver(BufferedInputStream bis, DataInputStream dis) {
+//		this.sock = sock;
+		this.bis = bis;
+		this.dis = dis;
 	}
 	
 	@Override
 	public void run() {
 		try {
-			bis = new BufferedInputStream(sock.getInputStream());
-			dis = new DataInputStream(bis);
-			
 			System.out.println("File Receiving...");
 			
 			String fileName = dis.readUTF();
 			file = new File(dir, fileName);
-			Files.copy(dis, file.toPath());
-			System.out.println(file.getName() + " has been transfered to Server/n");
+			Long bytes = Files.copy(dis, file.toPath());
+			
+			System.out.println(file.getName() +" (Size:"+ bytes + "bytes) has been transfered to Server/n");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
-			try {
-				if(dis !=null) dis.close();
-				if(bis !=null) bis.close();
-				if(sock!=null) sock.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		
+//			try {
+//				if(dis!=null) dis.close();
+//				if(bis!=null) bis.close();
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
 		}
 	} // end of run() method 
 	

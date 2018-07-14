@@ -5,8 +5,12 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.UUID;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -521,7 +525,6 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 					
 				} else {
 					// 2. new user
-					System.out.println(!strPw.equals(strPwConfirm));
 					if(!strPw.equals(strPwConfirm)) {
 						JOptionPane.showMessageDialog(
 								btnConfirm, 
@@ -537,7 +540,7 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 							// Upload photo
 							FileSender sender = new FileSender(photoFile);
 							sender.start();
-							
+							System.out.println("uploaded");
 							// Create (If empID is NOT exist)
 							EmployeeDto newEmpDto = new EmployeeDto();
 							newEmpDto.setPassword(txtPassword.getPassword().toString());
@@ -554,7 +557,13 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 							newEmpDto.setTeam(cbTeam.getSelectedItem().toString());
 							newEmpDto.setPhoto(lblPhoto.getText());
 							
-							dao.insertEmployee(newEmpDto);
+							int result = dao.insertEmployee(newEmpDto);
+							if(result==InJungDao.INSERT_DATA_SUCCESS) {
+								txtWarning.append("\nDB에 성공적으로 등록했습니다.");
+							} else {
+								txtWarning.append("\nDB에 등록 실패했습니다.");
+							}
+								
 						}
 					}
 				}
@@ -578,15 +587,28 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 				
 				if(returnVal==JFileChooser.APPROVE_OPTION) {
 					photoFile = fileChooser.getSelectedFile();
-					lblPhoto.setIcon(new ImageIcon(photoFile.getPath()));
-					lblPhoto.setText(photoFile.getName());
+					
+					String newFileName = UUID.randomUUID().toString()+".jpg";
+					File newFile = new File(dir,newFileName);
+					
+					// Copy photo to Local photo folder
+					try {
+						Files.copy(photoFile.toPath(), newFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+					} catch (IOException e1) {
+						txtWarning.append("\n파일을 Photo폴더로 복사 할 수 없습니다.");
+						e1.printStackTrace();
+					}
+					photoFile = newFile; 
+					
+					lblPhoto.setText(newFileName);
+					lblPhoto.setIcon(new ImageIcon(newFile.getAbsolutePath()));
 				}
 			} //end of btnPhotoUpload action	
 		}
 
 		/**
 		 * Field Validation 
-		 * @return If all field are valid return 0. <br> The figure means the number of invalid items 
+		 * @return If all field are valid return 0. <br> The return figure means the number of invalid items 
 		 */
 		private int fieldValidation() {
 			int valid = 0; 

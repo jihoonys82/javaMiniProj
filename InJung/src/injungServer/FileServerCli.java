@@ -1,9 +1,7 @@
 package injungServer;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -33,25 +31,20 @@ public class FileServerCli {
 			while(true) {
 				System.out.println("Waiting for Client...");
 				sock = serv.accept();
-				bis = new BufferedInputStream(sock.getInputStream());
-				dis = new DataInputStream(bis);
+				
+				if(bis==null)bis = new BufferedInputStream(sock.getInputStream());
+				if(dis==null) dis = new DataInputStream(bis);
+				
 				System.out.println("Client("+sock.getInetAddress().getHostAddress()+ ") is connected.\n");
 				
 				//check it is request for sending or receiving file.
 				if(dis.readUTF().equals("Send")) {
-					FileReceiver receiver = new FileReceiver(sock);
+					FileReceiver receiver = new FileReceiver(bis, dis);
 					receiver.start();
 				} else if(dis.readUTF().equals("Request")) {
 					FileSender sender = new FileSender(dis.readUTF());
 					sender.start();
 				}
-				try {
-					if(dis!=null)	dis.close();
-					if(bis!=null)	bis.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				
 			} // end of while
 		} catch (IOException e) {
 			e.printStackTrace();

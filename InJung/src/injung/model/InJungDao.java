@@ -52,7 +52,7 @@ public class InJungDao {
 		String query = "INSERT INTO employee("
 				+ " employeeId, employeeName, birthDate, team, employLevel, role, mobile, workPhone, email, location, password, photoPath, lostIdQuestion, lostIdAnswer) "
 				+ " VALUES (EMP_SEQ.NEXTVAL,"
-				+ " ?," //1. employName
+				+ " ?," //1. employeeName
 				+ " ?," //2. birthDate
 				+ " ?," //3. team
 				+ " ?," //4. employLevel

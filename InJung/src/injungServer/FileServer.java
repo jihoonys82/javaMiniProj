@@ -143,8 +143,8 @@ public class FileServer extends JFrame implements ActionListener, Runnable {
 				sock = serv.accept();
 				txtConsole.append("Client("+sock.getInetAddress().getHostAddress()+ ") is connected.\n");
 				
-				FileReceiver receiver = new FileReceiver(sock);
-				SwingUtilities.invokeLater(receiver);
+//				FileReceiver receiver = new FileReceiver(sock, bis, dis);
+//				SwingUtilities.invokeLater(receiver);
 				
 				
 			} // end of while
