@@ -2,18 +2,27 @@ package injung;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import injung.model.EmployeeDto;
 import injung.model.InJungDao;
 
-public class FindIdPanel extends JDialog implements ActionListener {
+/*
+ * 07.15
+ * 작성자: 송주현
+ *  
+ */
+
+public class FindIdPanel extends JDialog implements ActionListener, KeyListener {
 private static final long serialVersionUID = -1581889542704938075L;
 	
 	private JTextField txtEmployeeId;
@@ -23,8 +32,8 @@ private static final long serialVersionUID = -1581889542704938075L;
 	private JButton btnCancel;
 	private JLabel lblNewPw;
 	private JLabel lblVerifyPw;
-	private JTextField txtNewPw;
-	private JTextField txtVerifyPw;
+	private JPasswordField txtNewPw;
+	private JPasswordField txtVerifyPw;
 	
 	private InJungDao dao = InJungDao.getInstance();
 	private EmployeeDto eDto;
@@ -73,13 +82,14 @@ private static final long serialVersionUID = -1581889542704938075L;
 		lblVerifyPw = new JLabel("패스워드 확인 : ");	// 비밀번호 확인 레이블 생성 
 		lblVerifyPw.setBounds(83, 157, 105, 15);
 		
-		txtNewPw = new JTextField();	// 비밀번호 변경 텍스트필드 설정 
+		txtNewPw = new JPasswordField();	// 비밀번호 변경 텍스트필드 설정 
 		txtNewPw.setColumns(10);
 		txtNewPw.setBounds(196, 119, 152, 21);
 		
-		txtVerifyPw = new JTextField();	// 비밀번호 확인 텍스트필드 생성 
+		txtVerifyPw = new JPasswordField();	// 비밀번호 확인 텍스트필드 생성 
 		txtVerifyPw.setColumns(10);
 		txtVerifyPw.setBounds(196, 154, 152, 21);
+		txtVerifyPw.addKeyListener(this);
 		
 		findIdPane.add(txtVerifyPw);
 		findIdPane.add(txtNewPw);
@@ -99,57 +109,92 @@ private static final long serialVersionUID = -1581889542704938075L;
 	}
 	
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		
-		String strId = txtEmployeeId.getText();
-		int toIntId = Integer.parseInt(strId); 
-		
-		if ( e.getSource().equals(btnOk)) {
-			// 1. 확인버튼 눌렀을 때 값이 일치하면 비밀번호 변경 가능 
-			//  1-1. 새비밀번호나 비밀번호확인 텍스트필드가 빈칸이면 비밀번호 입력 요청
-			//		1-1-1. 두 필드 중 하나만 빈칸인 경우
-			//		1-1-2. 두 필드 모두 빈칸인 경우 
-			//	1-2. 새비밀번호와 비밀번호확인 텍스트필드가 불일치하면 불일치 메세지 
-			//  1-3. 새비밀번호와 비밀번호확인 텍스트필드가 일치하면 비밀번호 변경 
-			// 2. 확인버튼 눌렀을 때 값이 불일치하면 "일치x" 메세지 띄우기 
+	public void actionPerformed(ActionEvent e) {	
+		if ( e.getSource().equals(btnOk)) {	// 확인 버튼 클릭시 정보 일치 여부 확인 
+			String strId = txtEmployeeId.getText(); 
+			int intId = Integer.parseInt(strId);	
+			eDto = dao.getEmployee(intId); 
+			String toString = String.valueOf(intId);
 			
-			if ( (txtEmployeeId.getText().equals(eDto.getEmployeeId())) && (txtQuestion.getText().equals(eDto.getPassword()))
-					&& (txtAnswer.getText().equals(eDto.getLostIdAnswer()) ))  {		
-			
-						CreatePw(toIntId);
+			// TODO trim() 관련 문제 해결 			
+//			if ( (txtEmployeeId.getText().equals(toString)) && (txtQuestion.getText().trim().equals(eDto.getLostIdQuestion().trim()))
+//					&& (txtAnswer.getText().trim().equals(eDto.getLostIdAnswer().trim()))) {
 		
+			if ((txtEmployeeId.getText().equals(toString)) 
+					&& (txtQuestion.getText().equals(eDto.getLostIdQuestion()))
+					&& (txtAnswer.getText().equals(eDto.getLostIdAnswer())))  {	//	사번/분실질문/분실대답이 모두 일치하면 비밀번호 변경 가능 
+			
+						System.out.println("비번 변경 메소드 실행");
+						createPw(intId);
 				
-			} else if ( !(txtEmployeeId.getText().equals(eDto.getEmployeeId())) || !(txtQuestion.getText().equals(eDto.getLostIdQuestion()))		// 정보가 일치하지 않으면 관리자문의 메세지 
-					|| !(txtAnswer.getText().equals(eDto.getLostIdAnswer())) ) {	
+			} else if (!(txtEmployeeId.getText().equals(toString)) 
+					|| !(txtQuestion.getText().equals(eDto.getLostIdQuestion()))		
+					|| !(txtAnswer.getText().equals(eDto.getLostIdAnswer()))) {	// 사번/분실질문/분실대답 하나라도 일치하지 않으면 관리자문의 메세지 
 				JOptionPane.showMessageDialog(null, "정보가 일치하지 않습니다 \n 관리자에게 문의하세요");
 			}
-			
+	
 		} else if (e.getSource().equals(btnCancel)) {	// 취소버튼 클릭시 닫기 
 				dispose();
 		}
-		
-		
 	}
 	
-	private void CreatePw(int empId) {
-		eDto = dao.getEmployee(empId);
+	private void createPw(int empId) {
+		eDto = dao.getEmployee(empId);			
+		
+		char[] chPw_1 = txtNewPw.getPassword();		// getPassword를 char[]에 담은 후 new String
+		String strNewPw = new String(chPw_1);		
+		char[] chPw_2 = txtVerifyPw.getPassword();
+		String strVerPw = new String(chPw_2);
+
+		if((strNewPw.equals("")) && (strVerPw.equals(""))) {	// 두 텍스트필드를 공백으로 두었을 때  
+			System.out.println("비번 2개 공백");
+			JOptionPane.showMessageDialog(null, "변경할 비밀번호를 입력하세요");		
 			
-			if( ( (txtNewPw.getText().equals("")) && (txtVerifyPw.getText().equals("")))){	// 두 텍스트필드를 공백으로 두었을 때  
-					JOptionPane.showMessageDialog(null, "변경할 비밀번호를 입력하세요");	
+		} else if (( !(strNewPw.length()>0)) || ( !(strVerPw.length()>0)) ) {	// 하나의 텍스트필드만 공백으로 두었을 때
+			JOptionPane.showMessageDialog(null, "변경할 비밀번호를 입력하세요");		
+			
+		} else if (!(strNewPw.equals(strVerPw))) {	// 새비밀번호와 비밀번호확인이 일치하지 않을 때 
+			JOptionPane.showMessageDialog(null, "비밀번호가 일치하지 않습니다 \n 다시 입력하세요"); 
+			
+		} else if (strNewPw.equals(strVerPw)) {	// 비밀번호 변경 가능
+			changeData();		// 비밀번호 데이터 변경 메소드 실행 
+			dispose();			// 변경 후 닫기 
 						
-				} else if ( (txtNewPw.getText().equals("")) || (txtVerifyPw.getText().equals(""))) {
-					JOptionPane.showMessageDialog(null, "변경할 비밀번호를 입력하세요");	// 하나의 텍스트필드만 공백으로 두었을 때 
-						
-				} else if (!(txtNewPw.getText().equals(txtVerifyPw.getText()))) {
-					JOptionPane.showMessageDialog(null, "비밀번호가 일치하지 않습니다 \n 다시 입력하세요"); // 새비밀번호와 비밀번호확인이 일치하지 않을 때 
-						
-				} else if ((txtNewPw.getText().equals(txtVerifyPw.getText()))) {	// 비밀번호 변경 가능
-					JOptionPane.showMessageDialog(null, "비밀번호가 변경되었습니다");
+		}
+	}	// createPw									
+
 	
-					eDto.setPassword(txtNewPw.getText()); // 변경된 값 DB로 전송 
-					dispose();	// 변경 후 닫기 
-						
-				}
+	private void changeData() {	// DB로 데이터 전송하는 메소드 
+		int intId = Integer.parseInt(txtEmployeeId.getText()); 	
 		
+		char[] chNewPw = txtNewPw.getPassword();
+		String strNewPw = new String(chNewPw);
+		
+		int result = dao.setNewPassword(intId,strNewPw);		// DAO에 ID와 새로운 PW 값 인자로 전달 
+		
+		if (result == InJungDao.INSERT_DATA_SUCCESS) {			// DB 값 전송 성공 여부 
+			JOptionPane.showMessageDialog(null, "비밀번호가  변경되었습니다");
+		} else if (result == InJungDao.INSERT_DATA_FAILED) {
+			JOptionPane.showMessageDialog(null, "비밀번호를 변경할 수 없습니다 \n 관리자에게 문의하세요");
+		}
+		
+	}	// changeData 
+
+	@Override
+	public void keyPressed(KeyEvent e) {	// 엔터 기억키
+		if ( e.getKeyCode() == KeyEvent.VK_ENTER) {
+			
+			String strId = txtEmployeeId.getText(); 
+			int id = Integer.parseInt(strId);	
+			eDto = dao.getEmployee(id); 
+			
+			createPw(id);
+		}	
 	}
+
+	@Override
+	public void keyReleased(KeyEvent e) { }
+
+	@Override
+	public void keyTyped(KeyEvent e) { }		
 }
