@@ -199,7 +199,7 @@ public class MainFrameTest extends JFrame implements ActionListener{ // 액션 리�
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == record_NewEmployee) {
 			System.out.println("신규등록 누름");
-			add(new EditEmployeePanel(9002));
+			add(new EmployeeInfoPanel(9002));
 			
 			validate(); // 컴포넌트 검증 (메모리 상태 확인) - 메모리 확실하게
 			repaint(); // 다시 그리기

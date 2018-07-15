@@ -9,7 +9,7 @@ import java.net.UnknownHostException;
 import java.nio.file.Files;
 
 /**
- * File Sender 
+ * File Sender (Client side)
  * DataOutputStream - send String(filename) and File
  * Referred form https://stackoverflow.com/questions/15649972/how-do-i-send-file-name-with-file-using-sockets-in-java
  * @since 2018-07-04

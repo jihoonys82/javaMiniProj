@@ -120,6 +120,7 @@ public class EmployeeInfoPanel extends JPanel implements ActionListener {
 		
 		
 		file = new File(dir, dto.getPhoto());
+		System.out.println("TEST file : " + file);
 		if(!file.exists()) {
 				FileReceiver request = new FileReceiver(file);
 				request.start();

@@ -26,22 +26,22 @@ public class FileSender extends Thread {
 	private DataOutputStream dos;
 	private BufferedOutputStream bos;
 	
-	private String host = "localhost";
-	private int port = 9998;
+//	private String host = "localhost";
+//	private int port = 9998;
 	
 	/**
 	 * File Sender Constructor
 	 * @param file : Source file
 	 */
-	public FileSender(String filename) {
+	public FileSender(Socket sock, String filename) {
 		this.file = new File(dir, filename);
-		
+		this.sock = sock;
 	}
 	
 	@Override
 	public void run() {
 		try {
-			sock = new Socket(host,port);
+//			sock = new Socket(host,port);
 			bos = new BufferedOutputStream(sock.getOutputStream());
 			dos = new DataOutputStream(bos);
 			

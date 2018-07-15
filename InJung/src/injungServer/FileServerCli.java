@@ -48,13 +48,13 @@ public class FileServerCli {
 					FileReceiver receiver = new FileReceiver(dis);
 					receiver.start();
 				} else if(dis.readUTF().equals("Request")) {
-					String requestedFile = dis.readUTF();
+					String requestedFile = dis.readUTF(); // receive file name for request.
 					System.out.println("File ("+requestedFile +") Sending...");
 					if((new File(dir, requestedFile).exists())) {
-						FileSender sender = new FileSender(requestedFile);
+						FileSender sender = new FileSender(sock, requestedFile);
 						sender.start();						
 					} else {
-						System.out.println(requestedFile+" already exists!");
+						System.out.println(requestedFile+" is not exists in server!");
 					}
 				}
 			} // end of while
