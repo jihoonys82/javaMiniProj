@@ -45,9 +45,10 @@ public class FileSender extends Thread {
 			bos = new BufferedOutputStream(sock.getOutputStream());
 			dos = new DataOutputStream(bos);
 			
-			dos.writeUTF(file.getName()); // send file name
+//			dos.writeUTF(file.getName()); // send file name
 			Files.copy(file.toPath(), dos); // copy file to server
 			
+			dos.flush();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

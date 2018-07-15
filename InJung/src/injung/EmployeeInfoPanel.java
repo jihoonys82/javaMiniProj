@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -63,8 +64,12 @@ public class EmployeeInfoPanel extends JPanel implements ActionListener {
 	private JTextField txtBirth 		= new JTextField();
 	
 	// Buttons
-	JButton btnEditInfo 		= new JButton("Edit Info");
-	JButton btnPasswordChange 	= new JButton("Password Change");
+	private JButton btnEditInfo 		= new JButton("Edit Info");
+	private JButton btnPasswordChange 	= new JButton("Password Change");
+	
+	// Files 
+	private File dir  = new File("./Photo");
+	private File file;
 	
 	public EmployeeInfoPanel() {
 		
@@ -113,6 +118,12 @@ public class EmployeeInfoPanel extends JPanel implements ActionListener {
 		txtRole.setText(dto.getRole());
 		txtBirth.setText(dto.getBirth());
 		
+		
+		file = new File(dir, dto.getPhoto());
+		if(!file.exists()) {
+				FileReceiver request = new FileReceiver(file);
+				request.start();
+		} 
 		lblPhoto.setIcon(new ImageIcon("./Photo/"+dto.getPhoto()));
 		
 		validate();

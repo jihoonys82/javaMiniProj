@@ -2,6 +2,7 @@ package injungServer;
 
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -23,6 +24,8 @@ public class FileServerCli {
 	private BufferedInputStream bis;
 	private DataInputStream dis;
 	
+	private File dir = new File("./server_photo");
+	
 	private FileServerCli() {
 		try {
 			System.out.println("***Starting Server***");
@@ -41,11 +44,18 @@ public class FileServerCli {
 				// when receive "Send" : FileReceiver call
 				// when receive "Request" : FileSender call 
 				if(dis.readUTF().equals("Send")) {
+					System.out.println("File Receivng...");
 					FileReceiver receiver = new FileReceiver(dis);
 					receiver.start();
 				} else if(dis.readUTF().equals("Request")) {
-					FileSender sender = new FileSender(dis.readUTF());
-					sender.start();
+					String requestedFile = dis.readUTF();
+					System.out.println("File ("+requestedFile +") Sending...");
+					if((new File(dir, requestedFile).exists())) {
+						FileSender sender = new FileSender(requestedFile);
+						sender.start();						
+					} else {
+						System.out.println(requestedFile+" already exists!");
+					}
 				}
 			} // end of while
 		} catch (IOException e) {
@@ -64,9 +74,7 @@ public class FileServerCli {
 	}
 	
 	public static void main(String[] args) {
-		
 		new FileServerCli();
-
 	}
 
 }

@@ -9,8 +9,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
-import injung.model.InJungDao;
-
 /*
  * 수정일자 : 2018.07.06 ~
  * 
@@ -27,6 +25,7 @@ public class MainFrameTest extends JFrame implements ActionListener{ // 액션 리�
 	private static final long serialVersionUID = 1L;
 
 	//루트 컨테이너 구성에 필요한 변수
+	@SuppressWarnings("unused")
 	private Container root; // 루트 컨테이너
 	
 	//첫 번째 판넬
@@ -200,7 +199,7 @@ public class MainFrameTest extends JFrame implements ActionListener{ // 액션 리�
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == record_NewEmployee) {
 			System.out.println("신규등록 누름");
-			add(new EditEmployeePanel(9001));
+			add(new EditEmployeePanel(9002));
 			
 			validate(); // 컴포넌트 검증 (메모리 상태 확인) - 메모리 확실하게
 			repaint(); // 다시 그리기
