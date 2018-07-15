@@ -1,25 +1,38 @@
 package injung;
 
+import java.awt.BorderLayout;
 import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Vector;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.KeyStroke;
+import javax.swing.table.DefaultTableModel;
+
+import injung.model.EmployeeDto;
+import injung.model.InJungDao;
 
 /* 
- * 수정일자 : 2018.07.14
+ * 수정일자 : 2018.07.16
  * 
  * 수정자 : 권미현
  * 
- *  - '내 정보 보기' 메뉴 아이템 추가 및 기억키, 가속키 추가
- *  - '내 정보 보기' 기능 추가
- *  - 로그인/로그아웃 상세 기능 추가 (로그인 고정, 로그아웃 구현)
+ *  - MainFrame Y축 조절(600 > 650)
+ *  - 이달의 생일 알림 기능 추가 : initTablePanel(ArrayList<EmployeeDto> birthDto) 메소드
  *  
  */
 
@@ -30,12 +43,28 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 	// Login 
 	private static int id = 0; // 아이디 받아올 값
 	private static boolean login = false; // 로그인 체크
+	
+	// Date
+	private static Date month;
+	private static SimpleDateFormat dateFormat; // 현재 달만 출력
 
+	// -------------------------------------------------------//
 
 	//루트 컨테이너 구성에 필요한 변수
 	private Container root; // 루트 컨테이너
 	
-	//첫 번째 판넬
+	//Table Panel
+	private JPanel tablePanel;
+	
+	
+	//JTable 설정
+	private JTable birthTable; // 이달의 생일 Table
+	private DefaultTableModel tableModel;	// 추가, 삭제를 용이
+	//JTable - 속성
+	private Vector<String> tableAttribute;
+	private static final String[] AttributeStr = {"생일", "이름", "부서", "직급", "직책"};
+	//JTable - 스크롤바
+	private JScrollPane jScrollPane; // 컴포넌트 스크롤바
 	
 
 	//메뉴바 설정
@@ -71,12 +100,33 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 	private JMenuItem help_Credit;
 	private JMenuItem help_About;
 	
+	
+	//DAO, DTO (생일)
+	private static InJungDao dao;
+	private ArrayList<EmployeeDto> birthDto;
+	
+	// DTO에서 받아서 저장할 Vector (생일)
+	private Vector<String> vDto; 
+	
+	
 	public MainFrame() {
 		
 		//메인 프레임 설정
 		setTitle("메인 프레임");
-		setBounds(300, 100, 1000, 600);
+		setBounds(300, 100, 1000, 650);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		
+		
+		//Date 설정
+		month = new Date();
+		dateFormat = new SimpleDateFormat("MM"); // 현재 달만 출력
+		
+		//DAO, DTO 설정 (생일)
+		dao = InJungDao.getInstance();
+		birthDto = new ArrayList<>();
+//		birthDto = dao.getEmpBirth(Integer.parseInt((dateFormat.format(month))));
+//		System.out.println(Integer.parseInt((dateFormat.format(month)))); // 현재 달, 확인 완료
+		birthDto = dao.getEmpBirth(8);
 		
 		//메뉴바 설정
 		initMenu();
@@ -268,9 +318,76 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 		
 	}
 	
+	
+	public void initTablePanel(ArrayList<EmployeeDto> birthDto) {
+		
+		tablePanel = new JPanel();
+		tablePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 30));
+		
+		
+		// --- 테이블 속성 ---
+		tableAttribute = new Vector<>();
+		
+		for(int i = 0; i < AttributeStr.length; i++) {
+			tableAttribute.add(AttributeStr[i]);
+		}
+//		System.out.println(tableAttribute);
+		// --------------
+		
+		
+		// DefaultTableModel에 속성 넣기 (데이터 x)
+		tableModel = new DefaultTableModel(tableAttribute, 0) {
+
+			@Override
+			public boolean isCellEditable(int row, int column) { // 테이블 내용 수정 불가로 만들기
+				return false;
+			}
+		};
+		
+		birthTable = new JTable(tableModel); // JTable에 DefaultTableModel 설정
+		
+		// 테이블에 데이터 넣기(row)
+		for(EmployeeDto list : birthDto) {
+			
+			vDto = new Vector<>();
+
+			vDto.add(list.getBirth());
+			vDto.add(list.getName());
+			vDto.add(list.getTeam());
+			vDto.add(list.getLevel());
+			vDto.add(list.getRole());
+			
+			tableModel.addRow(vDto);
+//			System.out.println(vDto); // vDto 데이터 확인 완료
+			
+		}
+		
+		// 컬럼 사이즈
+		birthTable.getColumnModel().getColumn(0).setPreferredWidth(200);
+		birthTable.getColumnModel().getColumn(1).setPreferredWidth(110);
+		birthTable.getColumnModel().getColumn(2).setPreferredWidth(200);
+		birthTable.getColumnModel().getColumn(3).setPreferredWidth(110);
+		birthTable.getColumnModel().getColumn(4).setPreferredWidth(180);
+		birthTable.setRowHeight(30);
+		
+		
+		jScrollPane = new JScrollPane(birthTable);
+		
+		jScrollPane.setPreferredSize(new Dimension(800, 200));
+		
+		tablePanel.add(jScrollPane);
+		
+		
+		root.add(tablePanel, BorderLayout.SOUTH);
+	}
+	
+	
 	private void initRootContainer() {	
 		root = getContentPane();
 		
+		//JTable 설정
+		// 이달의 생일 Table 설정
+		initTablePanel(birthDto);
 	}
 	
 	
@@ -294,8 +411,9 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 				if(logckeck==LoginPanel.LOGIN_SUCCESSED) {
 
 					root.removeAll();
-
+					
 					root.add(new EmployeeInfoPanel(id));
+					initTablePanel(birthDto); // 이달의 생일
 					setTitle("내 정보");
 
 					root.validate(); // 컴포넌트 검증 (메모리 상태 확인) - 메모리 확실하게
@@ -310,15 +428,18 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 				
 				int logOut = logOut();
 				
-				if (logOut == 0) {
+				if (logOut == 0) { // 확인 버튼
 					root.removeAll();
 
-					view_MyView.setEnabled(false);
-					login = false;
-
+					initTablePanel(birthDto); // 이달의 생일
+					
 					root.validate(); // 컴포넌트 검증 (메모리 상태 확인) - 메모리 확실하게
 					root.repaint(); // 다시 그리기
-				} else if (logOut == 1) {
+					
+					view_MyView.setEnabled(false); // 내 정보 보기 MenuItem 비활성화
+					login = false;
+
+				} else if (logOut == 1) { // 취소 버튼
 					
 				}
 				
@@ -371,7 +492,7 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 		else if (e.getSource() == record_NewTeamManage) {
 			root.removeAll();
 			
-			root.add(new TeamRecordPanel()); // 컨테이너 넣기
+			root.add(new TeamRecordPanel(this)); // 컨테이너 넣기
 			setTitle("조직관리");
 			
 			root.validate(); // 컴포넌트 검증 (메모리 상태 확인) - 메모리 확실하게
@@ -384,6 +505,7 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 			root.removeAll();
 			
 			root.add(new EmployeeInfoPanel(id)); // 컨테이너 넣기
+			initTablePanel(birthDto); // 이달의 생일
 			setTitle("내 정보 보기");
 			
 			root.validate(); // 컴포넌트 검증 (메모리 상태 확인) - 메모리 확실하게
@@ -531,6 +653,7 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
  		return yesNo;
  		
 	}
+	
 	
 	public static void main(String[] args) {
 		new MainFrame();

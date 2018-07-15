@@ -722,7 +722,7 @@ public class InJungDao {
 		PreparedStatement pstmt = null;
 		ResultSet set = null;
 		String query = "SELECT * FROM employee" + 
-				"WHERE TO_CHAR(TO_DATE(birthdate), 'mm') = ?"; 
+				" WHERE TO_CHAR(TO_DATE(birthdate), 'mm') = ?"; 
 		ArrayList<EmployeeDto> dtos = new ArrayList<>();
 		EmployeeDto dto = null;
 		
