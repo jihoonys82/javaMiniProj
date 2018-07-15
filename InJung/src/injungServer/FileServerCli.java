@@ -41,7 +41,7 @@ public class FileServerCli {
 				// when receive "Send" : FileReceiver call
 				// when receive "Request" : FileSender call 
 				if(dis.readUTF().equals("Send")) {
-					FileReceiver receiver = new FileReceiver(bis, dis);
+					FileReceiver receiver = new FileReceiver(dis);
 					receiver.start();
 				} else if(dis.readUTF().equals("Request")) {
 					FileSender sender = new FileSender(dis.readUTF());

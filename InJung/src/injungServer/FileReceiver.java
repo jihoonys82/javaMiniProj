@@ -16,15 +16,15 @@ import java.nio.file.Files;
 public class FileReceiver extends Thread { 
 	
 //	private Socket sock; 
-	private BufferedInputStream bis;
+//	private BufferedInputStream bis;
 	private DataInputStream dis;
 	
 	private File dir = new File("./server_photo"); // default photo storage folder
 	private File file; 
 	
-	public FileReceiver(BufferedInputStream bis, DataInputStream dis) {
+	public FileReceiver(DataInputStream dis) {
 //		this.sock = sock;
-		this.bis = bis;
+//		this.bis = bis;
 		this.dis = dis;
 	}
 	

@@ -470,7 +470,7 @@ public class InJungDao {
 		
 		Connection connection = null;
 		PreparedStatement pstmt = null;
-		String query = "insert into team value (?,?,?)";
+		String query = "INSERT INTO team VALUES (?,?,?)";
 		
 		try {
 			connection = getConnection();
