@@ -2,6 +2,7 @@ package injung;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,6 +14,8 @@ import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -82,9 +85,12 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
     private JButton btnEdit;
     private JButton btnDelete;
     
+    //다이얼로그
+    private JDialog dialog;
+    private int select;
     
-    public TeamRecordPanel() {
-	
+    
+    public TeamRecordPanel(JFrame frame){	
     	setLayout(null);
     	
     	
@@ -270,6 +276,9 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
     	btnPane.add(btnDelete);
     	 	
     	add(btnPane);
+    	    	    
+    	//다이얼로그 객체
+    	dialog = new Dialog(frame,"사용자 다이얼로그",true,50,50);
     	
     	//리스너 설정
     	btnInsert.addActionListener(this);
@@ -279,33 +288,128 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
    	 	
 	}
 
+//	public void selectMessage() {
+//		if(select==1) lblMessage_Dia.setText(txtTeam.getText()+" 을 추가하시겠습니까?");
+//		if(select==2) lblMessage_Dia.setText(txtTeam.getText()+" 로(으로) 수정하시겠습니까?");
+//		if(select==3) lblMessage_Dia.setText(txtTeam.getText()+" 을 삭제하시겠습니까?");
+//	}
 
+    //Dialog 중첩 클래스
+    private class Dialog extends JDialog implements ActionListener{
+    	
+    	//Dialog 판넬,컴포넌트
+    	public JPanel pane_Dia;
+    	public JButton btnOk_Dia;
+    	public JButton btnCancel_Dia;
+    	public JLabel lblMessage_Dia; 
+    	
+    	//Dialog 생성자(프레임,제목,모달,위치x,위치y)
+    	public Dialog(JFrame frame,String title,boolean modal,int x,int y) {
+    	
+    		//다이얼로그 설정
+    		super(frame,title,modal);
+    		setLocation(x, y);
+    		setLayout(new GridLayout(2, 0));
+    		
+    		//다이얼로그 버튼
+    		pane_Dia = new JPanel();
+    		btnOk_Dia = new JButton("확인");
+    		btnCancel_Dia = new JButton("취소");
+    		pane_Dia.add(btnOk_Dia);
+    		pane_Dia.add(btnCancel_Dia);
+    		
+    		//메세지 내용
+    		lblMessage_Dia = new JLabel("");
+
+    		//기타
+    		add(lblMessage_Dia);
+    		add(pane_Dia);
+    		pack();
+    		
+    		btnOk_Dia.addActionListener(this);
+    		btnCancel_Dia.addActionListener(this);
+    		 		
+    	}
+
+    	//다이얼로그 버튼 이벤트
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			
+			if(e.getSource()==btnOk_Dia) {
+				//입력 버튼일 떄
+				if(select==1) {
+					//DTO
+					dto_Team = new TeamDto();
+					String arr[] = new String[2];
+					dto_Team.setTeamName(txtTeam.getText());
+					dto_Team.setTeamRole(txtRole.getText());
+					
+					arr = ((String)cbLeader.getSelectedItem()).split("_사번:"); 
+					dto_Team.setTeamLeaderName(arr[0]);
+					dto_Team.setTeamLeaderId(arr[1]);
+					
+					dao.insertTeam(dto_Team);
+					
+					//JTABLE
+					Vector<String> v = new Vector<>();
+					v.addElement(txtTeam.getText());
+					v.addElement(txtRole.getText());
+					v.addElement(arr[0]);
+					v.addElement(arr[1]);
+					tbDefault.addRow(v);
+										
+				}
+				//삭제 버튼일 때
+				if(select==2) {
+					//DTO
+					String teamName;
+					teamName = (String)tbTeamRecord.getValueAt(tbTeamRecord.getSelectedRow(), 0);
+					
+					dao.deleteTeam(teamName);
+					
+					txtTeam.setText("");
+					txtRole.setText("");
+					cbLeader.setSelectedIndex(0);
+					
+					//JTABLE
+					tbDefault.removeRow(tbTeamRecord.getSelectedRow());				
+				}
+				//수정 버튼일 때
+				if(select==3) {
+					//DTO
+					String prevTeam = (String) tbTeamRecord.getValueAt(tbTeamRecord.getSelectedRow(), 0);
+					System.out.println(prevTeam);
+					dto_Team = new TeamDto();
+					dto_Team.setTeamName(txtTeam.getText());
+					dto_Team.setTeamRole(txtRole.getText());
+					
+					String arr[] = new String[2];
+					arr = ((String)cbLeader.getSelectedItem()).split("_사번:"); 
+					dto_Team.setTeamLeaderName(arr[0]);
+					dto_Team.setTeamLeaderId(arr[1]);
+					
+					dao.updateTeam(dto_Team, prevTeam);
+					
+					//JTABLE
+					tbTeamRecord.setValueAt(txtTeam.getText(), tbTeamRecord.getSelectedRow(), 0);
+					tbTeamRecord.setValueAt(txtRole.getText(), tbTeamRecord.getSelectedRow(), 1);
+					tbTeamRecord.setValueAt(arr[0], tbTeamRecord.getSelectedRow(), 2);				
+				}
+			}
+
+			if(e.getSource()==btnCancel_Dia) {
+				dispose();
+			}
+		}   	 	
+    }
+          
+    //클릭 이벤트 처리
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
 		if(e.getSource()==btnInsert) {
-			//입력 버튼
-			//DTO
-			dto_Team = new TeamDto();
-			String arr[] = new String[2];
-			dto_Team.setTeamName(txtTeam.getText());
-			dto_Team.setTeamRole(txtRole.getText());
-			
-			arr = ((String)cbLeader.getSelectedItem()).split("_사번:"); 
-			dto_Team.setTeamLeaderName(arr[0]);
-			dto_Team.setTeamLeaderId(arr[1]);
-			
-			dao.insertTeam(dto_Team);
-			
-			//JTABLE
-			Vector<String> v = new Vector<>();
-			v.addElement(txtTeam.getText());
-			v.addElement(txtRole.getText());
-			v.addElement(arr[0]);
-			v.addElement(arr[1]);
-			tbDefault.addRow(v);
-						
-			
+			select = 1;
+    		setVisible(true);
 		}
 		if(e.getSource()==btnCancel) {
 			//취소 버튼
@@ -314,30 +418,12 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
 			cbLeader.setSelectedIndex(0);
 		}
 		if(e.getSource()==btnDelete) {
-			
-			//JTABLE
-			
+			select = 2;
+    		setVisible(true);
 		}
 		if(e.getSource()==btnEdit) {
-			//수정 버튼
-			//DTO
-			String prevTeam = (String) tbTeamRecord.getValueAt(tbTeamRecord.getSelectedRow(), 0);
-			System.out.println(prevTeam);
-			dto_Team = new TeamDto();
-			dto_Team.setTeamName(txtTeam.getText());
-			dto_Team.setTeamRole(txtRole.getText());
-			
-			String arr[] = new String[2];
-			arr = ((String)cbLeader.getSelectedItem()).split("_사번:"); 
-			dto_Team.setTeamLeaderName(arr[0]);
-			dto_Team.setTeamLeaderId(arr[1]);
-			
-			dao.updateTeam(dto_Team, prevTeam);
-			
-			//JTABLE
-			tbTeamRecord.setValueAt(txtTeam.getText(), tbTeamRecord.getSelectedRow(), 0);
-			tbTeamRecord.setValueAt(txtRole.getText(), tbTeamRecord.getSelectedRow(), 1);
-			tbTeamRecord.setValueAt(arr[0], tbTeamRecord.getSelectedRow(), 2);				
+			select = 3;
+    		setVisible(true);
 		}
 	}
 
@@ -360,3 +446,6 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
 	@Override
 	public void mouseExited(MouseEvent e) {}
 }
+
+
+
