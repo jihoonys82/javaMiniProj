@@ -15,14 +15,8 @@ import injung.model.InJungDao;
 
 /*
  * 작성 일자 : 2018.07.01
- * 수정 일자 : 2018.07.05
- * 	- 테이블 셀(내용) 수정 방지
- * 수정 일자 : 2018.07.09
- *  - 상속 : JFram → JPanel
- * 수정 일자 : 2018.07.10
- *  - 패널 추가, 레이아웃 변경
- * 수정 일자 : 2018.07.13
- *  - DAO, DTO 추가
+ * 수정 일자 : 2018.07.14
+ *  - 컬럼 높이 수정
  * 
  * 작성자 : 권미현
  * 
@@ -88,7 +82,7 @@ public class WholeView extends JPanel{
 		for(int i = 0; i < AttributeStr.length; i++) {
 			tableAttribute.add(AttributeStr[i]);
 		}
-		System.out.println(tableAttribute);
+//		System.out.println(tableAttribute);
 		// --------------
 
 		
@@ -117,7 +111,7 @@ public class WholeView extends JPanel{
 			vDto.add(list.getWorkPhone());	
 			
 			tableModel.addRow(vDto);
-			System.out.println(vDto);
+//			System.out.println(vDto);
 			
 		}
 		
@@ -134,6 +128,7 @@ public class WholeView extends JPanel{
 		tableView.getColumnModel().getColumn(3).setPreferredWidth(150);
 		tableView.getColumnModel().getColumn(4).setPreferredWidth(300);
 		tableView.getColumnModel().getColumn(5).setPreferredWidth(200);
+		tableView.setRowHeight(30);
 		
 		
 //		tableView.setSize(900, 450);	// 변경X

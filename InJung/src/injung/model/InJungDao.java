@@ -17,11 +17,10 @@ import java.util.Random;
  */
 public class InJungDao {
 	
-	public static final int INSERT_DATA_SUCCESS = 0;
-	public static final int INSERT_DATA_FAILED  = 1;
-	public static final int DELETE_DATA_SUCCESS = 0;
-	public static final int DELETE_DATA_FAILED  = 1;
-	
+	public static final int INSERT_DATA_SUCCESS = 1;
+	public static final int INSERT_DATA_FAILED  = 0;
+	public static final int DELETE_DATA_SUCCESS = 1;
+	public static final int DELETE_DATA_FAILED  = 0;
 	
 	private static InJungDao instance = new InJungDao();
 	
@@ -541,7 +540,7 @@ public class InJungDao {
 		
 		Connection connection = null;
 		PreparedStatement pstmt = null;
-		String query = "DELETE tem WHERE teamname = ?";
+		String query = "DELETE team WHERE teamname = ?";
 		
 		try {
 			connection = getConnection();
@@ -640,7 +639,7 @@ public class InJungDao {
 	 * @return results code -1: failed, 1: success 
 	 */
 	public int setNewPassword (int empId, String newPw) {
-		int results = -1 ; 
+		int results = INSERT_DATA_FAILED ; 
 		Connection connection = null;
 		PreparedStatement pstmt = null;
 		String query = "update employee set password = ? where employeeID=?";
@@ -652,7 +651,7 @@ public class InJungDao {
 			pstmt.setInt(2, empId);
 			pstmt.executeUpdate();
 		
-			results = 1;	
+			results = INSERT_DATA_SUCCESS;	
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

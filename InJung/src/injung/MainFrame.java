@@ -9,22 +9,27 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 /* 
- * 수정일자 : 2018.07.12
+ * 수정일자 : 2018.07.14
  * 
- * 수정자 : 권미현, 송주현
+ * 수정자 : 권미현
  * 
- *  - 로그인/로그아웃 : LoginPanel 에서 ID값 받아오기
+ *  - '내 정보 보기' 메뉴 아이템 추가 및 기억키, 가속키 추가
+ *  - '내 정보 보기' 기능 추가
+ *  - 로그인/로그아웃 상세 기능 추가 (로그인 고정, 로그아웃 구현)
+ *  
  */
 
 public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 상속
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 7649255430561976296L;
+	
+	// Login 
+	private static int id = 0; // 아이디 받아올 값
+	private static boolean login = false; // 로그인 체크
 
 
 	//루트 컨테이너 구성에 필요한 변수
@@ -49,6 +54,7 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 	private JMenuItem record_NewTeamManage;
 	//메뉴바 - View
 	private JMenu view;
+	private JMenuItem view_MyView;
 	private JMenuItem view_3View;
 	private JMenuItem view_PhotoView;
 	private JMenuItem view_WholeView;
@@ -133,22 +139,26 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 		////////////////////
 		
 		menuBar.add(record);
+//		record_NewEmployee.setEnabled(false);
 		
 		
 		//View 메뉴
 		view = new JMenu("View");
 		
+		view_MyView = new JMenuItem("내 정보 보기(1)");
 		view_3View = new JMenuItem("3명 보기(3)");
 		view_PhotoView = new JMenuItem("사진 보기(P)");
 		view_WholeView = new JMenuItem("전체리스트 보기(W)");
 		view_TeamView = new JMenuItem("팀별 보기(T)");
 	    
+		view.add(view_MyView);
 		view.add(view_3View);
 		view.add(view_PhotoView);
 		view.add(view_WholeView);
 		view.add(view_TeamView);
 		
 		// ActionListener //
+		view_MyView.addActionListener(this);
 		view_3View.addActionListener(this);
 		view_PhotoView.addActionListener(this);
 		view_WholeView.addActionListener(this);
@@ -156,6 +166,7 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 		////////////////////
 		
 		menuBar.add(view);
+		view_MyView.setEnabled(false);
 		
 		
 		// Calendar 메뉴
@@ -214,6 +225,7 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 		record_NewEmployee.setMnemonic(KeyEvent.VK_N);
 		record_NewTeamManage.setMnemonic(KeyEvent.VK_M);
 				
+		view_MyView.setMnemonic(KeyEvent.VK_1);
 		view_3View.setMnemonic(KeyEvent.VK_3);
 		view_PhotoView.setMnemonic(KeyEvent.VK_P);
 		view_WholeView.setMnemonic(KeyEvent.VK_W);
@@ -239,6 +251,7 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 		record_NewEmployee.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.ALT_MASK));
 		record_NewTeamManage.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, KeyEvent.ALT_MASK));
 				
+		view_MyView.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1, KeyEvent.ALT_MASK));
 		view_3View.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_3, KeyEvent.ALT_MASK));
 		view_PhotoView.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, KeyEvent.ALT_MASK));
 		view_WholeView.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, KeyEvent.ALT_MASK));
@@ -260,6 +273,7 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 		
 	}
 	
+	
 	// JMenuItem 동작 설정
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -269,24 +283,47 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 		if(e.getSource() == file_LogInOut) {
 //			System.out.println("로그인/로그아웃 누름");
 
-			LoginPanel logPan ;
-			logPan = new LoginPanel(this,"Login Dialog",true);
-			logPan.setVisible(true);
-			
-			int id = logPan.getTxtEmployeeId(); // LoginPanel에서 받아온 ID 값
+			if(login == false) {
+				LoginPanel logPan ;
+				logPan = new LoginPanel(this,"Login Dialog",true);
+				logPan.setVisible(true);
 
-			int logckeck = logPan.isLoginCheck(id);
-			if(logckeck==LoginPanel.LOGIN_SUCCESSED) {
+				id = logPan.getTxtEmployeeId(); // LoginPanel에서 받아온 ID 값
 
-				root.removeAll();
+				int logckeck = logPan.isLoginCheck(id);
+				if(logckeck==LoginPanel.LOGIN_SUCCESSED) {
+
+					root.removeAll();
+
+					root.add(new EmployeeInfoPanel(id));
+					setTitle("내 정보");
+
+					root.validate(); // 컴포넌트 검증 (메모리 상태 확인) - 메모리 확실하게
+					root.repaint(); // 다시 그리기
+
+					view_MyView.setEnabled(true); // 내 정보 보기 MenuItem 활성화
+					login = true;
+					
+				}
 				
-				root.add(new EmployeeInfoPanel(id));
-				setTitle("내 정보");
+			} else if (login == true) {
+				
+				int logOut = logOut();
+				
+				if (logOut == 0) {
+					root.removeAll();
 
-				root.validate(); // 컴포넌트 검증 (메모리 상태 확인) - 메모리 확실하게
-				root.repaint(); // 다시 그리기
+					view_MyView.setEnabled(false);
+					login = false;
+
+					root.validate(); // 컴포넌트 검증 (메모리 상태 확인) - 메모리 확실하게
+					root.repaint(); // 다시 그리기
+				} else if (logOut == 1) {
+					
+				}
+				
 			}
-
+//			System.out.println(login); // 로그인 확인
 		} 
 		// 가져오기
 		else if (e.getSource() == file_Import){
@@ -320,7 +357,7 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 
 		// Record 메뉴 이벤트
 		// 신규등록
-		else if (e.getSource() == record_NewEmployee) {
+		if (e.getSource() == record_NewEmployee) {
 			root.removeAll();
 			
 			root.add(new EditEmployeePanel()); // 컨테이너 넣기
@@ -342,6 +379,16 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 		}
 
 		// View 메뉴 이벤트
+		// 내 정보 보기
+		if (e.getSource() == view_MyView) {
+			root.removeAll();
+			
+			root.add(new EmployeeInfoPanel(id)); // 컨테이너 넣기
+			setTitle("내 정보 보기");
+			
+			root.validate(); // 컴포넌트 검증 (메모리 상태 확인) - 메모리 확실하게
+			root.repaint(); // 다시 그리기
+		}
 		// 3명 보기
 		else if (e.getSource() == view_3View) {
 			root.removeAll();
@@ -385,7 +432,7 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 
 		// Calendar 메뉴 이벤트
 		// 개인 일정보기
-		else if (e.getSource() == calendar_PersonView) {
+		if (e.getSource() == calendar_PersonView) {
 			root.removeAll();
 			
 //			root.add(comp); // 컨테이너 넣기
@@ -417,7 +464,7 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 
 		// Help 메뉴 이벤트
 		// 퀴즈!
-		else if (e.getSource() == help_Quiz) {
+		if (e.getSource() == help_Quiz) {
 			root.removeAll();
 			
 			root.add(new QuizPanel()); // 컨테이너 넣기
@@ -458,6 +505,32 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 		}
 
 	} // actionPerformed end
+	
+	
+	// 로그인 후 로그아웃 시도할시 나타날 Dialog
+	private int logOut() {
+		
+		Object[] options = {"확인", "취소"};
+ 		int yesNo = JOptionPane.showOptionDialog(
+				root, 
+				"현재 로그인 상태입니다. 로그아웃 하시겠습니까?", 
+				"",
+				JOptionPane.YES_NO_OPTION,
+				JOptionPane.QUESTION_MESSAGE,
+				null, 
+				options,
+				options[0]);
+ 		
+ 		if (yesNo == 0) {
+ 			JOptionPane.showMessageDialog(root,
+ 					"로그아웃 되었습니다.",
+ 					"",
+ 					JOptionPane.INFORMATION_MESSAGE);
+ 		}
+ 		
+ 		return yesNo;
+ 		
+	}
 	
 	public static void main(String[] args) {
 		new MainFrame();
