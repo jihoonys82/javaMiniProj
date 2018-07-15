@@ -9,7 +9,6 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -20,7 +19,7 @@ import injung.model.InJungDao;
 /*
  * 작성 일자 : 2018.07.05 
  * 수정 일자 : 2018.07.08
- * 	- 로그인 성공 메시지 뜬 후, 확인 누를시 dialog 종료
+ * 
  * 
  * 작성자 : 송주현 
  * 수정자 : 권미현
@@ -43,9 +42,6 @@ class LoginPanel extends JDialog implements ActionListener, KeyListener {
 	
 	public static final int LOGIN_SUCCESSED = 0;
 	public static final int LOGIN_FAILED = 1;
-	
-	
-//	private boolean bLoginCheck;
 	
 	public LoginPanel(JFrame frame, String title, boolean modal) {
 		super(frame,title,true);
@@ -96,11 +92,8 @@ class LoginPanel extends JDialog implements ActionListener, KeyListener {
 	}
 	
 
-
-
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		
+	public void actionPerformed(ActionEvent e) {	
 		if (e.getSource().equals(btnLogin)) {
 			String strId = txtEmployeeId.getText();
 			int toIntId = Integer.parseInt(strId); 
@@ -113,32 +106,19 @@ class LoginPanel extends JDialog implements ActionListener, KeyListener {
 		   findIddialog.setLocation(470, 300);
 		   findIddialog.setSize(500,300);
 		   findIddialog.setVisible(true);
-		   
-		} 
-		
-	}
-		
-		
-	
-	
-	// for문 
+	   
+		} 		
+	}		
 	
 	public int isLoginCheck(int empId) {
 		
 		eDto = dao.getEmployee(empId);	
 		int login_result = LOGIN_FAILED;
 		String strPW = String.valueOf(txtPw.getPassword());	// 패스워드필드에서 가져온 값 string에 담기 
-//		String str = new String(txtPw.getPassword());
 		
 		if ( (txtEmployeeId.getText().equals(Integer.toString(eDto.getEmployeeId()))) 
 				&& (strPW.equals(eDto.getPassword()))){		//  1. 입력 사번과 DB사번이 같고, 입력 패스워드와 DB 패스워드가 같다면	
-			
-//				System.out.println("DB Id: " + eDto.getEmployeeId());			// DB걊 확인 
-//				System.out.println("DB pw: "+ eDto.getPassword());
-//				
-//				System.out.println("id: " + txtEmployeeId.getText().toString());
-//				System.out.println("pw: "+ str);
-			
+		
 				login_result = LOGIN_SUCCESSED;		// 로그인 성공 		
 				dispose();							// 로그인창 종료 
 				
@@ -147,21 +127,7 @@ class LoginPanel extends JDialog implements ActionListener, KeyListener {
 			
 			lblWarn.setText("<html> 로그인 정보가 일치하지 않습니다 <br/> 다시 입력해주세요 </html>");		// 경고레이블 출력 
 			
-			for(int i = 0; i<3; i++) {	// for문을 통해 사번과 패스워드 입력을 3번 받고 
-//				System.out.println(i + "번 반복중");
-				
-				if((txtEmployeeId.getText().equals(Integer.toString(eDto.getEmployeeId()))) 
-						&& (strPW.equals(eDto.getPassword()))) {		// 2-1. 3번 안에 입력 사번과 DB사번이 같고, 입력 패스워드와 DB패스워드가 같다면
-						login_result = LOGIN_SUCCESSED;		// 로그인 성공 
-						break;								// for문 종료 
-						
-				} else if  ( !(txtEmployeeId.getText().equals(Integer.toString(eDto.getEmployeeId()))) ||
-						!(strPW.equals(eDto.getPassword()))) {	// 2-2. 3번 이상 입력 사번과 DB 사번이 같지 않거나, 입력 패스워드와 DB패스워드가 같지 않다면 
-						JOptionPane.showMessageDialog(null, "<html> 로그인 정보가 일치하지 않습니다 <br/> 패스워드 찾기 버튼을 눌러주세요 </html>");	// 패스워드찾기 버튼 권유 다이어로그 출력 
-				}	// 작은 if문 끝 				
-			}	// for문 끝 
-			
-		}	// 큰 if문 끝 
+		}	//  if문 끝 
 			return login_result;	// 로그인 성공 결과 리턴 
 	}	// isLoginCheck 메소드  
 	
@@ -169,11 +135,6 @@ class LoginPanel extends JDialog implements ActionListener, KeyListener {
 	public int getTxtEmployeeId() {		// MainFram에 넘길 ID값
 		int id = Integer.parseInt(txtEmployeeId.getText());
 		return id;
-	}
-
-	
-	@Override
-	public void keyTyped(KeyEvent e) {
 	}
 
 	
@@ -186,11 +147,11 @@ class LoginPanel extends JDialog implements ActionListener, KeyListener {
 			isLoginCheck(toIntId);	
 		}	
 	}
-
 	
 	@Override
-	public void keyReleased(KeyEvent e) {
-	}
+	public void keyTyped(KeyEvent e) { }
+	@Override
+	public void keyReleased(KeyEvent e) { }
 
  }
 	
