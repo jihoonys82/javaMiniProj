@@ -42,15 +42,6 @@ public class FileReceiver extends Thread {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		} finally {
-//			try {
-//				if(dis!=null) dis.close();
-//				if(bis!=null) bis.close();
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-		}
+		} 
 	} // end of run() method 
-	
-	
 }

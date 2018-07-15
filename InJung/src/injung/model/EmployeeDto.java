@@ -116,4 +116,11 @@ public class EmployeeDto {
 		this.lostIdAnswer = lostIdAnswer;
 	}
 	
+	@Override
+	public String toString() {
+		return "Employee (ID:" + employeeId 
+				+", name:  " + name
+				+")";
+	}
+	
 }

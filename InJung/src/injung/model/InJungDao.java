@@ -83,9 +83,9 @@ public class InJungDao {
 			pstmt.setString(11, dto.getPhoto());
 			pstmt.setString(12, dto.getLostIdQuestion());
 			pstmt.setString(13, dto.getLostIdAnswer());
-			pstmt.executeUpdate();
+			results = pstmt.executeUpdate();
 			
-			results = INSERT_DATA_SUCCESS; 
+//			results = INSERT_DATA_SUCCESS; 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {

@@ -81,7 +81,7 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 		
 		
 		// TextFields
-		private JTextField txtEmployeeId 	= new JTextField();
+		private JTextField txtEmployeeId 	= new JTextField("");
 		private JPasswordField txtPassword  = new JPasswordField();
 		private JPasswordField txtPwConfirm = new JPasswordField();
 		private JTextField txtLostQuestion	= new JTextField();
@@ -478,9 +478,7 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 			if(e.getSource().equals(btnConfirm)) {
 				//reset txtWarning
 				txtWarning.setText("");
-				txtWarning.validate();
-				txtWarning.repaint();
-				
+
 				//Check PW
 				String strPw = String.valueOf(txtPassword.getPassword());
 				String strPwConfirm = String.valueOf(txtPwConfirm.getPassword());
@@ -518,8 +516,11 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 							eDto.setLocation(txtLocation.getText());
 							eDto.setLevel(cbLevel.getSelectedItem().toString());
 							eDto.setTeam(cbTeam.getSelectedItem().toString());
-
-							dao.updateEmployee(eDto);
+							
+							System.out.println(eDto);
+							
+							int result = dao.updateEmployee(eDto);
+							txtWarning.append((result==InJungDao.INSERT_DATA_SUCCESS)? "입력 성공" : "입력 실패");
 						}
 					}
 					
@@ -558,12 +559,7 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 							newEmpDto.setPhoto(lblPhoto.getText());
 							
 							int result = dao.insertEmployee(newEmpDto);
-							if(result==InJungDao.INSERT_DATA_SUCCESS) {
-								txtWarning.append("\nDB에 성공적으로 등록했습니다.");
-							} else {
-								txtWarning.append("\nDB에 등록 실패했습니다.");
-							}
-								
+							txtWarning.append((result==InJungDao.INSERT_DATA_SUCCESS)? "입력 성공" : "입력 실패");	
 						}
 					}
 				}
@@ -618,7 +614,7 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 				valid++;
 			}
 			if(txtName.getText().length()<3 || txtName.getText().length()>20) {
-				txtWarning.append("\n***이름이 너무 짧거나 깁니다. \n2~10자 내로 입력하세요.");
+				txtWarning.append("\n***이름이 너무 짧거나 깁니다. \n   2~10자 내로 입력하세요.");
 				valid++;
 			}
 			if(txtPassword.getPassword().length<6) {

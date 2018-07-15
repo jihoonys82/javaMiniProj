@@ -32,12 +32,14 @@ public class FileServerCli {
 				System.out.println("Waiting for Client...");
 				sock = serv.accept();
 				
-				if(bis==null)bis = new BufferedInputStream(sock.getInputStream());
+				if(bis==null) bis = new BufferedInputStream(sock.getInputStream());
 				if(dis==null) dis = new DataInputStream(bis);
 				
-				System.out.println("Client("+sock.getInetAddress().getHostAddress()+ ") is connected.\n");
+				System.out.println("Client("+sock.getInetAddress().getHostAddress()+ ") is connected.");
 				
 				//check it is request for sending or receiving file.
+				// when receive "Send" : FileReceiver call
+				// when receive "Request" : FileSender call 
 				if(dis.readUTF().equals("Send")) {
 					FileReceiver receiver = new FileReceiver(bis, dis);
 					receiver.start();
