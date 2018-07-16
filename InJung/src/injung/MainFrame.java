@@ -467,8 +467,13 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 		// 내보내기
 		else if (e.getSource() == file_Export) {
 			root.removeAll();
-//			root.add(comp); // 컨테이너 넣기
+			
+			ExportDialog ex = new ExportDialog();
+			ex.setVisible(true);
+			
+			root.add(new ExportDialog()); // 컨테이너 넣기
 			setTitle("내보내기");
+			
 			root.validate(); // 컴포넌트 검증 (메모리 상태 확인) - 메모리 확실하게
 			root.repaint(); // 다시 그리기
 		} 
