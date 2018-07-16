@@ -13,17 +13,17 @@ import java.util.Properties;
  */
 
 public class PropertiesLoad {
-	
-	public static Properties getProperties (String path) {
-		
+
+	public static Properties getProperties(String path) {
+
 		Properties pro = null;
 		FileInputStream fis = null;
-		
+
 		try {
-			pro = new Properties();				// properties 객체 생성 
-			fis = new FileInputStream(path);	// path를 인자로 받아 파일을 읽어옴
-			pro.load(fis);						// properties 에 load
-			
+			pro = new Properties(); // properties 객체 생성
+			fis = new FileInputStream(path); // path를 인자로 받아 파일을 읽어옴
+			pro.load(fis); // properties 에 load
+
 //			FileOutputStream fos = new FileOutputStream(path);
 //			pro.replace("id", "sadfsa");
 //			pro.store(fos, "comment");
@@ -33,18 +33,19 @@ public class PropertiesLoad {
 			e.printStackTrace();
 		} finally {
 			try {
-			if (fis!= null) fis.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
+				if (fis != null)
+					fis.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
 		}
 		return pro;
 	}
-	
-	public static Properties getProperties () {
+
+	public static Properties getProperties() {
 		Properties property = getProperties("./Outcomes/Jdbc.properties");
 		return property;
 	}
-		
+
 }

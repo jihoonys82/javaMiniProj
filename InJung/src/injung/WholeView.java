@@ -24,68 +24,65 @@ import injung.model.InJungDao;
  */
 
 @SuppressWarnings("serial")
-public class WholeView extends JPanel{
+public class WholeView extends JPanel {
 
 	// WholeView Panel
 	private JPanel wholePanel;
-	
+
 	// -- JTable 설정 ---
 	private JTable tableView; // 전체보기 Table
 	private DefaultTableModel tableModel; // 추가, 삭제를 용이하게 하기 위해 설정
 	// 기본 JTable 은 추가, 삭제가 안 됨
-	
+
 	private JScrollPane jScrollPane; // 컴포넌트 스크롤바
-	
+
 	// ---- 테이블 속성 -----
 	private Vector<String> tableAttribute;
-	private static final String[] AttributeStr = {"이름", "부서", "직급", "직책", "메일", "전화"};
+	private static final String[] AttributeStr = { "이름", "부서", "직급", "직책", "메일", "전화" };
 	// ------------------
-	
+
 	// --- DAO, DTO ---
 	private static InJungDao dao;
 	private ArrayList<EmployeeDto> listDto;
 	// ----------------
-	
+
 	// DTO에서 받아서 저장할 Vector
-	private Vector<String> vDto; 
-	
+	private Vector<String> vDto;
+
 	// 생성자
 	public WholeView() {
-		
-		setLayout(null);	// 레이아웃
-		
+
+		setLayout(null); // 레이아웃
+
 		// --- DAO, DTO 설정 ---
 		dao = InJungDao.getInstance();
 		listDto = new ArrayList<>();
 		listDto = dao.getAllEmployee();
 		// -------------------
-		
+
 		// --- 프레임 구성 작업 ---
 		initTablePanel(listDto); // 전체보기 리스트(테이블) 설정
 		// ------------------
-		
+
 	}
 
-	
 	private void initTablePanel(ArrayList<EmployeeDto> listDto) {
-		
+
 		wholePanel = new JPanel();
 		wholePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 20));
 		wholePanel.setBounds(0, 0, 1000, 600);
-		
+
 		////////////////////////////////////////////////////////////////
-		
-		
+
 		// --- 테이블 속성 ---
 		tableAttribute = new Vector<>();
-		
-		for(int i = 0; i < AttributeStr.length; i++) {
+
+		for (int i = 0; i < AttributeStr.length; i++) {
 			tableAttribute.add(AttributeStr[i]);
 		}
 //		System.out.println(tableAttribute);
 		// --------------
 
-		
 		// DefaultTableModel에 속성 넣기 (데이터 x)
 		tableModel = new DefaultTableModel(tableAttribute, 0) {
 
@@ -94,34 +91,32 @@ public class WholeView extends JPanel{
 				return false;
 			}
 		};
-		
+
 		tableView = new JTable(tableModel); // JTable에 DefaultTableModel 설정
-		
-		
+
 		// 테이블에 데이터 넣기(row)
-		for(EmployeeDto list : listDto) {
-			
+		for (EmployeeDto list : listDto) {
+
 			vDto = new Vector<>();
-			
+
 			vDto.add(list.getName());
 			vDto.add(list.getTeam());
 			vDto.add(list.getLevel());
 			vDto.add(list.getRole());
 			vDto.add(list.geteMail());
-			vDto.add(list.getWorkPhone());	
-			
+			vDto.add(list.getWorkPhone());
+
 			tableModel.addRow(vDto);
 //			System.out.println(vDto);
-			
+
 		}
-		
+
 //		for(int i = 0; i <50; i++) {
 //			String[] sam = {"홍길동", "관리부", "과장", "관리부과장", "aaa@naver.com", "000-0000-0000"};
 //			tableModel.addRow(sam);
 //		}
-		
-		
-		// 컬럼 사이즈 
+
+		// 컬럼 사이즈
 		tableView.getColumnModel().getColumn(0).setPreferredWidth(100);
 		tableView.getColumnModel().getColumn(1).setPreferredWidth(150);
 		tableView.getColumnModel().getColumn(2).setPreferredWidth(100);
@@ -129,19 +124,18 @@ public class WholeView extends JPanel{
 		tableView.getColumnModel().getColumn(4).setPreferredWidth(300);
 		tableView.getColumnModel().getColumn(5).setPreferredWidth(200);
 		tableView.setRowHeight(30);
-		
-		
+
 //		tableView.setSize(900, 450);	// 변경X
-		
+
 		jScrollPane = new JScrollPane(tableView);
-		
+
 //		jScrollPane.setSize(900, 450); // 변경X
 		jScrollPane.setPreferredSize(new Dimension(900, 450));
-		
+
 		wholePanel.add(jScrollPane); // wholeView Panel에 추가
-		
+
 		add(wholePanel); // wholeView Panel 추가
-		
+
 	}
-	
+
 }
