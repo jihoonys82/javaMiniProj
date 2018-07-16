@@ -81,7 +81,7 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 	private JLabel lblLocation = new JLabel("업무위치");
 
 	// TextFields
-	private JTextField txtEmployeeId = new JTextField("");
+	private JTextField txtEmployeeId = new JTextField("0");
 	private JPasswordField txtPassword = new JPasswordField();
 	private JPasswordField txtPwConfirm = new JPasswordField();
 	private JTextField txtLostQuestion = new JTextField();
@@ -445,9 +445,12 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 		if (photoFile.exists()) {
 			lblPhoto.setIcon(new ImageIcon("./Photo/" + eDto.getPhoto()));
 		} else {
-			// TODO: FileReceiver
+			FileReceiver request = new FileReceiver(photoFile, lblPhoto);
+			request.start();
 		}
 
+		validate();
+		repaint();
 	}
 
 	/**
@@ -484,12 +487,12 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 			String strPwConfirm = String.valueOf(txtPwConfirm.getPassword());
 			// 1. Check password for Update
 			// txtPassword==txtPasswordConfirm==eDto.getPassword
-			if (txtEmployeeId.getText() != "") {
+			if (!txtEmployeeId.getText().equals("0")) {
 				if (!strPw.equals(strPwConfirm) && !strPw.equals(eDto.getPassword())) {
 					JOptionPane.showMessageDialog(btnConfirm, "패스워드가 일치하지 않습니다.", "패스워드 확인", JOptionPane.ERROR_MESSAGE);
 				} else {
 					int valid = fieldValidation();
-					if (valid == 0 && txtEmployeeId.getText().trim() != "") {
+					if (valid == 0) {
 						// Upload photo(if it is changed)
 						if (lblPhoto.getText() != eDto.getPhoto()) {
 							eDto.setPhoto(lblPhoto.getText());
@@ -521,13 +524,15 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 
 			} else {
 				// 2. new user
+				System.out.println("new user");
 				if (!strPw.equals(strPwConfirm)) {
+					System.out.println("pw not matched");
 					JOptionPane.showMessageDialog(btnConfirm, "패스워드가 일치하지 않습니다.", "패스워드 확인", JOptionPane.ERROR_MESSAGE);
 				} else {
 					// field data validation
 					int valid = fieldValidation();
-
-					if (valid == 0 && txtEmployeeId.getText().trim() == "") {
+					System.out.println("validation :" + valid);
+					if (valid == 0) {
 						// Upload photo
 						FileSender sender = new FileSender(photoFile);
 						sender.start();
@@ -547,7 +552,7 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 						newEmpDto.setLevel(cbLevel.getSelectedItem().toString());
 						newEmpDto.setTeam(cbTeam.getSelectedItem().toString());
 						newEmpDto.setPhoto(lblPhoto.getText());
-
+						System.out.println("insert to db");
 						int result = dao.insertEmployee(newEmpDto);
 						txtWarning.append((result == InJungDao.INSERT_DATA_SUCCESS) ? "입력 성공" : "입력 실패");
 					}
@@ -600,7 +605,7 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 			txtWarning.append("\n***사진이 없습니다.");
 			valid++;
 		}
-		if (txtName.getText().length() < 3 || txtName.getText().length() > 20) {
+		if (txtName.getText().length() < 2 || txtName.getText().length() > 20) {
 			txtWarning.append("\n***이름이 너무 짧거나 깁니다. \n   2~10자 내로 입력하세요.");
 			valid++;
 		}

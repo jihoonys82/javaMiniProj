@@ -58,13 +58,10 @@ public class FileReceiver extends Thread {
 			bis = new BufferedInputStream(sock.getInputStream());
 			dis = new DataInputStream(bis);
 
-//			System.out.println("R1");
 			dos.writeUTF("Request"); // notice file request to server
 			dos.flush();
-//			System.out.println("R2");
 			dos.writeUTF(file.getName()); // request file
 			dos.flush();
-//			System.out.println("R3");
 			System.out.println("Request to server : " + file.getName());
 			Long bytes = Files.copy(dis, file.toPath());
 

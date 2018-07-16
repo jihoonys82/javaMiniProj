@@ -119,7 +119,6 @@ public class EmployeeInfoPanel extends JPanel implements ActionListener {
 		txtBirth.setText(dto.getBirth());
 
 		file = new File(dir, dto.getPhoto());
-		System.out.println("TEST file : " + file);
 		if (!file.exists()) {
 			FileReceiver request = new FileReceiver(file, lblPhoto);
 			request.start();

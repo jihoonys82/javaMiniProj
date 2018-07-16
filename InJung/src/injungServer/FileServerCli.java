@@ -36,9 +36,9 @@ public class FileServerCli {
 				System.out.println("Waiting for Client...");
 				sock = serv.accept();
 
-				if (bis == null)
+//				if (bis == null)
 					bis = new BufferedInputStream(sock.getInputStream());
-				if (dis == null)
+//				if (dis == null)
 					dis = new DataInputStream(bis);
 
 				System.out.println("Client(" + sock.getInetAddress().getHostAddress() + ") is connected.");
@@ -46,32 +46,23 @@ public class FileServerCli {
 				// check it is request for sending or receiving file.
 				// when receive "Send" : FileReceiver call
 				// when receive "Request" : FileSender call
-				System.out.println(1);
 				String r = dis.readUTF();
-				System.out.println(11);
-//				if(dis.readUTF().equals("Send")) {
+
 				if (r.equals("Send")) {
-					System.out.println(2);
 					System.out.println("File Receivng...");
 					FileReceiver receiver = new FileReceiver(dis);
 					receiver.start();
-//				} else if(dis.readUTF().equals("Request")) {
 				} else if (r.equals("Request")) {
-					System.out.println(3);
 					String requestedFile = dis.readUTF(); // receive file name for request.
 					System.out.println("File (" + requestedFile + ") Sending...");
 					if ((new File(dir, requestedFile).exists())) {
-						System.out.println(31);
 						FileSender sender = new FileSender(sock, requestedFile);
 						sender.start();
 					} else {
-						System.out.println(32);
 						System.out.println(requestedFile + " is not exists in server!");
 					}
 				}
-				System.out.println(4);
-				System.out.println("dddd : " + r);
-//				System.out.println(dis.readUTF());
+
 			} // end of while
 		} catch (IOException e) {
 			e.printStackTrace();

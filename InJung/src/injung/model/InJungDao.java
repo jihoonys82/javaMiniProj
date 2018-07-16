@@ -52,7 +52,8 @@ public class InJungDao {
 		PreparedStatement pstmt = null;
 		String query = "INSERT INTO employee("
 				+ " employeeId, employeeName, birthDate, team, employLevel, role, mobile, workPhone, email, location, password, photoPath, lostIdQuestion, lostIdAnswer) "
-				+ " VALUES (EMP_SEQ.NEXTVAL," + " ?," // 1. employeeName
+				+ " VALUES (EMP_SEQ.NEXTVAL," 
+				+ " ?," // 1. employeeName
 				+ " ?," // 2. birthDate
 				+ " ?," // 3. team
 				+ " ?," // 4. employLevel
@@ -85,6 +86,7 @@ public class InJungDao {
 			pstmt.setString(13, dto.getLostIdAnswer());
 			results = pstmt.executeUpdate();
 
+			System.out.println(results);
 //			results = INSERT_DATA_SUCCESS; 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -707,6 +709,11 @@ public class InJungDao {
 		return results;
 	}
 
+	/**
+	 * get Quiz data 
+	 * 
+	 * @return return 3 random employee DTOs
+	 */
 	public ArrayList<EmployeeDto> getQuizData() {
 		int tot = countEmployee();
 		int[] selectedIndex = new int[3];
