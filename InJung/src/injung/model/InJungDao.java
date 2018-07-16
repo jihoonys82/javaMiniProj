@@ -353,7 +353,7 @@ public class InJungDao {
 		Connection connection = null;
 		PreparedStatement pstmt = null;
 		ResultSet set = null;
-		String query = "select * from " + "(SELECT * FROM employee " + "WHERE teamName = ? AND employeeId > ? )"
+		String query = "select * from " + "(SELECT * FROM employee " + "WHERE team = ? AND employeeId > ? )"
 				+ "where rownum <= ?";
 		ArrayList<EmployeeDto> dtos = new ArrayList<>();
 		EmployeeDto dto = null;

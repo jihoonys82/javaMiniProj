@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Vector;
 
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -663,6 +664,17 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
  		
 	}
 	
+	
+	public static void redirect(JComponent comp, String dest, int param) {
+		comp.removeAll();
+		comp.validate();
+		comp.repaint();
+		
+		if(dest.equals("EmployeeInfoPanel")) {
+			new EmployeeInfoPanel(param);
+		}
+		
+	}
 	
 	public static void main(String[] args) {
 		new MainFrame();
