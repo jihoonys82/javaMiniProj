@@ -502,7 +502,7 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 		else if (e.getSource() == record_NewTeamManage) {
 			root.removeAll();
 			
-			root.add(new TeamRecordPanel(this)); // 컨테이너 넣기
+			root.add(new TeamRecordPanel()); // 컨테이너 넣기
 			setTitle("조직관리");
 			
 			root.validate(); // 컴포넌트 검증 (메모리 상태 확인) - 메모리 확실하게
