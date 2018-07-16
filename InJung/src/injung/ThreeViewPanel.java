@@ -11,7 +11,6 @@ import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -27,6 +26,16 @@ import injung.model.InJungDao;
 + * @author Changhwan Bae
 + *
 + */
+
+/*
+ * 수정 일자 : 2018.07.16
+ * 
+ * 수정자 : 권미현
+ * 
+ *  - JButton Action 기능 구현 ( 상세보기 가능 )
+ *  
+ */
+
  public class ThreeViewPanel extends JPanel implements ActionListener {
 	 
  	private static final long serialVersionUID = -1740434906725933696L;
@@ -314,11 +323,16 @@ import injung.model.InJungDao;
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource().equals(btnDetailView[0])) {
-			MainFrame.redirect(this, "EmployeeInfoPanel", dtos.get(0).getEmployeeId());
+			
+			MainFrame.redirect("EmployeeInfoPanel", dtos.get(0).getEmployeeId());
 			
 		} else if(e.getSource().equals(btnDetailView[1])) {
 			
+			MainFrame.redirect("EmployeeInfoPanel", dtos.get(1).getEmployeeId());
+			
 		} else if(e.getSource().equals(btnDetailView[2])) {
+			
+			MainFrame.redirect("EmployeeInfoPanel", dtos.get(2).getEmployeeId());
 		
 		} else if(e.getSource().equals(btnPrivView)) {
 			if(CountPage>1) {
