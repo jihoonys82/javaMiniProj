@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Vector;
 
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -37,6 +36,7 @@ import injung.model.InJungDao;
  *  - 이달의 생일 알림 기능 추가 : initTablePanel(ArrayList<EmployeeDto> birthDto) 메소드
  *  - 환경설정 연결 (PropertyPanel)
  *  - 이달의 생일 Label 추가
+ *  - Panel 간 연결(호출) 메소드 추가 : redirect(String dest, int param) 메소드
  *  
  */
 
@@ -57,22 +57,22 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 	// -------------------------------------------------------//
 
 	//루트 컨테이너 구성에 필요한 변수
-	private Container root; // 루트 컨테이너
+	private static Container root; // 루트 컨테이너
 	
 	//Table Panel
-	private JPanel tablePanel;
+	private static JPanel tablePanel;
 	
 	
 	//JTable 설정
-	private JTable birthTable; // 이달의 생일 Table
-	private DefaultTableModel tableModel;	// 추가, 삭제를 용이
+	private static JTable birthTable; // 이달의 생일 Table
+	private static DefaultTableModel tableModel;	// 추가, 삭제를 용이
 	//JTable - 속성
-	private Vector<String> tableAttribute;
+	private static Vector<String> tableAttribute;
 	private static final String[] AttributeStr = {"생일", "이름", "부서", "직급", "직책"};
 	//JTable - 스크롤바
-	private JScrollPane jScrollPane; // 컴포넌트 스크롤바
+	private static JScrollPane jScrollPane; // 컴포넌트 스크롤바
 	//JLabel - 라벨
-	private JLabel birthLabel;	// 이달의 생일 Label
+	private static JLabel birthLabel;	// 이달의 생일 Label
 	
 
 	//메뉴바 설정
@@ -111,10 +111,10 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 	
 	//DAO, DTO (생일)
 	private static InJungDao dao;
-	private ArrayList<EmployeeDto> birthDto;
+	private static ArrayList<EmployeeDto> birthDto;
 	
 	// DTO에서 받아서 저장할 Vector (생일)
-	private Vector<String> vDto; 
+	private static Vector<String> vDto; 
 	
 	
 	public MainFrame() {
@@ -327,7 +327,7 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 	}
 	
 	
-	public void initTablePanel(ArrayList<EmployeeDto> birthDto) {
+	public static void initTablePanel(ArrayList<EmployeeDto> birthDto) {
 		
 		tablePanel = new JPanel();
 		tablePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 80, 10));
@@ -665,15 +665,18 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 	}
 	
 	
-	public static void redirect(JComponent comp, String dest, int param) {
-		comp.removeAll();
-		comp.validate();
-		comp.repaint();
+	public static void redirect(String dest, int param) { // (연결할 panel 메시지, panel 에 받아온 id 값)
 		
-		if(dest.equals("EmployeeInfoPanel")) {
-			new EmployeeInfoPanel(param);
+		if(dest.equals("EmployeeInfoPanel") && param!=0) {
+			root.removeAll();
+			
+			root.add(new EmployeeInfoPanel(param));
+			initTablePanel(birthDto); // 이달의 생일
+			
+			root.validate();
+			root.repaint();
 		}
-		
+			
 	}
 	
 	public static void main(String[] args) {
