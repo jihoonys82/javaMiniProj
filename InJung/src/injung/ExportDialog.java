@@ -80,6 +80,7 @@ public class ExportDialog extends JDialog implements ActionListener {
 		rbCsv.setBounds(251, 67, 121, 23);
 		exportPanel.add(rbCsv);
 		
+		btnGroup = new ButtonGroup(); // 객체 생성 추가 : java.lang.NullPointerException
 		btnGroup.add(rbDat);
 		btnGroup.add(rbCsv);
 		

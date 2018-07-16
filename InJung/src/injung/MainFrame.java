@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -37,6 +38,8 @@ import injung.model.InJungDao;
  *  - 환경설정 연결 (PropertyPanel)
  *  - 이달의 생일 Label 추가
  *  - Panel 간 연결(호출) 메소드 추가 : redirect(String dest, int param) 메소드
+ *  - 내보내기 Dialog 연결
+ *  - MainFrame 모니터 화면 중앙에 배치하기
  *  
  */
 
@@ -121,7 +124,17 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 		
 		//메인 프레임 설정
 		setTitle("메인 프레임");
-		setBounds(300, 100, 1000, 650);
+		
+//		setBounds(300, 100, 1000, 650);
+		
+		setSize(1000, 650);
+		
+		//모니터 화면 중앙에 배치하기
+		Dimension frameSize = getSize(); // 프레임 사이즈
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize(); // 모니터 사이즈
+		setLocation((screenSize.width - frameSize.width)/2, 
+				(screenSize.height - frameSize.height)/2); // 화면 중앙
+		
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 		
@@ -469,10 +482,13 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 			root.removeAll();
 			
 			ExportDialog ex = new ExportDialog();
+			ex.setBounds(450, 250, 450, 300);
+			
+//			ex.setSize(450, 300);
+			
 			ex.setVisible(true);
 			
-			root.add(new ExportDialog()); // 컨테이너 넣기
-			setTitle("내보내기");
+//			setTitle("내보내기");
 			
 			root.validate(); // 컴포넌트 검증 (메모리 상태 확인) - 메모리 확실하게
 			root.repaint(); // 다시 그리기
