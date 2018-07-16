@@ -3,12 +3,15 @@ package injung;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileOutputStream;
 import java.util.Properties;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
 
 /*
  * 07.15
@@ -22,126 +25,210 @@ public class PropertyPanel extends JPanel implements ActionListener {
 
 	private JPanel routePane;
 	private JPanel btnPane;
-
+	
 	private JLabel lblPhotoFolder;
 	private JLabel lblDbRoute;
 	private JLabel lblUrl;
 	private JLabel lblDb;
 	private JLabel lblPw;
 	private JLabel lblId;
-
+	private JLabel lblServer;
+	private JLabel lblPort;
+	private JLabel lblHost;
+	
 	private JTextField txtPhotoFolder;
 	private JTextField txtUrl;
 	private JTextField txtId;
 	private JTextField txtPw;
-	private JTextField txtDb;
-
+	private JTextField txtLoc;
+	private JTextField txtPort;
+	private JTextField txtHost;
+	
 	private JButton btnOk;
 	private JButton btnCancel;
-
+	
+	private static final int SUCCESSED = 0;
+	private static final int FAILED = 1;
+	
 	PropertiesLoad proLoad = new PropertiesLoad();
-	Properties property = proLoad
-			.getProperties("C:\\Users\\지현화\\git\\새 폴더\\.project\\InJung\\Outcomes\\Jdbc.properties"); // path를 경로로
-																										// properties 호출
-//	Properties property = proLoad.getProperties("./Outcomes/Jdbc.properties");	// path를 경로로 properties 호출
-//	private Properties prop = PropertiesLoad.getProperties();
-
-	String strPw = property.getProperty("PW"); // String으로 Property안의 경로들 받아오기
-	String strId = property.getProperty("ID");
-	String strUrl = property.getProperty("URL");
-	String strDriver = property.getProperty("DRIVER");
-	String strphoto = property.getProperty("PHOTOPATH");
-
+	private Properties prop = PropertiesLoad.getProperties();
+	
+	PropertiesStore proStore = new PropertiesStore();
+	private Properties pro = PropertiesStore.setProperties();
+	
+	String strPw = prop.getProperty("PW");	// String으로  Property안의 경로들 받아오기 
+	String strId = prop.getProperty("ID");
+	String strUrl = prop.getProperty("URL");
+	String strPhoto = prop.getProperty("PHOTOPATH");
+	String strPort = prop.getProperty("PORT");
+	String strHost = prop.getProperty("HOST");
+	String strLocation = prop.getProperty("LOCATION");
+	
 	public PropertyPanel() {
-		setBounds(0, 0, 900, 500);
+		setBounds(0,0,900,500);
 		setLayout(null);
 
-		routePane = new JPanel(); // 경로 Panel
-		routePane.setBounds(0, 0, 884, 415);
+		routePane = new JPanel();	// 경로 Panel 
+		routePane.setBounds(-41, 10, 884, 415);
 		routePane.setLayout(null);
-
-		lblPhotoFolder = new JLabel("사진 폴더"); // 사진 폴더 경로
-		lblPhotoFolder.setBounds(203, 89, 99, 33);
-
-		txtPhotoFolder = new JTextField();
-		txtPhotoFolder.setBounds(413, 95, 286, 27);
+		
+		lblPhotoFolder = new JLabel("사진 폴더");	// 사진 폴더 경로 
+		lblPhotoFolder.setBounds(203, 122, 99, 33);
+				
+		lblDbRoute = new JLabel("DB 경로");	// DB 경로 
+		lblDbRoute.setBounds(203, 181, 99, 33);
+		
+		lblUrl = new JLabel("URL");
+		lblUrl.setBounds(314, 190, 57, 15);
+		
+		lblId = new JLabel("ID");
+		lblId.setBounds(314, 244, 57, 15);
+		
+		lblPw = new JLabel("PW");
+		lblPw.setBounds(314, 298, 57, 15);
+		
+		lblDb = new JLabel("기본저장소");
+		lblDb.setBounds(292, 352, 79, 15);
+		
+		lblServer = new JLabel("서버");
+		lblServer.setBounds(203, 25, 99, 33);
+		
+		lblHost = new JLabel("호스트");
+		lblHost.setBounds(315, 34, 57, 15);
+		
+		lblPort = new JLabel("접속포트");
+		lblPort.setBounds(315, 81, 57, 15);
+		
+		txtPhotoFolder = new JTextField();	
+		txtPhotoFolder.setBounds(413, 125, 286, 27);
 		txtPhotoFolder.setColumns(10);
-		txtPhotoFolder.setText(strphoto); // 사진 폴더 경로 받아오기
-		txtPhotoFolder.setEditable(false);
-
-		lblDbRoute = new JLabel("DB 경로"); // DB 경로
-		lblDbRoute.setBounds(203, 148, 99, 33);
-
-		txtUrl = new JTextField();
+		txtPhotoFolder.setText(strPhoto);	// 사진 폴더 경로 받아오기 
+		txtPhotoFolder.setEditable(true);
+		
+		txtUrl = new JTextField();	
 		txtUrl.setColumns(10);
-		txtUrl.setBounds(413, 151, 286, 27);
-		txtUrl.setText(strUrl); // URL 경로 받아오기
-		txtUrl.setEditable(false);
-
+		txtUrl.setBounds(413, 184, 286, 27);
+		txtUrl.setText(strUrl);	// URL 경로 받아오기 
+		txtUrl.setEditable(true);
+		
 		txtId = new JTextField();
 		txtId.setColumns(10);
-		txtId.setBounds(413, 205, 286, 27);
-		txtId.setText(strId); // ID 받아오기
-		txtId.setEditable(false);
-
+		txtId.setBounds(413, 238, 286, 27);
+		txtId.setText(strId); // ID 받아오기 
+		txtId.setEditable(true);
+		
 		txtPw = new JTextField();
 		txtPw.setColumns(10);
-		txtPw.setBounds(413, 259, 286, 27);
-		txtPw.setText(strPw); // 패스워드 받아오기
-		txtPw.setEditable(false);
+		txtPw.setBounds(413, 292, 286, 27);
+		txtPw.setText(strPw); // 패스워드 받아오기 
+		txtPw.setEditable(true);
 
-		txtDb = new JTextField();
-		txtDb.setColumns(10);
-		txtDb.setBounds(413, 316, 286, 27);
-		txtDb.setText(strDriver); // Driver 경로 받아오기
-		txtDb.setEditable(false);
+		txtLoc = new JTextField();
+		txtLoc.setColumns(10);
+		txtLoc.setBounds(413, 349, 286, 27);
+		txtLoc.setText(strLocation);	// 저장소 경로 받아오기 
+		txtLoc.setEditable(true);
+		
+		txtPort = new JTextField();
+		txtPort.setColumns(10);
+		txtPort.setBounds(414, 78, 286, 27);
+		txtPort.setText(strPort);
+		txtPort.setEditable(true);
+		
+		txtHost = new JTextField();
+		txtHost.setColumns(10);
+		txtHost.setBounds(414, 34, 286, 27);
+		txtHost.setText(strHost);
+		txtHost.setEditable(true);
 
-		lblUrl = new JLabel("URL");
-		lblUrl.setBounds(314, 157, 57, 15);
-
-		lblId = new JLabel("ID");
-		lblId.setBounds(314, 211, 57, 15);
-
-		lblPw = new JLabel("PW");
-		lblPw.setBounds(314, 265, 57, 15);
-
-		lblDb = new JLabel("DB");
-		lblDb.setBounds(314, 319, 57, 15);
-
-		btnPane = new JPanel(); // 버튼 Panel
+		
+		btnPane = new JPanel();	// 버튼 Panel 
 		btnPane.setBounds(0, 443, 884, 57);
 		btnPane.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-
-		btnOk = new JButton("확인");
+		
+		btnOk = new JButton("확인");	
+		btnOk.addActionListener(this);
 		btnCancel = new JButton("취소");
-
+		btnCancel.addActionListener(this);
+		
 		btnPane.add(btnOk);
 		btnPane.add(btnCancel);
-
+		
 		routePane.add(lblDb);
 		routePane.add(lblPw);
 		routePane.add(lblId);
 		routePane.add(lblUrl);
-		routePane.add(txtDb);
+		routePane.add(txtHost);
+		routePane.add(txtPort);
+		routePane.add(txtLoc);
 		routePane.add(txtPw);
 		routePane.add(txtId);
 		routePane.add(txtUrl);
 		routePane.add(txtPhotoFolder);
 		routePane.add(lblDbRoute);
 		routePane.add(lblPhotoFolder);
+		routePane.add(lblServer);
+		routePane.add(lblHost);
+		routePane.add(lblPort);
 
 		add(btnPane);
 		add(routePane);
-
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) { // TODO 액션리스너 구현
+	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(btnCancel)) {
-
+			
+			removeAll();
+			validate(); 
+			repaint();
+		
 		} else if (e.getSource().equals(btnOk)) {
-
+			checkProperty();
+//			pro.replace("PW", txtPw.getText());
+			
+//			System.out.println(txtPw.getText());
+//			System.out.println(prop.getProperty("PW"));
+			
+			if (checkProperty() == SUCCESSED) {
+			JOptionPane.showMessageDialog(null, "설정이 저장되었습니다");
+			}
+			
 		}
 	}
-
+	
+	
+	public int checkProperty() {	
+		
+		int result = FAILED;
+		String strId = txtId.getText();
+		String strPw = txtPw.getText();
+		
+//		pro.replace("ID", strId);
+//		pro.replace("PW", txtPw.getText());
+//		pro.replace("PORT", txtPort.getText());
+//		pro.replace("HOST", txtHost.getText());
+//		pro.replace("LOCATION", txtLoc.getText());
+//		pro.replace("URL", txtUrl.getText());
+//		pro.replace("PHOTOPATH", txtPhotoFolder.getText());
+	
+		
+		pro.setProperty("ID",strId);	
+		pro.setProperty("PW", txtPw.getText());
+		pro.setProperty("PORT", txtPort.getText());
+		pro.setProperty("HOST", txtHost.getText());
+		pro.setProperty("LOCATION", txtLoc.getText());
+		pro.setProperty("URL", txtUrl.getText());
+		pro.setProperty("PHOTOPATH", txtPhotoFolder.getText());
+		
+//		System.out.println(strId);
+//		System.out.println(pro.getProperty("PW"));
+		
+//		pro.store(fos, "EDIT");
+//		FileOutputStream fos = new FileOutputStream(path, false);
+		result = SUCCESSED;
+		
+		return result;	
+	}
+	
 }
