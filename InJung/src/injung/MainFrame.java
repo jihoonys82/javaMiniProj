@@ -33,6 +33,7 @@ import injung.model.InJungDao;
  * 
  *  - MainFrame Y축 조절(600 > 650)
  *  - 이달의 생일 알림 기능 추가 : initTablePanel(ArrayList<EmployeeDto> birthDto) 메소드
+ *  - 환경설정 연결 (PropertyPanel)
  *  
  */
 
@@ -45,7 +46,9 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 	private static boolean login = false; // 로그인 체크
 	
 	// Date
+	@SuppressWarnings("unused")
 	private static Date month;
+	@SuppressWarnings("unused")
 	private static SimpleDateFormat dateFormat; // 현재 달만 출력
 
 	// -------------------------------------------------------//
@@ -338,6 +341,8 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 		// DefaultTableModel에 속성 넣기 (데이터 x)
 		tableModel = new DefaultTableModel(tableAttribute, 0) {
 
+			private static final long serialVersionUID = 7171482468923032071L;
+
 			@Override
 			public boolean isCellEditable(int row, int column) { // 테이블 내용 수정 불가로 만들기
 				return false;
@@ -383,11 +388,9 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 	
 	
 	private void initRootContainer() {	
+		
 		root = getContentPane();
 		
-		//JTable 설정
-		// 이달의 생일 Table 설정
-		initTablePanel(birthDto);
 	}
 	
 	
@@ -465,8 +468,10 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 		// 환경설정
 		else if (e.getSource() == file_Config) {
 			root.removeAll();
-//			root.add(comp); // 컨테이너 넣기
+			
+			root.add(new PropertyPanel()); // 컨테이너 넣기
 			setTitle("환경설정");
+			
 			root.validate(); // 컴포넌트 검증 (메모리 상태 확인) - 메모리 확실하게
 			root.repaint(); // 다시 그리기
 		} 
