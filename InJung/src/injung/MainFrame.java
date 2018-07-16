@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -36,6 +35,7 @@ import injung.model.InJungDao;
  *  - MainFrame Y축 조절(600 > 650)
  *  - 이달의 생일 알림 기능 추가 : initTablePanel(ArrayList<EmployeeDto> birthDto) 메소드
  *  - 환경설정 연결 (PropertyPanel)
+ *  - 이달의 생일 Label 추가
  *  
  */
 
@@ -329,12 +329,11 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 	public void initTablePanel(ArrayList<EmployeeDto> birthDto) {
 		
 		tablePanel = new JPanel();
-		tablePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 30));
-//		tablePanel.setLayout(new GridLayout(2, 1));
-//		tablePanel.setBounds(0, 350, 800, 300);
+		tablePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 80, 10));
+		tablePanel.setPreferredSize(new Dimension(800, 250)); // tablePanel 크기 지정
 		
 		birthLabel = new JLabel("이달의 생일");
-//		birthLabel.setBounds(0, 350, width, height);
+		birthLabel.setPreferredSize(new Dimension(800, 20)); // birthLabel 크기 지정
 		
 		
 		// --- 테이블 속성 ---
@@ -343,7 +342,6 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 		for(int i = 0; i < AttributeStr.length; i++) {
 			tableAttribute.add(AttributeStr[i]);
 		}
-//		System.out.println(tableAttribute);
 		// --------------
 		
 		
@@ -372,7 +370,6 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 			vDto.add(list.getRole());
 			
 			tableModel.addRow(vDto);
-//			System.out.println(vDto); // vDto 데이터 확인 완료
 			
 		}
 		
@@ -387,7 +384,7 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 		
 		jScrollPane = new JScrollPane(birthTable);
 		
-		jScrollPane.setPreferredSize(new Dimension(800, 200));
+		jScrollPane.setPreferredSize(new Dimension(800, 200)); // jScrollPane(birthTable) 크기 지정
 		
 		tablePanel.add(birthLabel);
 		tablePanel.add(jScrollPane);
@@ -400,7 +397,6 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 	private void initRootContainer() {	
 		
 		root = getContentPane();
-//		initTablePanel(birthDto); // 이달의 생일
 		
 	}
 	
@@ -412,7 +408,6 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 		// file 메뉴 이벤트
 		// 로그인/로그아웃
 		if(e.getSource() == file_LogInOut) {
-//			System.out.println("로그인/로그아웃 누름");
 
 			if(login == false) {
 				LoginPanel logPan ;
@@ -458,7 +453,7 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 				}
 				
 			}
-//			System.out.println(login); // 로그인 확인
+
 		} 
 		// 가져오기
 		else if (e.getSource() == file_Import){
@@ -488,7 +483,6 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 		} 
 		// 종료
 		else if (e.getSource() == file_Close) {
-//			System.out.println("프로그램 종료");
 			System.exit(0);
 		} 
 
@@ -499,7 +493,6 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 			
 			root.add(new EditEmployeePanel()); // 컨테이너 넣기
 			setTitle("신규등록");
-//			setBounds(300, 100, 1000, 700);
 			
 			root.validate(); // 컴포넌트 검증 (메모리 상태 확인) - 메모리 확실하게
 			root.repaint(); // 다시 그리기
