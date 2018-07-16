@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -13,6 +14,7 @@ import java.util.Date;
 import java.util.Vector;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -68,6 +70,8 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 	private static final String[] AttributeStr = {"생일", "이름", "부서", "직급", "직책"};
 	//JTable - 스크롤바
 	private JScrollPane jScrollPane; // 컴포넌트 스크롤바
+	//JLabel - 라벨
+	private JLabel birthLabel;	// 이달의 생일 Label
 	
 
 	//메뉴바 설정
@@ -326,6 +330,11 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 		
 		tablePanel = new JPanel();
 		tablePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 30));
+//		tablePanel.setLayout(new GridLayout(2, 1));
+//		tablePanel.setBounds(0, 350, 800, 300);
+		
+		birthLabel = new JLabel("이달의 생일");
+//		birthLabel.setBounds(0, 350, width, height);
 		
 		
 		// --- 테이블 속성 ---
@@ -380,6 +389,7 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 		
 		jScrollPane.setPreferredSize(new Dimension(800, 200));
 		
+		tablePanel.add(birthLabel);
 		tablePanel.add(jScrollPane);
 		
 		
@@ -390,6 +400,7 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 	private void initRootContainer() {	
 		
 		root = getContentPane();
+//		initTablePanel(birthDto); // 이달의 생일
 		
 	}
 	
