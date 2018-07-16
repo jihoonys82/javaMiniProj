@@ -36,7 +36,7 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
 	 * 	 <팀 레코드 판넬>
 	 * 최근 업데이트 : 7.16
 	 * 작성자 : 이현우
-	 * 진행 작업 : 다이얼로그 이벤트 + 예외처리
+	 * 진행 작업 : 코딩 정리
 	 *
 	 */
 	
@@ -368,14 +368,15 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
 			
 			//JTABLE
 			tbDefault.removeRow(tbTeamRecord.getSelectedRow());
+	    	tbTeamRecord.setRowSelectionInterval(1, 0);
+	    	
     	}
   
     }
     
     //팀 수정
     private void editTeam(int select) {
-    	
-    	
+    	    	
     	if(select==0) {
    		 
     		String arr[] = new String[2];
@@ -424,11 +425,9 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
     			}
     		}
     		
-    		
-    		   		
+  		   		
     		//DTO
     		String prevTeam = (String) tbTeamRecord.getValueAt(tbTeamRecord.getSelectedRow(), 0);
-    		System.out.println(prevTeam);
 			dto_Team = new TeamDto();
 			dto_Team.setTeamName(txtTeam.getText());
 			dto_Team.setTeamRole(txtRole.getText());
