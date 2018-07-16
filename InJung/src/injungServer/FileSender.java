@@ -37,8 +37,6 @@ public class FileSender extends Thread {
 	 */
 	public FileSender(Socket sock, String filename) {
 		this.file = new File(dir, filename);
-		System.out.println(this.file.exists());
-		System.out.println(this.file.isDirectory());
 		this.sock = sock;
 	}
 

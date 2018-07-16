@@ -64,13 +64,14 @@ public class FileReceiver extends Thread {
 			dos.flush();
 			System.out.println("Request to server : " + file.getName());
 			Long bytes = Files.copy(dis, file.toPath());
-
 			System.out.println(file.getName() + " (Size:" + bytes + "bytes) has been transfered from Server/n");
 			dos.flush();
 
-			lbl.setIcon(new ImageIcon(file.toString()));
-			lbl.validate();
-			lbl.repaint();
+			if(lbl!=null) {
+				lbl.setIcon(new ImageIcon(file.toString()));
+				lbl.validate();
+				lbl.repaint();				
+			}
 
 		} catch (UnknownHostException e) {
 			e.printStackTrace();

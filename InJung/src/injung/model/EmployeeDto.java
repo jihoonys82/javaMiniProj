@@ -1,7 +1,10 @@
 package injung.model;
 
-public class EmployeeDto {
+import java.io.Serializable;
 
+public class EmployeeDto implements Serializable {
+	private static final long serialVersionUID = -7362786764406975154L;
+	
 	private int employeeId;
 	private String name;
 	private String birth;

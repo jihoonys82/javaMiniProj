@@ -1,7 +1,10 @@
 package injung.model;
 
-public class TeamDto {
+import java.io.Serializable;
 
+public class TeamDto implements Serializable {
+	private static final long serialVersionUID = -383049198919544480L;
+	
 	private String teamName;
 	private String teamRole;
 	private String teamLeaderId;
