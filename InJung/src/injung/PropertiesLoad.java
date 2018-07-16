@@ -2,6 +2,7 @@ package injung;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -13,7 +14,7 @@ import java.util.Properties;
 
 public class PropertiesLoad {
 	
-	public Properties getProperties (String path) {
+	public static Properties getProperties (String path) {
 		
 		Properties pro = null;
 		FileInputStream fis = null;
@@ -21,7 +22,11 @@ public class PropertiesLoad {
 		try {
 			pro = new Properties();				// properties 객체 생성 
 			fis = new FileInputStream(path);	// path를 인자로 받아 파일을 읽어옴
-			pro.load(fis);						// properties 에 load 
+			pro.load(fis);						// properties 에 load
+			
+//			FileOutputStream fos = new FileOutputStream(path);
+//			pro.replace("id", "sadfsa");
+//			pro.store(fos, "comment");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -35,6 +40,11 @@ public class PropertiesLoad {
 		
 		}
 		return pro;
+	}
+	
+	public static Properties getProperties () {
+		Properties property = getProperties("./Outcomes/Jdbc.properties");
+		return property;
 	}
 		
 }

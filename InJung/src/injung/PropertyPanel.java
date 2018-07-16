@@ -42,7 +42,9 @@ public class PropertyPanel extends JPanel implements ActionListener {
 	
 	PropertiesLoad proLoad = new PropertiesLoad();
 	Properties property = proLoad.getProperties("C:\\Users\\지현화\\git\\새 폴더\\.project\\InJung\\Outcomes\\Jdbc.properties");	// path를 경로로 properties 호출 
-	
+//	Properties property = proLoad.getProperties("./Outcomes/Jdbc.properties");	// path를 경로로 properties 호출
+//	private Properties prop = PropertiesLoad.getProperties();
+
 	String strPw = property.getProperty("PW");	// String으로  Property안의 경로들 받아오기 
 	String strId = property.getProperty("ID");
 	String strUrl = property.getProperty("URL");

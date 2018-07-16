@@ -125,7 +125,7 @@ public class EmployeeInfoPanel extends JPanel implements ActionListener {
 				FileReceiver request = new FileReceiver(file);
 				request.start();
 		} 
-		lblPhoto.setIcon(new ImageIcon("./Photo/"+dto.getPhoto()));
+		lblPhoto.setIcon(new ImageIcon(file.getAbsolutePath()));
 		
 		validate();
 		repaint();
