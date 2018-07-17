@@ -33,7 +33,7 @@ class LoginPanel extends JDialog implements ActionListener, KeyListener {
 	private JLabel lblEmployeeId;
 	private JLabel lblPw;
 	private JLabel lblWarn;
-	public JTextField txtEmployeeId;
+	private JTextField txtEmployeeId;
 	private JPasswordField txtPw;
 	private JButton btnLogin;
 	private JButton btnFindInfo;
@@ -111,9 +111,7 @@ class LoginPanel extends JDialog implements ActionListener, KeyListener {
 				System.out.println("로그인패널 ID값"+strId);
 				
 				FindIdPanel findIddialog = new FindIdPanel(this, "Create new password", true
-						,txtEmployeeId.getText().trim());
-				// 비밀번호 변경 다이얼로그로 이동	
-//				findIddialog.getId(strId);
+						,txtEmployeeId.getText().trim());					// 비밀번호 변경 다이얼로그로 이동	
 				findIddialog.setLocation(470, 300);
 				findIddialog.setSize(500, 300);
 				findIddialog.setVisible(true);
@@ -143,11 +141,13 @@ class LoginPanel extends JDialog implements ActionListener, KeyListener {
 		return login_result; // 로그인 성공 결과 리턴
 	} // isLoginCheck 메소드
 
-	public int gettxtEmployeeId() { // MainFram에 넘길 ID값
+	
+	public int getTxtEmployeeId() { // MainFram에 넘길 ID값
 		int id = Integer.parseInt(txtEmployeeId.getText());
 		return id;
 	}
 
+	
 	@Override
 	public void keyPressed(KeyEvent e) { // 엔터를 누를 때 로그인 체크 메소드 실행
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -159,11 +159,8 @@ class LoginPanel extends JDialog implements ActionListener, KeyListener {
 	}
 
 	@Override
-	public void keyTyped(KeyEvent e) {
-	}
-
+	public void keyTyped(KeyEvent e) { }
 	@Override
-	public void keyReleased(KeyEvent e) {
-	}
+	public void keyReleased(KeyEvent e) { }
 
 }
