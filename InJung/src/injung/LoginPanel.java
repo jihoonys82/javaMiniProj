@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -32,14 +33,14 @@ class LoginPanel extends JDialog implements ActionListener, KeyListener {
 	private JLabel lblEmployeeId;
 	private JLabel lblPw;
 	private JLabel lblWarn;
-	private JTextField txtEmployeeId;
+	public JTextField txtEmployeeId;
 	private JPasswordField txtPw;
 	private JButton btnLogin;
 	private JButton btnFindInfo;
-
+	
 	private InJungDao dao = InJungDao.getInstance();
 	private EmployeeDto eDto = new EmployeeDto();
-
+	
 	public static final int LOGIN_SUCCESSED = 0;
 	public static final int LOGIN_FAILED = 1;
 
@@ -99,15 +100,28 @@ class LoginPanel extends JDialog implements ActionListener, KeyListener {
 			isLoginCheck(toIntId); // 로그인 일치 여부
 
 		} else if (e.getSource().equals(btnFindInfo)) {
+			
+			if (txtEmployeeId.getText().equals("")) {
+				JOptionPane.showMessageDialog(null, "사번을 입력해주세요");
+						
+			} else if (!(txtEmployeeId.getText().equals(""))) {
+				
+				String strId = txtEmployeeId.getText().trim();
+				
+				System.out.println("로그인패널 ID값"+strId);
+				
+				FindIdPanel findIddialog = new FindIdPanel(this, "Create new password", true
+						,txtEmployeeId.getText().trim());
+				// 비밀번호 변경 다이얼로그로 이동	
+//				findIddialog.getId(strId);
+				findIddialog.setLocation(470, 300);
+				findIddialog.setSize(500, 300);
+				findIddialog.setVisible(true);
 
-			FindIdPanel findIddialog = new FindIdPanel(this, "Create new password", true); // 비밀번호 변경 다이얼로그로 이동
-			findIddialog.setLocation(470, 300);
-			findIddialog.setSize(500, 300);
-			findIddialog.setVisible(true);
-
+			}
 		}
 	}
-
+	
 	public int isLoginCheck(int empId) {
 
 		eDto = dao.getEmployee(empId);
@@ -129,7 +143,7 @@ class LoginPanel extends JDialog implements ActionListener, KeyListener {
 		return login_result; // 로그인 성공 결과 리턴
 	} // isLoginCheck 메소드
 
-	public int getTxtEmployeeId() { // MainFram에 넘길 ID값
+	public int gettxtEmployeeId() { // MainFram에 넘길 ID값
 		int id = Integer.parseInt(txtEmployeeId.getText());
 		return id;
 	}

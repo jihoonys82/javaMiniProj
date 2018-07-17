@@ -25,7 +25,7 @@ import injung.model.InJungDao;
 public class FindIdPanel extends JDialog implements ActionListener, KeyListener {
 	private static final long serialVersionUID = -1581889542704938075L;
 
-	private JTextField txtEmployeeId;
+	public JTextField txtEmployeeId;
 	private JTextField txtQuestion;
 	private JTextField txtAnswer;
 	private JButton btnOk;
@@ -35,10 +35,20 @@ public class FindIdPanel extends JDialog implements ActionListener, KeyListener 
 	private JPasswordField txtNewPw;
 	private JPasswordField txtVerifyPw;
 
+//	private String txtEmployee;
+	
 	private InJungDao dao = InJungDao.getInstance();
 	private EmployeeDto eDto;
-
-	public FindIdPanel(JDialog dialog, String title, boolean modal) {
+	
+//	public void getId(String txtEmployee) {
+//		this.txtEmployee = txtEmployee;
+//	}
+	
+//	public FindIdPanel(JTextField txtEmployeeId) {
+//		this.txtEmployeeId = txtEmployeeId;
+//	}
+	
+	public FindIdPanel(JDialog dialog, String title, boolean modal,String str) {
 		super(dialog, title, true);
 
 		getContentPane().setLayout(null);
@@ -46,7 +56,7 @@ public class FindIdPanel extends JDialog implements ActionListener, KeyListener 
 		JPanel findIdPane = new JPanel(); // 비밀번호 찾기 패널 생성
 		findIdPane.setBounds(0, 0, 434, 261);
 		findIdPane.setLayout(null);
-
+		
 		JLabel lblEmployeeId = new JLabel("사번 :"); // 사번 레이블 생성
 		lblEmployeeId.setBounds(83, 24, 57, 15);
 
@@ -57,12 +67,15 @@ public class FindIdPanel extends JDialog implements ActionListener, KeyListener 
 		lblAnswer.setBounds(83, 88, 77, 15);
 
 		txtEmployeeId = new JTextField(); // 사번 텍스트필드 생성
+		txtEmployeeId.setText(str);
 		txtEmployeeId.setBounds(196, 21, 152, 21);
 		txtEmployeeId.setColumns(10);
-
+		txtEmployeeId.setEditable(false);
+		
 		txtQuestion = new JTextField(); // 질문 텍스트필드 생성
 		txtQuestion.setColumns(10);
 		txtQuestion.setBounds(196, 52, 152, 21);
+		txtQuestion.setEditable(false);
 
 		txtAnswer = new JTextField(); // 대답 텍스트필드 생성
 		txtAnswer.setColumns(10);
@@ -105,7 +118,13 @@ public class FindIdPanel extends JDialog implements ActionListener, KeyListener 
 		findIdPane.add(lblEmployeeId);
 
 		getContentPane().add(findIdPane);
-
+		
+//			if (txtEmployee == null || txtEmployee.trim().equals("")) {
+//				txtEmployee = "0";
+//			}	
+		int logid = Integer.parseInt(str);
+		System.out.println("파인드패널 ID값"+logid);
+		showData(logid);
 	}
 
 	@Override
@@ -116,15 +135,12 @@ public class FindIdPanel extends JDialog implements ActionListener, KeyListener 
 			eDto = dao.getEmployee(intId);
 			String toString = String.valueOf(intId);
 
-			// TODO trim() 관련 문제 해결
-//			if ( (txtEmployeeId.getText().equals(toString)) && (txtQuestion.getText().trim().equals(eDto.getLostIdQuestion().trim()))
-//					&& (txtAnswer.getText().trim().equals(eDto.getLostIdAnswer().trim()))) {
-
+			// TODO 공백 문제 해결
+			
 			if ((txtEmployeeId.getText().equals(toString)) && (txtQuestion.getText().equals(eDto.getLostIdQuestion()))
 					&& (txtAnswer.getText().equals(eDto.getLostIdAnswer()))) { // 사번/분실질문/분실대답이 모두 일치하면 비밀번호 변경 가능
 
-				System.out.println("비번 변경 메소드 실행");
-				createPw(intId);
+					createPw(intId);
 
 			} else if (!(txtEmployeeId.getText().equals(toString))
 					|| !(txtQuestion.getText().equals(eDto.getLostIdQuestion()))
@@ -146,7 +162,6 @@ public class FindIdPanel extends JDialog implements ActionListener, KeyListener 
 		String strVerPw = new String(chPw_2);
 
 		if ((strNewPw.equals("")) && (strVerPw.equals(""))) { // 두 텍스트필드를 공백으로 두었을 때
-			System.out.println("비번 2개 공백");
 			JOptionPane.showMessageDialog(null, "변경할 비밀번호를 입력하세요");
 
 		} else if ((!(strNewPw.length() > 0)) || (!(strVerPw.length() > 0))) { // 하나의 텍스트필드만 공백으로 두었을 때
@@ -177,6 +192,21 @@ public class FindIdPanel extends JDialog implements ActionListener, KeyListener 
 		}
 
 	} // changeData
+	
+	public void showData(int empId) {
+//		eDto = new EmployeeDto();
+		eDto = dao.getEmployee(empId);
+	
+//		String strQ = eDto.getLostIdQuestion();		
+//		if (strQ == null || strQ.trim().equals("")) {
+//			strQ = "0";
+//		}
+		
+//		txtQuestion.setText(strQ);
+		
+		txtQuestion.setText(eDto.getLostIdQuestion());
+	}
+	
 
 	@Override
 	public void keyPressed(KeyEvent e) { // 엔터 기억키
@@ -185,16 +215,14 @@ public class FindIdPanel extends JDialog implements ActionListener, KeyListener 
 			String strId = txtEmployeeId.getText();
 			int id = Integer.parseInt(strId);
 			eDto = dao.getEmployee(id);
-
+			
 			createPw(id);
 		}
 	}
 
 	@Override
-	public void keyReleased(KeyEvent e) {
-	}
+	public void keyReleased(KeyEvent e) { }
 
 	@Override
-	public void keyTyped(KeyEvent e) {
-	}
+	public void keyTyped(KeyEvent e) { }
 }
