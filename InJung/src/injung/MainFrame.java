@@ -25,6 +25,7 @@ import javax.swing.KeyStroke;
  *  - 이달의 생일 기능 관련 메소드, 변수 등 삭제 
  *  	→ BirthdayPanel 클래스로 분리
  *  	→ 이달의 생일 기능을 BirthdayPanel 생성자로 부르기
+ *  - 다이어로그 정리
  *  
  */
 
@@ -76,9 +77,7 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 	private JMenuItem help_About;
 	
 	//help메뉴 다이얼로그
-	private JDialog about_Dialog = null;
-	private JDialog credit_Dialog = null;
-	private JDialog help_Dialog = null;
+	private JDialog dialog;
 		
 	public MainFrame() {
 		
@@ -102,9 +101,6 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 		
 		//루트컨테이너 설정
 		initRootContainer();
-		
-		//다이얼로그 설정
-		initDialog();
 		
 		setVisible(true);
 			
@@ -297,17 +293,6 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 		
 	}
 	
-	private void initDialog() {
-		
-		//인정?어인정 다이얼로그 설정
-		about_Dialog = new AboutInjungDialog(
-			this, 
-			"인정?어인정에 대하여",
-			true, 
-			getX()+300,
-			getY()+100);
-		
-	}
 	
 	// JMenuItem 동작 설정
 	@Override
@@ -318,13 +303,14 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 		if(e.getSource() == file_LogInOut) {
 
 			if(login == false) {
-				LoginPanel logPan ;
-				logPan = new LoginPanel(this,"Login Dialog",true);
-				logPan.setVisible(true);
 
-				id = logPan.getTxtEmployeeId(); // LoginPanel에서 받아온 ID 값
+				dialog = new LoginPanel(this,"Login Dialog",true);
+				
+				dialog.setVisible(true);
 
-				int logckeck = logPan.isLoginCheck(id);
+				id = ((LoginPanel) dialog).getTxtEmployeeId(); // LoginPanel에서 받아온 ID 값
+
+				int logckeck = ((LoginPanel) dialog).isLoginCheck(id);
 				if(logckeck==LoginPanel.LOGIN_SUCCESSED) {
 
 					root.removeAll();
@@ -371,19 +357,14 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 		}
 		// 내보내기
 		else if (e.getSource() == file_Export) {
-			root.removeAll();
 			
-			ExportDialog ex = new ExportDialog();
-			ex.setBounds(450, 250, 450, 300);
+			dialog = new ExportDialog();
+			dialog.setBounds(450, 250, 450, 300);
 			
-//			ex.setSize(450, 300);
+//			dialog.setSize(450, 300);
 			
-			ex.setVisible(true);
+			dialog.setVisible(true);
 			
-//			setTitle("내보내기");
-			
-			root.validate(); // 컴포넌트 검증 (메모리 상태 확인) - 메모리 확실하게
-			root.repaint(); // 다시 그리기
 		} 
 		// 환경설정
 		else if (e.getSource() == file_Config) {
@@ -541,9 +522,16 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 		// 인정?어인정에 대하여
 		else if (e.getSource() == help_About) {
 			
-			about_Dialog.setVisible(true);
-			root.validate(); // 컴포넌트 검증 (메모리 상태 확인) - 메모리 확실하게
-			root.repaint(); // 다시 그리기
+			//인정?어인정 다이얼로그 설정
+			dialog = new AboutInjungDialog(
+				this, 
+				"인정?어인정에 대하여",
+				true, 
+				getX()+300,
+				getY()+100);
+			
+			dialog.setVisible(true);
+			
 		}
 
 	} // actionPerformed end
