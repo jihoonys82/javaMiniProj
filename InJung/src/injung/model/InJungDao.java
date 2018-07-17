@@ -716,25 +716,26 @@ public class InJungDao {
 	 */
 	public ArrayList<EmployeeDto> getQuizData() {
 		int tot = countEmployee();
-		int[] selectedIndex = new int[3];
+		int[] selectedIndex = new int[7];
 		Random rand = new Random();
-		for (int i = 0; i < 3; i++) {
-			selectedIndex[i] = rand.nextInt(tot + 1);
+		for (int i = 0; i < selectedIndex.length; i++) {
+			selectedIndex[i] = (rand.nextInt(tot + 1)) + 1;
 		}
 
 		Connection connection = null;
 		PreparedStatement pstmt = null;
 		ResultSet set = null;
-		String query = "SELECT * FROM(" + "Select employeename, photopath, rownum r FROM employee)"
-				+ "WHERE r IN (?, ?, ?);";
+		String query = "SELECT * FROM(" 
+				+ "SELECT employeename, photopath, rownum r FROM employee)"
+				+ "WHERE r IN (?, ?, ?, ?, ? ,? ,?)";
 		ArrayList<EmployeeDto> dtos = new ArrayList<>();
 		EmployeeDto dto = null;
 
 		try {
 			connection = getConnection();
 			pstmt = connection.prepareStatement(query);
-			for (int i = 1; i < selectedIndex.length + 1; i++) {
-				pstmt.setInt(i, selectedIndex[i]);
+			for (int i = 0; i < selectedIndex.length; i++) {
+				pstmt.setInt(i+1, selectedIndex[i]);
 			}
 			set = pstmt.executeQuery();
 
