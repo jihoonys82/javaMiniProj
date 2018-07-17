@@ -343,7 +343,7 @@ public class EmployeeInfoPanel extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(btnEditInfo)) {
-
+			MainFrame.redirect("EditEmployeePanel", Integer.parseInt(txtEmployeeId.getText()));
 		}
 	}
 }

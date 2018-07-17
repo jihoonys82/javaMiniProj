@@ -29,17 +29,11 @@ import injung.model.EmployeeDto;
 import injung.model.InJungDao;
 
 /* 
- * 수정일자 : 2018.07.16
+ * 수정일자 : 2018.07.17
  * 
  * 수정자 : 권미현
  * 
- *  - MainFrame Y축 조절(600 > 650)
- *  - 이달의 생일 알림 기능 추가 : initTablePanel(ArrayList<EmployeeDto> birthDto) 메소드
- *  - 환경설정 연결 (PropertyPanel)
- *  - 이달의 생일 Label 추가
- *  - Panel 간 연결(호출) 메소드 추가 : redirect(String dest, int param) 메소드
- *  - 내보내기 Dialog 연결
- *  - MainFrame 모니터 화면 중앙에 배치하기
+ *  - redirect 메소드 기능 추가 : EditEmployeePanel
  *  
  */
 
@@ -453,8 +447,6 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 				
 				if (logOut == 0) { // 확인 버튼
 					root.removeAll();
-
-					initTablePanel(birthDto); // 이달의 생일
 					
 					root.validate(); // 컴포넌트 검증 (메모리 상태 확인) - 메모리 확실하게
 					root.repaint(); // 다시 그리기
@@ -688,7 +680,8 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 	
 	public static void redirect(String dest, int param) { // (연결할 panel 메시지, panel 에 받아온 id 값)
 		
-		if(dest.equals("EmployeeInfoPanel") && param!=0) {
+		if(dest.equals("EmployeeInfoPanel") && param!=0) { // && param!=0 : 빈 사원 정보를 불려오지 못하도록 막기
+			
 			root.removeAll();
 			
 			root.add(new EmployeeInfoPanel(param));
@@ -696,6 +689,16 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 			
 			root.validate();
 			root.repaint();
+			
+		} else if(dest.equals("EditEmployeePanel")) { // id값 받아와서 해당 id값의 개인정보 수정하는 페이지로 넘기기
+			
+			root.removeAll();
+			
+			root.add(new EditEmployeePanel(param));
+			
+			root.validate();
+			root.repaint();
+			
 		}
 			
 	}
