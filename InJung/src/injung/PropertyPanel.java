@@ -62,27 +62,38 @@ public class PropertyPanel extends JPanel implements ActionListener {
 	private Properties pro = PropertiesStore.setProperties();
 	FileOutputStream fos;	
 	
-	public void loadValue() {	// String으로  Property안의 경로들 받아오기 
+	public void loadValue() {	// String으로  Property안의 경로들 받아오기 		
+		pro.setProperty("ID",prop.getProperty("ID"));	// 입력값 property에 set
+		pro.setProperty("PW", prop.getProperty("PW"));
+		pro.setProperty("PORT",prop.getProperty("PORT"));
+		pro.setProperty("HOST", prop.getProperty("HOST"));
+		pro.setProperty("LOCATION", prop.getProperty("LOCATION"));
+		pro.setProperty("URL", prop.getProperty("URL"));
+		pro.setProperty("PHOTOPATH", prop.getProperty("PHOTOPATH"));
+				
 		String strPw = prop.getProperty("PW");
 		txtPw.setText(strPw); // 패스워드 받아오기 
-	
 		String strId = prop.getProperty("ID");
-		txtId.setText(strId); // ID 받아오기 
-		
+		txtId.setText(strId); // ID 받아오기 		
 		String strUrl = prop.getProperty("URL");
-		txtUrl.setText(strUrl);	// URL 경로 받아오기 
-		
+		txtUrl.setText(strUrl);	// URL 경로 받아오기 	
 		String strPhoto = prop.getProperty("PHOTOPATH");
-		txtPhotoFolder.setText(strPhoto);
-		
+		txtPhotoFolder.setText(strPhoto);	
 		String strPort = prop.getProperty("PORT");
-		txtPort.setText(strPort);
-		
+		txtPort.setText(strPort);	
 		String strHost = prop.getProperty("HOST");
-		txtHost.setText(strHost);
-		
+		txtHost.setText(strHost);		
 		String strLocation = prop.getProperty("LOCATION");
 		txtLoc.setText(strLocation);	// 저장소 경로 받아오기 
+		
+		try {
+			fos = new FileOutputStream("./Outcomes/Jdbc.properties");
+			pro.store(fos, null);	// 변경값 저장 
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}			
 	}
 	
 	public PropertyPanel() {
@@ -184,19 +195,20 @@ public class PropertyPanel extends JPanel implements ActionListener {
 		routePane.add(lblHost);
 		routePane.add(lblPort);
 		
-		loadValue();
-
 		add(btnPane);
 		add(routePane);
+			
+		loadValue();
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource().equals(btnCancel)) {	// 취소 버튼 클릭시 화면 지우기 
+		if (e.getSource().equals(btnCancel)) {	// 취소 버튼 클릭시 화면 지우기 		
+			
 			removeAll();
 			validate(); 
 			repaint();
-		
+
 		} else if (e.getSource().equals(btnOk)) { // 확인버튼 클릭시 
 			modifyValue();					  // 값 변경 메소드 실행 
 			
