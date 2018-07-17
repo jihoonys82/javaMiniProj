@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -74,7 +75,11 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 	private JMenuItem help_Credit;
 	private JMenuItem help_About;
 	
-	
+	//help메뉴 다이얼로그
+	private JDialog about_Dialog = null;
+	private JDialog credit_Dialog = null;
+	private JDialog help_Dialog = null;
+		
 	public MainFrame() {
 		
 		//메인 프레임 설정
@@ -97,10 +102,12 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 		
 		//루트컨테이너 설정
 		initRootContainer();
-
+		
+		//다이얼로그 설정
+		initDialog();
 		
 		setVisible(true);
-		
+			
 	}
 	
 	private void initMenu() {
@@ -279,6 +286,7 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 		help_Help.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_H, KeyEvent.ALT_MASK));
 		help_Credit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, KeyEvent.ALT_MASK));
 		help_About.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.ALT_MASK));
+	
 		
 	}
 	
@@ -289,6 +297,17 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 		
 	}
 	
+	private void initDialog() {
+		
+		//인정?어인정 다이얼로그 설정
+		about_Dialog = new AboutInjungDialog(
+			this, 
+			"인정?어인정에 대하여",
+			true, 
+			getX()+300,
+			getY()+100);
+		
+	}
 	
 	// JMenuItem 동작 설정
 	@Override
@@ -521,11 +540,8 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 		}
 		// 인정?어인정에 대하여
 		else if (e.getSource() == help_About) {
-			root.removeAll();
 			
-//			root.add(comp); // 컨테이너 넣기
-			setTitle("인정?어인정에 대하여");
-			
+			about_Dialog.setVisible(true);
 			root.validate(); // 컴포넌트 검증 (메모리 상태 확인) - 메모리 확실하게
 			root.repaint(); // 다시 그리기
 		}

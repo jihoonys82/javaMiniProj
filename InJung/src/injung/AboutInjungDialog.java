@@ -1,48 +1,76 @@
 package injung;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Frame;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 public class AboutInjungDialog extends JDialog implements ActionListener{
 	
+	//컴포넌트 멤버필드
 	JTextArea txtContent = null;
 	JButton btnCancel = null;
 	JPanel btnPane = null;
+	JLabel lblLogo = null;
 	
+	//생성자
 	public AboutInjungDialog(Frame frame,String title,boolean modal,int x,int y) {
 		
+		//다이얼로그 설정값
 		super(frame, title, modal);
 		setLocation(x, y);
-				
-		setLayout(new GridLayout(2, 0));
+		setSize(400, 300);
+		setLayout(null);
 		
-		String txt = " 프로그램명 : 인정? 어인정\r\n"
-					+ " 버전 : (정식판)Injung Release(v1.0)\r\n"
-					+ " 정보 : 본 프로그램은 조별 Mini Project\r\n "
+		
+		//TxtArea 설정
+		String txt = "\r\n 프로그램명 : 인정? 어인정\r\n"
+					+ " 버전정보 : Injung Release(v1.0)\r\n"
+					+ " 소개 : 본 프로그램은 조별 Mini Project\r\n "
 					+ "      수행 결과물로 사원의 인사관리와\r\n"
-					+ "      일정관리의 기능을 팀 단위로 제공합니다\r\n";
-		
-		System.out.println(txt);
+					+ "      일정관리의 기능을 그룹 별로 다양하게 제공합니다\r\n";
 		
 		txtContent = new JTextArea();
-		btnCancel = new JButton();
-		
+		txtContent.setBounds(0, 0, 400, 130);
+		txtContent.setColumns(20);
+		txtContent.setRows(10);
+		txtContent.setFont(new Font("고딕",Font.BOLD,14));
+		txtContent.setEditable(false);
+		txtContent.setBackground(new Color(245, 245, 245));
 		txtContent.setText(txt);
 		
-		btnPane = new JPanel();
-		btnPane.add(btnCancel);
 		
+		//btnPane 설정
+		btnPane = new JPanel();
+		btnPane.setLayout(null);
+		btnPane.setBounds(0, 130, 400, 150);
+		btnPane.setBackground(new Color(245, 245, 245));
+		
+		//btnCancel 설정
+		btnCancel = new JButton("닫기");		
+		btnCancel.setBounds(280, 60, 80, 40);
+				
+		//lblLogo 설정
+		lblLogo = new JLabel();
+		lblLogo.setIcon(new ImageIcon("./photo/logo.jpg"));
+		lblLogo.setBounds(0, 0, 120, 120);
+		
+		
+		btnPane.add(btnCancel);
+		btnPane.add(lblLogo);
+
 		add(txtContent);
 		add(btnPane);
-		pack();
-				
+		
+		btnCancel.addActionListener(this);		
 	}
 
 	@Override
