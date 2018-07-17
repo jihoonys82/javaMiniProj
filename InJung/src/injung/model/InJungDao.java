@@ -825,6 +825,139 @@ public class InJungDao {
 
 		return dtos;
 	}
+	
+	
+	/**
+	 * Insert Calendar data to Database
+	 * 
+	 * @param dto
+	 * @return result code 1:Success, 0: Fail to insert
+	 */
+	public int insertCalendar(CalendarDto dto) {
+		int results = INSERT_DATA_FAILED;
+
+		Connection connection = null;
+		PreparedStatement pstmt = null;
+		String query = "INSERT INTO calendar("
+				+ " calendarId, taskName, startdate, expectedEndDate, ActualEndDate, status, note, ownerId ) "
+				+ " VALUES (SEQ_CALENDAR.NEXTVAL," // 0. CalendarId (Auto generated)
+				+ " ?," // 1. taskName 
+				+ " ?," // 2. startDate
+				+ " ?," // 3. expectedEndDate
+				+ " ?," // 4. ActualEndDate
+				+ " ?," // 5. status
+				+ " ?," // 6. note
+				+ " ?)"; // 7. ownerID
+
+		try {
+			connection = getConnection();
+			pstmt = connection.prepareStatement(query);
+			pstmt.setString(1, dto.getTaskName());
+			pstmt.setString(2, dto.getStartDate());
+			pstmt.setString(3, dto.getExpectEndDate());
+			pstmt.setString(4, dto.getActualEndDate());
+			pstmt.setString(5, dto.getStatus());
+			pstmt.setString(6, dto.getNote());
+			pstmt.setInt(7, dto.getOwnerId());
+			results = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+				if (connection != null)
+					connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return results;
+	}
+	
+	public int finishTask(int calendarId, String actualEndDate, String status) {
+		int results = INSERT_DATA_FAILED;
+		//TODO 
+		Connection connection = null;
+		PreparedStatement pstmt = null;
+		String query = "UPDATE calendar SET "
+				+ " actualEndDate = ?," // 1. employName
+				+ " status = ?"
+				+ " WHERE caneldarId = ?";
+
+		try {
+			connection = getConnection();
+			pstmt = connection.prepareStatement(query);
+			pstmt.setString(1, actualEndDate);
+			pstmt.setString(2, status);
+			pstmt.setInt(3, calendarId);
+			
+			results = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+				if (connection != null)
+					connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return results;
+	}
+	
+	/**
+	 * get all calendar
+	 * @param ownerId
+	 * @return CalenDto ArrayList
+	 */
+	public ArrayList<CalendarDto> getAllTasks(int ownerId) {
+		Connection connection = null;
+		PreparedStatement pstmt = null;
+		ResultSet set = null;
+		String query = "SELECT * FROM Calendar"
+				+ "WHERE ownerId = ?"; // EQUI JOIN
+		ArrayList<CalendarDto> dtos = new ArrayList<>();
+		CalendarDto dto = null;
+
+		try {
+			connection = getConnection();
+			pstmt = connection.prepareStatement(query);
+			pstmt.setInt(1, ownerId);
+			set = pstmt.executeQuery();
+
+			while (set.next()) {
+				dto = new CalendarDto();
+
+				dto.setCalendarId(set.getInt("calendarId"));
+				dto.setTaskName(set.getString("taskName"));
+				dto.setStartDate(set.getString("startDate"));
+				dto.setExpectEndDate(set.getString("expectedEndDate"));
+				dto.setActualEndDate(set.getString("actualEndDate"));
+				dto.setStatus(set.getString("status"));
+				dto.setNote(set.getString("note"));
+				dto.setOwnerId(set.getInt("ownerId"));
+				dtos.add(dto);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (set != null)
+					set.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (connection != null)
+					connection.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return dtos;
+	}
+	
 
 	private Connection getConnection() {
 		Connection connection = null;
