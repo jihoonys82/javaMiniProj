@@ -6,7 +6,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Properties;
 import java.util.Random;
+
+import injung.PropertiesLoad;
 
 /**
  * Data Access Object for InJung a InJung.
@@ -22,6 +25,8 @@ public class InJungDao {
 	public static final int DELETE_DATA_SUCCESS = 1;
 	public static final int DELETE_DATA_FAILED = 0;
 
+	private Properties prop = PropertiesLoad.getProperties();
+	
 	private static InJungDao instance = new InJungDao();
 
 	private InJungDao() {
@@ -825,9 +830,9 @@ public class InJungDao {
 		Connection connection = null;
 
 		// JDBC connection information.
-		String url = "jdbc:oracle:thin:@localhost:1521:xe";
-		String uid = "ji";
-		String upw = "1";
+		String url = prop.getProperty("URL");
+		String uid = prop.getProperty("ID");
+		String upw = prop.getProperty("PW");
 
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");

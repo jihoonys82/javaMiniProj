@@ -65,6 +65,7 @@ public class ExportDialog extends JDialog implements ActionListener {
 	
 	public ExportDialog() {
 		setTitle("내보내기");
+		setModal(true);
 		
 		exportPanel = new JPanel();
 		getContentPane().add(exportPanel, BorderLayout.CENTER);
@@ -133,6 +134,7 @@ public class ExportDialog extends JDialog implements ActionListener {
 		btnCancel.setBounds(219, 214, 97, 23);
 		exportPanel.add(btnCancel);
 		btnConfirm.addActionListener(this);
+		btnCancel.addActionListener(this);
 		
 	}
 
@@ -150,13 +152,21 @@ public class ExportDialog extends JDialog implements ActionListener {
 				lblWarning.setText("내보낼 폴더를 다시 선택해 주세요.");
 			}
 		} else if(e.getSource().equals(btnConfirm)) {
-			String[] options = { "확인", "취소" };
+			String[] options = { "내보내기", "취소" };
 			int selected = JOptionPane.showOptionDialog(this, 
 					txtPath.getText() + "로 선택된 내용을 보냅니다. 시작할까요?", 
 					"내보내기 확인",
 					JOptionPane.OK_CANCEL_OPTION, 
 					JOptionPane.QUESTION_MESSAGE, 
 					null, options, options[1]);
+			
+
+			System.out.println("");
+			System.out.println("");
+			System.out.println("");
+			System.out.println("");
+			System.out.println("");
+			
 			if (selected == 0) { 
 //				System.out.println("확인 클릭됨");
 				File backDir = new File(txtPath.getText());
@@ -183,7 +193,7 @@ public class ExportDialog extends JDialog implements ActionListener {
 				}
 			}
 		} else if(e.getSource().equals(btnCancel)) {
-			dispose();
+			this.dispose();
 		}
 	}
 	
