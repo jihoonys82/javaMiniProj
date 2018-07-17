@@ -3,30 +3,17 @@ package injung;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Vector;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.KeyStroke;
-import javax.swing.table.DefaultTableModel;
-
-import injung.model.EmployeeDto;
-import injung.model.InJungDao;
 
 /* 
  * 수정일자 : 2018.07.17
@@ -34,6 +21,9 @@ import injung.model.InJungDao;
  * 수정자 : 권미현
  * 
  *  - redirect 메소드 기능 추가 : EditEmployeePanel
+ *  - 이달의 생일 기능 관련 메소드, 변수 등 삭제 
+ *  	→ BirthdayPanel 클래스로 분리
+ *  	→ 이달의 생일 기능을 BirthdayPanel 생성자로 부르기
  *  
  */
 
@@ -44,32 +34,11 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 	// Login 
 	private static int id = 0; // 아이디 받아올 값
 	private static boolean login = false; // 로그인 체크
-	
-	// Date
-	@SuppressWarnings("unused")
-	private static Date month;
-	@SuppressWarnings("unused")
-	private static SimpleDateFormat dateFormat; // 현재 달만 출력
 
 	// -------------------------------------------------------//
 
 	//루트 컨테이너 구성에 필요한 변수
 	private static Container root; // 루트 컨테이너
-	
-	//Table Panel
-	private static JPanel tablePanel;
-	
-	
-	//JTable 설정
-	private static JTable birthTable; // 이달의 생일 Table
-	private static DefaultTableModel tableModel;	// 추가, 삭제를 용이
-	//JTable - 속성
-	private static Vector<String> tableAttribute;
-	private static final String[] AttributeStr = {"생일", "이름", "부서", "직급", "직책"};
-	//JTable - 스크롤바
-	private static JScrollPane jScrollPane; // 컴포넌트 스크롤바
-	//JLabel - 라벨
-	private static JLabel birthLabel;	// 이달의 생일 Label
 	
 
 	//메뉴바 설정
@@ -106,14 +75,6 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 	private JMenuItem help_About;
 	
 	
-	//DAO, DTO (생일)
-	private static InJungDao dao;
-	private static ArrayList<EmployeeDto> birthDto;
-	
-	// DTO에서 받아서 저장할 Vector (생일)
-	private static Vector<String> vDto; 
-	
-	
 	public MainFrame() {
 		
 		//메인 프레임 설정
@@ -130,18 +91,6 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 				(screenSize.height - frameSize.height)/2); // 화면 중앙
 		
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		
-		
-		//Date 설정
-		month = new Date();
-		dateFormat = new SimpleDateFormat("MM"); // 현재 달만 출력
-		
-		//DAO, DTO 설정 (생일)
-		dao = InJungDao.getInstance();
-		birthDto = new ArrayList<>();
-//		birthDto = dao.getEmpBirth(Integer.parseInt((dateFormat.format(month))));
-//		System.out.println(Integer.parseInt((dateFormat.format(month)))); // 현재 달, 확인 완료
-		birthDto = dao.getEmpBirth(8);
 		
 		//메뉴바 설정
 		initMenu();
@@ -334,74 +283,6 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 	}
 	
 	
-	public static void initTablePanel(ArrayList<EmployeeDto> birthDto) {
-		
-		tablePanel = new JPanel();
-		tablePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 80, 10));
-		tablePanel.setPreferredSize(new Dimension(800, 250)); // tablePanel 크기 지정
-		
-		birthLabel = new JLabel("이달의 생일");
-		birthLabel.setPreferredSize(new Dimension(800, 20)); // birthLabel 크기 지정
-		
-		
-		// --- 테이블 속성 ---
-		tableAttribute = new Vector<>();
-		
-		for(int i = 0; i < AttributeStr.length; i++) {
-			tableAttribute.add(AttributeStr[i]);
-		}
-		// --------------
-		
-		
-		// DefaultTableModel에 속성 넣기 (데이터 x)
-		tableModel = new DefaultTableModel(tableAttribute, 0) {
-
-			private static final long serialVersionUID = 7171482468923032071L;
-
-			@Override
-			public boolean isCellEditable(int row, int column) { // 테이블 내용 수정 불가로 만들기
-				return false;
-			}
-		};
-		
-		birthTable = new JTable(tableModel); // JTable에 DefaultTableModel 설정
-		
-		// 테이블에 데이터 넣기(row)
-		for(EmployeeDto list : birthDto) {
-			
-			vDto = new Vector<>();
-
-			vDto.add(list.getBirth());
-			vDto.add(list.getName());
-			vDto.add(list.getTeam());
-			vDto.add(list.getLevel());
-			vDto.add(list.getRole());
-			
-			tableModel.addRow(vDto);
-			
-		}
-		
-		// 컬럼 사이즈
-		birthTable.getColumnModel().getColumn(0).setPreferredWidth(200);
-		birthTable.getColumnModel().getColumn(1).setPreferredWidth(110);
-		birthTable.getColumnModel().getColumn(2).setPreferredWidth(200);
-		birthTable.getColumnModel().getColumn(3).setPreferredWidth(110);
-		birthTable.getColumnModel().getColumn(4).setPreferredWidth(180);
-		birthTable.setRowHeight(30);
-		
-		
-		jScrollPane = new JScrollPane(birthTable);
-		
-		jScrollPane.setPreferredSize(new Dimension(800, 200)); // jScrollPane(birthTable) 크기 지정
-		
-		tablePanel.add(birthLabel);
-		tablePanel.add(jScrollPane);
-		
-		
-		root.add(tablePanel, BorderLayout.SOUTH);
-	}
-	
-	
 	private void initRootContainer() {	
 		
 		root = getContentPane();
@@ -430,7 +311,7 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 					root.removeAll();
 					
 					root.add(new EmployeeInfoPanel(id));
-					initTablePanel(birthDto); // 이달의 생일
+					root.add(new BirthdayPanel(), BorderLayout.SOUTH); // 이달의 생일
 					setTitle("내 정보");
 
 					root.validate(); // 컴포넌트 검증 (메모리 상태 확인) - 메모리 확실하게
@@ -528,7 +409,7 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 			root.removeAll();
 			
 			root.add(new EmployeeInfoPanel(id)); // 컨테이너 넣기
-			initTablePanel(birthDto); // 이달의 생일
+			root.add(new BirthdayPanel(), BorderLayout.SOUTH);; // 이달의 생일
 			setTitle("내 정보 보기");
 			
 			root.validate(); // 컴포넌트 검증 (메모리 상태 확인) - 메모리 확실하게
@@ -685,7 +566,7 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 			root.removeAll();
 			
 			root.add(new EmployeeInfoPanel(param));
-			initTablePanel(birthDto); // 이달의 생일
+			root.add(new BirthdayPanel(), BorderLayout.SOUTH);; // 이달의 생일
 			
 			root.validate();
 			root.repaint();
