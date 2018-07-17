@@ -65,12 +65,14 @@ public class EmployeeInfoPanel extends JPanel implements ActionListener {
 
 	// Buttons
 	private JButton btnEditInfo = new JButton("Edit Info");
-	private JButton btnPasswordChange = new JButton("Password Change");
 
 	// Files
 	private File dir = new File("./Photo");
 	private File file;
 
+	/**
+	 * Initialize EmployInfoPanel
+	 */
 	public EmployeeInfoPanel() {
 
 		// set up main Panel
@@ -89,23 +91,55 @@ public class EmployeeInfoPanel extends JPanel implements ActionListener {
 		disabledTxtFields();
 	}
 
+	/**
+	 * Detail Employee Information about the employeeId
+	 * @param employeeId
+	 */
 	public EmployeeInfoPanel(int employeeId) {
 		this();
 
-		InJungDao dao = InJungDao.getInstance();
-		EmployeeDto dto = new EmployeeDto();
-
-		dto = dao.getEmployee(employeeId);
-
-		setEmployeeInfo(dto);
-
+		setEmployeeInfo(employeeId);
 	}
 
+	/**
+	 * Detail Employee Information about the employeeDto
+	 * @param eDto
+	 */
 	public EmployeeInfoPanel(EmployeeDto eDto) {
 		this();
 		setEmployeeInfo(eDto);
 	}
 
+	/**
+	 * Detail Employee Information for JDialog 
+	 * @param employeeId
+	 * @param isDialog - true: for dialog, false: same as EmployeeInfoPanel(int employeeId) 
+	 */
+	public EmployeeInfoPanel(int employeeId, boolean isDialog) {
+		if (!isDialog) {
+			setLayout(null);
+			initPhotoName();
+			initDetailInfo();
+			initButton();
+			disabledTxtFields();
+			setEmployeeInfo(employeeId);
+		} else {
+			setLayout(null);
+			initPhotoName();
+			initDetailInfo();
+			disabledTxtFields();
+			setEmployeeInfo(employeeId);
+		}
+	}
+	
+	private void setEmployeeInfo(int employeeId) {
+		InJungDao dao = InJungDao.getInstance();
+		EmployeeDto dto = new EmployeeDto();
+
+		dto = dao.getEmployee(employeeId);
+		setEmployeeInfo(dto);
+	}
+	
 	private void setEmployeeInfo(EmployeeDto dto) {
 		lblTeam.setText(dto.getTeam());
 		lblLevel.setText(dto.getLevel());
@@ -278,16 +312,13 @@ public class EmployeeInfoPanel extends JPanel implements ActionListener {
 		buttonPane.setLayout(null);
 
 		// buttons
-		btnEditInfo.setBounds(12, 234, 158, 23);
-		btnPasswordChange.setBounds(12, 267, 158, 23);
+		btnEditInfo.setBounds(12, 267, 158, 23);
 
 		// button actions
 		btnEditInfo.addActionListener(this);
-		btnPasswordChange.addActionListener(this);
 
 		// add components
 		buttonPane.add(btnEditInfo);
-		buttonPane.add(btnPasswordChange);
 		add(buttonPane);
 	}
 
@@ -312,9 +343,7 @@ public class EmployeeInfoPanel extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(btnEditInfo)) {
-
-		} else if (e.getSource().equals(btnPasswordChange)) {
-
+			MainFrame.redirect("EditEmployeePanel", Integer.parseInt(txtEmployeeId.getText()));
 		}
 	}
 }
