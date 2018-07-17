@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -324,16 +325,22 @@ import injung.model.InJungDao;
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource().equals(btnDetailView[0])) {
 			
-			MainFrame.redirect("EmployeeInfoPanel", dtos.get(0).getEmployeeId());
-			
+			JDialog dialog = new DetailDialog(new EmployeeInfoPanel(dtos.get(0).getEmployeeId(), true));
+			dialog.setSize(700, 400);
+			dialog.setVisible(true);
+		
 		} else if(e.getSource().equals(btnDetailView[1])) {
+			JDialog dialog = new DetailDialog(new EmployeeInfoPanel(dtos.get(1).getEmployeeId(), true));
+			dialog.setSize(700, 400);
+			dialog.setVisible(true);
 			
-			MainFrame.redirect("EmployeeInfoPanel", dtos.get(1).getEmployeeId());
 			
 		} else if(e.getSource().equals(btnDetailView[2])) {
-			
-			MainFrame.redirect("EmployeeInfoPanel", dtos.get(2).getEmployeeId());
+			JDialog dialog = new DetailDialog(new EmployeeInfoPanel(dtos.get(2).getEmployeeId(), true));
+			dialog.setSize(700, 400);
+			dialog.setVisible(true);
 		
+			
 		} else if(e.getSource().equals(btnPrivView)) {
 			if(CountPage>1) {
 				CountPage--;

@@ -107,6 +107,7 @@ public class EmployeeInfoPanel extends JPanel implements ActionListener {
 	 */
 	public EmployeeInfoPanel(EmployeeDto eDto) {
 		this();
+		
 		setEmployeeInfo(eDto);
 	}
 
@@ -117,18 +118,22 @@ public class EmployeeInfoPanel extends JPanel implements ActionListener {
 	 */
 	public EmployeeInfoPanel(int employeeId, boolean isDialog) {
 		if (!isDialog) {
+			
 			setLayout(null);
 			initPhotoName();
 			initDetailInfo();
 			initButton();
 			disabledTxtFields();
 			setEmployeeInfo(employeeId);
+			
 		} else {
+			
 			setLayout(null);
 			initPhotoName();
 			initDetailInfo();
 			disabledTxtFields();
 			setEmployeeInfo(employeeId);
+			
 		}
 	}
 	
@@ -169,6 +174,7 @@ public class EmployeeInfoPanel extends JPanel implements ActionListener {
 	 * setup photoNamePane
 	 */
 	private void initPhotoName() {
+		
 		// photoNamePane setting
 		photoNamePane.setBounds(12, 10, 200, 300);
 		photoNamePane.setLayout(null);
@@ -203,6 +209,7 @@ public class EmployeeInfoPanel extends JPanel implements ActionListener {
 	 * setup detailInfoPane
 	 */
 	private void initDetailInfo() {
+		
 		detailInfoPane.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
 		// detailInfoPane setting
 		detailInfoPane.setBounds(224, 10, 455, 300);
@@ -306,7 +313,9 @@ public class EmployeeInfoPanel extends JPanel implements ActionListener {
 	/**
 	 * setup buttonPane
 	 */
+	
 	private void initButton() {
+		
 		// setup buttonPane
 		buttonPane.setBounds(691, 10, 182, 300);
 		buttonPane.setLayout(null);
@@ -321,11 +330,13 @@ public class EmployeeInfoPanel extends JPanel implements ActionListener {
 		buttonPane.add(btnEditInfo);
 		add(buttonPane);
 	}
-
+	
+	
 	/**
 	 * disabled all textFields JTextField.setEditable(false)
 	 */
 	private void disabledTxtFields() {
+		
 		// setup Editable
 		txtEmployeeId.setEditable(false);
 		txtMobile.setEditable(false);
@@ -339,7 +350,8 @@ public class EmployeeInfoPanel extends JPanel implements ActionListener {
 //		validate();
 //		repaint();
 	}
-
+	
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(btnEditInfo)) {

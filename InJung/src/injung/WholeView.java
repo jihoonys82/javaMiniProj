@@ -1,14 +1,22 @@
 package injung;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Vector;
 
+import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
 import injung.model.EmployeeDto;
 import injung.model.InJungDao;
@@ -24,7 +32,7 @@ import injung.model.InJungDao;
  */
 
 @SuppressWarnings("serial")
-public class WholeView extends JPanel {
+public class WholeView extends JPanel implements ActionListener, MouseListener{
 
 	// WholeView Panel
 	private JPanel wholePanel;
@@ -48,6 +56,11 @@ public class WholeView extends JPanel {
 
 	// DTO에서 받아서 저장할 Vector
 	private Vector<String> vDto;
+
+	// mouseListner 변수
+	private int clicktable;
+
+	
 
 	// 생성자
 	public WholeView() {
@@ -73,6 +86,7 @@ public class WholeView extends JPanel {
 		wholePanel.setBounds(0, 0, 1000, 600);
 
 		////////////////////////////////////////////////////////////////
+		
 
 		// --- 테이블 속성 ---
 		tableAttribute = new Vector<>();
@@ -93,6 +107,7 @@ public class WholeView extends JPanel {
 		};
 
 		tableView = new JTable(tableModel); // JTable에 DefaultTableModel 설정
+		tableView.addMouseListener(this);
 
 		// 테이블에 데이터 넣기(row)
 		for (EmployeeDto list : listDto) {
@@ -136,6 +151,40 @@ public class WholeView extends JPanel {
 
 		add(wholePanel); // wholeView Panel 추가
 
+	}
+	
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		clicktable = tableView.getSelectedRow();
+		
+		JDialog dialog = new DetailDialog(new EmployeeInfoPanel(listDto.get(clicktable).getEmployeeId(), true));
+		dialog.setSize(700, 400);
+		dialog.setVisible(true);
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		
 	}
 
 }
