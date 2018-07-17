@@ -60,7 +60,8 @@ public class QuizPanel extends JPanel implements ActionListener {
 	private JTextField txtHint = new JTextField();
 	private JTextField txtCorrect = new JTextField();
 	private JTextField txtWrong = new JTextField();
-
+	
+	private final int idx = 3;
 	private int hint;
 	private int wrong;
 	private int correct;
@@ -97,7 +98,7 @@ public class QuizPanel extends JPanel implements ActionListener {
 		txtHint.setText(((Integer)hint).toString());
 		txtCorrect.setText(((Integer)correct).toString());
 		txtWrong.setText(((Integer)wrong).toString());
-		
+		lblNotice.setText("");
 		setQuizData();
 	}
 
@@ -110,16 +111,15 @@ public class QuizPanel extends JPanel implements ActionListener {
 		//get Quiz data 
 		InJungDao dao = InJungDao.getInstance();
 		dtos = dao.getQuizData();
-		System.out.println(dtos.isEmpty() + ", " + dtos.size());
 		Random rand = new Random();
-		answerIdx = rand.nextInt(dtos.size());
-		int hintIdx = rand.nextInt(dtos.size()-1);
+		answerIdx = rand.nextInt(idx);
+		int hintIdx = rand.nextInt(idx-1);
 		if(hintIdx == answerIdx) {
 			hintIdx = (answerIdx==0) ? hintIdx++ : hintIdx--; 
 		}
 		
 		// load images
-		for(int i=0;i<dtos.size();i++) {
+		for(int i=0;i<idx;i++) {
 			file = new File(dir,dtos.get(i).getPhoto());
 			if (!file.exists()) {
 				FileReceiver request = new FileReceiver(file, null);
@@ -243,7 +243,7 @@ public class QuizPanel extends JPanel implements ActionListener {
 			}
 			
 		} else if(e.getSource().equals(btnRetry)) {
-			
+			lblNotice.setText("");
 			initQuiz();
 			
 		} else if(e.getSource().equals(btnEnd)) {
@@ -259,6 +259,7 @@ public class QuizPanel extends JPanel implements ActionListener {
 			} else {
 				lblNotice.setText("틀렸습니다. 선택한 분은 " + dtos.get(0).getName() +" 입니다.");
 				wrong++;
+				txtWrong.setText(((Integer)wrong).toString());
 			}
 			
 			if(correct+wrong == 10) {
@@ -304,9 +305,9 @@ public class QuizPanel extends JPanel implements ActionListener {
 
 	private void showResults() {
 		lblNotice.setText("퀴즈를 다시 도전하려면 '다시하기'를 눌러주세요.");
-		String[] options = { "확인", "취소" };
+		String[] options = { "다시하기", "그만하기" };
 		int selected = JOptionPane.showOptionDialog(this, 
-				"======결과===== \n"
+				"=====결과===== \n"
 				+ "푼 문제 개수 : " + (correct+wrong)
 				+ "\n  맞은 개수 : " + correct
 				+ "\n사용한 힌트 : " + (3-hint),
