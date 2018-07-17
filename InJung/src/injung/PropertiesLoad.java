@@ -18,22 +18,11 @@ public class PropertiesLoad {
 		
 		Properties pro = null;
 		FileInputStream fis = null;
-		FileOutputStream fos = null;
 		
 		try {
 			pro = new Properties();				// properties 객체 생성 
 			fis = new FileInputStream(path);	// path를 인자로 받아 파일을 읽어옴
 			pro.load(fis);						// properties 에 load
-			
-			System.out.println(pro.getProperty("ID"));
-			System.out.println("pro.getProperty : " + pro.getProperty("ID"));
-			
-			String str = pro.getProperty("ID");
-			pro.setProperty("ID", str);
-			fos = new FileOutputStream(path);
-			pro.store(fos, "EDIT");
-			
-			System.out.println("strID : " + str);
 			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -42,7 +31,6 @@ public class PropertiesLoad {
 		} finally {
 			try {
 				if (fis!= null) fis.close();
-				if (fos!= null) fos.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 			}	

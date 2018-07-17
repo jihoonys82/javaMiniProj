@@ -3,7 +3,10 @@ package injung;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Properties;
 
 import javax.swing.JButton;
@@ -47,22 +50,40 @@ public class PropertyPanel extends JPanel implements ActionListener {
 	private JButton btnOk;
 	private JButton btnCancel;
 	
-	private static final int SUCCESSED = 0;
+	private static final int SUCCESSED = 0;	// ModifyValue 메소드가 정상작동시 반환값 
 	private static final int FAILED = 1;
 	
-	PropertiesLoad proLoad = new PropertiesLoad();
+	// properties를 load할 때 필요한 변수들 
+	PropertiesLoad proLoad = new PropertiesLoad();	// properties를 읽어오는 클래스 
 	private Properties prop = PropertiesLoad.getProperties();
 	
-	PropertiesStore proStore = new PropertiesStore();
+	// properties를 store할 때 필요햔 변수들 
+	PropertiesStore proStore = new PropertiesStore();	// properties를 내보내는 클래스 
 	private Properties pro = PropertiesStore.setProperties();
+	FileOutputStream fos;	
 	
-	String strPw = prop.getProperty("PW");	// String으로  Property안의 경로들 받아오기 
-	String strId = prop.getProperty("ID");
-	String strUrl = prop.getProperty("URL");
-	String strPhoto = prop.getProperty("PHOTOPATH");
-	String strPort = prop.getProperty("PORT");
-	String strHost = prop.getProperty("HOST");
-	String strLocation = prop.getProperty("LOCATION");
+	public void loadValue() {	// String으로  Property안의 경로들 받아오기 
+		String strPw = prop.getProperty("PW");
+		txtPw.setText(strPw); // 패스워드 받아오기 
+	
+		String strId = prop.getProperty("ID");
+		txtId.setText(strId); // ID 받아오기 
+		
+		String strUrl = prop.getProperty("URL");
+		txtUrl.setText(strUrl);	// URL 경로 받아오기 
+		
+		String strPhoto = prop.getProperty("PHOTOPATH");
+		txtPhotoFolder.setText(strPhoto);
+		
+		String strPort = prop.getProperty("PORT");
+		txtPort.setText(strPort);
+		
+		String strHost = prop.getProperty("HOST");
+		txtHost.setText(strHost);
+		
+		String strLocation = prop.getProperty("LOCATION");
+		txtLoc.setText(strLocation);	// 저장소 경로 받아오기 
+	}
 	
 	public PropertyPanel() {
 		setBounds(0,0,900,500);
@@ -78,7 +99,7 @@ public class PropertyPanel extends JPanel implements ActionListener {
 		lblDbRoute = new JLabel("DB 경로");	// DB 경로 
 		lblDbRoute.setBounds(203, 181, 99, 33);
 		
-		lblUrl = new JLabel("URL");
+		lblUrl = new JLabel("URL");	
 		lblUrl.setBounds(314, 190, 57, 15);
 		
 		lblId = new JLabel("ID");
@@ -102,46 +123,38 @@ public class PropertyPanel extends JPanel implements ActionListener {
 		txtPhotoFolder = new JTextField();	
 		txtPhotoFolder.setBounds(413, 125, 286, 27);
 		txtPhotoFolder.setColumns(10);
-		txtPhotoFolder.setText(strPhoto);	// 사진 폴더 경로 받아오기 
 		txtPhotoFolder.setEditable(true);
 		
 		txtUrl = new JTextField();	
 		txtUrl.setColumns(10);
 		txtUrl.setBounds(413, 184, 286, 27);
-		txtUrl.setText(strUrl);	// URL 경로 받아오기 
 		txtUrl.setEditable(true);
 		
 		txtId = new JTextField();
 		txtId.setColumns(10);
 		txtId.setBounds(413, 238, 286, 27);
-		txtId.setText(strId); // ID 받아오기 
 		txtId.setEditable(true);
 		
 		txtPw = new JTextField();
 		txtPw.setColumns(10);
 		txtPw.setBounds(413, 292, 286, 27);
-		txtPw.setText(strPw); // 패스워드 받아오기 
 		txtPw.setEditable(true);
 
 		txtLoc = new JTextField();
 		txtLoc.setColumns(10);
 		txtLoc.setBounds(413, 349, 286, 27);
-		txtLoc.setText(strLocation);	// 저장소 경로 받아오기 
 		txtLoc.setEditable(true);
 		
 		txtPort = new JTextField();
 		txtPort.setColumns(10);
 		txtPort.setBounds(414, 78, 286, 27);
-		txtPort.setText(strPort);
 		txtPort.setEditable(true);
 		
 		txtHost = new JTextField();
 		txtHost.setColumns(10);
 		txtHost.setBounds(414, 34, 286, 27);
-		txtHost.setText(strHost);
 		txtHost.setEditable(true);
 
-		
 		btnPane = new JPanel();	// 버튼 Panel 
 		btnPane.setBounds(0, 443, 884, 57);
 		btnPane.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
@@ -170,6 +183,8 @@ public class PropertyPanel extends JPanel implements ActionListener {
 		routePane.add(lblServer);
 		routePane.add(lblHost);
 		routePane.add(lblPort);
+		
+		loadValue();
 
 		add(btnPane);
 		add(routePane);
@@ -177,43 +192,25 @@ public class PropertyPanel extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource().equals(btnCancel)) {
-			
+		if (e.getSource().equals(btnCancel)) {	// 취소 버튼 클릭시 화면 지우기 
 			removeAll();
 			validate(); 
 			repaint();
 		
-		} else if (e.getSource().equals(btnOk)) {
-			checkProperty();
-//			pro.replace("PW", txtPw.getText());
+		} else if (e.getSource().equals(btnOk)) { // 확인버튼 클릭시 
+			modifyValue();					  // 값 변경 메소드 실행 
 			
-//			System.out.println(txtPw.getText());
-//			System.out.println(prop.getProperty("PW"));
-			
-			if (checkProperty() == SUCCESSED) {
+			if (modifyValue() == SUCCESSED) {	// 값 변경 되었을 때 설정 저장 다이어로그 띄우기
 			JOptionPane.showMessageDialog(null, "설정이 저장되었습니다");
-			}
-			
-		}
+			}	
+		}	// 첫번째 if문 끝
 	}
 	
-	
-	public int checkProperty() {	
+	public int modifyValue() {	// value 변경 메소드 
 		
 		int result = FAILED;
-		String strId = txtId.getText();
-		String strPw = txtPw.getText();
 		
-//		pro.replace("ID", strId);
-//		pro.replace("PW", txtPw.getText());
-//		pro.replace("PORT", txtPort.getText());
-//		pro.replace("HOST", txtHost.getText());
-//		pro.replace("LOCATION", txtLoc.getText());
-//		pro.replace("URL", txtUrl.getText());
-//		pro.replace("PHOTOPATH", txtPhotoFolder.getText());
-	
-		
-		pro.setProperty("ID",strId);	
+		pro.setProperty("ID",txtId.getText());	// 입력값 property에 set
 		pro.setProperty("PW", txtPw.getText());
 		pro.setProperty("PORT", txtPort.getText());
 		pro.setProperty("HOST", txtHost.getText());
@@ -221,13 +218,15 @@ public class PropertyPanel extends JPanel implements ActionListener {
 		pro.setProperty("URL", txtUrl.getText());
 		pro.setProperty("PHOTOPATH", txtPhotoFolder.getText());
 		
-//		System.out.println(strId);
-//		System.out.println(pro.getProperty("PW"));
-		
-//		pro.store(fos, "EDIT");
-//		FileOutputStream fos = new FileOutputStream(path, false);
-		result = SUCCESSED;
-		
+		try {
+			fos = new FileOutputStream("./Outcomes/Jdbc.properties");
+			pro.store(fos, "EDIT");	// 변경값 저장 
+			result = SUCCESSED;				// 변경 성공 시 result에 성공 반환 
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}	
 		return result;	
 	}
 	
