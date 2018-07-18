@@ -17,15 +17,12 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 /* 
- * 수정일자 : 2018.07.17
+ * 수정일자 : 2018.07.18
  * 
  * 수정자 : 권미현
  * 
- *  - redirect 메소드 기능 추가 : EditEmployeePanel
- *  - 이달의 생일 기능 관련 메소드, 변수 등 삭제 
- *  	→ BirthdayPanel 클래스로 분리
- *  	→ 이달의 생일 기능을 BirthdayPanel 생성자로 부르기
- *  - 다이어로그 정리
+ *  - 개인 일정 보기 : 컨테이너 연결
+ *  - 내 정보보기 : 개인 일정 & 이달의 생일 탭뷰 추가
  *  
  */
 
@@ -76,8 +73,9 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 	private JMenuItem help_Credit;
 	private JMenuItem help_About;
 	
-	//help메뉴 다이얼로그
+	// 다이얼로그 (로그인, 내보내기, 도움말, 인정?어인정에 대하여)
 	private JDialog dialog;
+	
 		
 	public MainFrame() {
 		
@@ -283,9 +281,8 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 		help_Credit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, KeyEvent.ALT_MASK));
 		help_About.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.ALT_MASK));
 	
-		
 	}
-	
+
 	
 	private void initRootContainer() {	
 		
@@ -316,7 +313,8 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 					root.removeAll();
 					
 					root.add(new EmployeeInfoPanel(id));
-					root.add(new BirthdayPanel(), BorderLayout.SOUTH); // 이달의 생일
+					root.add(new PersonCalendar(id, "tab", true), BorderLayout.SOUTH); // 개인 일정 & 이달의 생일 tab
+					
 					setTitle("내 정보");
 
 					root.validate(); // 컴포넌트 검증 (메모리 상태 확인) - 메모리 확실하게
@@ -408,8 +406,9 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 		if (e.getSource() == view_MyView) {
 			root.removeAll();
 			
-			root.add(new EmployeeInfoPanel(id)); // 컨테이너 넣기
-			root.add(new BirthdayPanel(), BorderLayout.SOUTH);; // 이달의 생일
+			root.add(new EmployeeInfoPanel(id)); // 컨테이너 넣기;
+			root.add(new PersonCalendar(id, "tab", true), BorderLayout.SOUTH); // 개인 일정 & 이달의 생일 tab
+			
 			setTitle("내 정보 보기");
 			
 			root.validate(); // 컴포넌트 검증 (메모리 상태 확인) - 메모리 확실하게
@@ -461,7 +460,7 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 		if (e.getSource() == calendar_PersonView) {
 			root.removeAll();
 			
-//			root.add(comp); // 컨테이너 넣기
+			root.add(new PersonCalendar(id, "normal", false)); // 컨테이너 넣기
 			setTitle("개인 일정보기");
 			
 			root.validate(); // 컴포넌트 검증 (메모리 상태 확인) - 메모리 확실하게
@@ -501,6 +500,7 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 		}
 		// 도움말
 		else if (e.getSource() == help_Help) {
+			
 			dialog = new HelpDialog(
 					this, 
 					"도움말",
@@ -509,6 +509,7 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 					getY()+100);
 				
 			dialog.setVisible(true);
+			
 		}
 		// 크레딧
 		else if (e.getSource() == help_Credit) {
@@ -516,6 +517,7 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 		}
 		// 인정?어인정에 대하여
 		else if (e.getSource() == help_About) {
+			
 			dialog = new AboutInjungDialog(
 				this, 
 				"인정?어인정에 대하여",
@@ -563,7 +565,6 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 			root.removeAll();
 			
 			root.add(new EmployeeInfoPanel(param));
-			root.add(new BirthdayPanel(), BorderLayout.SOUTH);; // 이달의 생일
 			
 			root.validate();
 			root.repaint();

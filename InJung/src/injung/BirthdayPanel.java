@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Vector;
 
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -18,10 +17,14 @@ import injung.model.InJungDao;
 
 /*
  * 작성일자 : 2018.07.17
+ * 수정일자 : 2018.07.18
  * 
  * 작성자 : 권미현
+ * 수정자 : 권미현
  * 
  * 이달의 생일 기능 (JTable)
+ * 
+ * - JLabel 제거
  * 
  */
 
@@ -35,9 +38,8 @@ public class BirthdayPanel extends JPanel {
 	@SuppressWarnings("unused")
 	private static SimpleDateFormat dateFormat; // 현재 달만 출력
 	
-	
 	// Table Panel
-	private JPanel tablePanel;
+	private JPanel bTablePanel; // birth
 	
 	
 	// JTable 설정
@@ -50,9 +52,6 @@ public class BirthdayPanel extends JPanel {
 	
 	// JTable - 스크롤바
 	private JScrollPane jScrollPane; // 컴포넌트 스크롤바
-	
-	// JLabel - 라벨
-	private JLabel birthLabel;	// 이달의 생일 Label
 	
 	
 	//DAO, DTO (생일)
@@ -80,14 +79,11 @@ public class BirthdayPanel extends JPanel {
 		
 	}
 	
-	public void initTablePanel(ArrayList<EmployeeDto> birthDto) {
+	private void initTablePanel(ArrayList<EmployeeDto> birthDto) {
 		
-		tablePanel = new JPanel();
-		tablePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 80, 10));
-		tablePanel.setPreferredSize(new Dimension(800, 250)); // tablePanel 크기 지정
-		
-		birthLabel = new JLabel("이달의 생일");
-		birthLabel.setPreferredSize(new Dimension(800, 20)); // birthLabel 크기 지정
+		bTablePanel = new JPanel();
+		bTablePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 5));
+		bTablePanel.setPreferredSize(new Dimension(800, 200)); // bTablePanel 크기 지정
 		
 		
 		// --- 테이블 속성 ---
@@ -140,11 +136,9 @@ public class BirthdayPanel extends JPanel {
 		
 		jScrollPane.setPreferredSize(new Dimension(800, 200)); // jScrollPane(birthTable) 크기 지정
 		
-		tablePanel.add(birthLabel);
-		tablePanel.add(jScrollPane);
+		bTablePanel.add(jScrollPane);
 		
-		
-		add(tablePanel);
+		add(bTablePanel);
 	}
 	
 }
