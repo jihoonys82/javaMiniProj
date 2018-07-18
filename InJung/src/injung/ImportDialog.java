@@ -3,7 +3,13 @@ package injung;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -53,9 +59,7 @@ public class ImportDialog extends JDialog implements ActionListener {
 	private File teamBackup = new File(dir, "TeamBackup.dat");
 	
 	private InJungDao dao = InJungDao.getInstance();
-	private EmployeeDto eDto;
 	private ArrayList<EmployeeDto> eDtos;
-	private TeamDto tDto;
 	private ArrayList<TeamDto> tDtos;
 	
 	public ImportDialog() {
@@ -183,17 +187,118 @@ public class ImportDialog extends JDialog implements ActionListener {
 	}
 	
 	private int importEmp() {
-		// TODO Auto-generated method stub
-		return 0;
+		int rtn = 0;
+		empBackup = new File(txtEmp.getText());
+		
+		if(!empBackup.exists()) return 0; 
+		
+		FileInputStream fis = null;
+		BufferedInputStream bis = null;
+		ObjectInputStream ois = null; 
+		
+		eDtos = new ArrayList<>();
+		
+		try {
+			fis = new FileInputStream(empBackup);
+			bis = new BufferedInputStream(fis);
+			ois = new ObjectInputStream(bis);
+			
+			eDtos = (ArrayList<EmployeeDto>) ois.readObject();
+			
+			for(EmployeeDto e : eDtos) {
+				if(!dao.isExist(e.getEmployeeId())) {
+					dao.insertEmployee(e);
+					rtn++;
+				}
+			}
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(ois!=null) ois.close();
+				if(bis!=null) bis.close();
+				if(fis!=null) fis.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return rtn;
 	}
 
 	private int importTeam() {
-		// TODO Auto-generated method stub
-		return 0;
+		int rtn = 0;
+		teamBackup = new File(txtTeam.getText());
+		
+		if(!teamBackup.exists()) return 0; 
+		
+		FileInputStream fis = null;
+		BufferedInputStream bis = null;
+		ObjectInputStream ois = null; 
+		
+		eDtos = new ArrayList<>();
+		
+		try {
+			fis = new FileInputStream(teamBackup);
+			bis = new BufferedInputStream(fis);
+			ois = new ObjectInputStream(bis);
+			
+			tDtos = (ArrayList<TeamDto>) ois.readObject();
+			
+			for(TeamDto t : tDtos) {
+				if(!dao.isExist(t.getTeamName())) {
+					dao.insertTeam(t);
+					rtn++;
+				}
+			}
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(ois!=null) ois.close();
+				if(bis!=null) bis.close();
+				if(fis!=null) fis.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return rtn;
 	}
 
 	private int importPhoto() {
-		// TODO Auto-generated method stub
-		return 0;
+		int rtn = 0; 
+		dirPhoto = new File(txtPhoto.getText());
+		String[] imgExtension = {"jpg", "jpeg", "png", "bmp", "gif", "tiff"};
+		File[] photoFiles = dirPhoto.listFiles(new FilenameFilter() {
+			
+			@Override
+			public boolean accept(File dir, String name) {
+				for(String img : imgExtension) {
+					if( name.endsWith("."+img)) {
+						return true;
+					}
+				}
+				return false;
+			}
+		});
+		
+		for(File photo : photoFiles) {
+			FileSender sender = new FileSender(photo);
+			sender.start();
+			rtn ++;
+		}
+		
+		return rtn;
 	}
 }

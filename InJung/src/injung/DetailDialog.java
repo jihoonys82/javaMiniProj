@@ -1,7 +1,6 @@
 package injung;
 
 import javax.swing.JDialog;
-import javax.swing.JPanel;
 
 public class DetailDialog extends JDialog {
 

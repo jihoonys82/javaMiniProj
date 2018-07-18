@@ -958,6 +958,87 @@ public class InJungDao {
 		return dtos;
 	}
 	
+	/**
+	 * Check employee is exist
+	 * @param employeeId
+	 * @return true: exist, false: not exist
+	 */
+	public boolean isExist(int employeeId) {
+		boolean exist = false;
+		Connection connection = null;
+		PreparedStatement pstmt = null;
+		ResultSet set = null;
+		String query = "SELECT COUNT(employeeId) AS c FROM employee"
+				+ " WHERE employeeId=?";
+
+		try {
+			connection = getConnection();
+			pstmt = connection.prepareStatement(query);
+			pstmt.setInt(1, employeeId);
+			set = pstmt.executeQuery();
+
+			if (set.next()) {
+				if(set.getInt("c")!= 0) {
+					exist = true;
+				} 
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (set != null)
+					set.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (connection != null)
+					connection.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return exist;
+	}
+	
+	/**
+	 * Check team is exist
+	 * @param teamName
+	 * @return true: exist, false: not exist
+	 */
+	public boolean isExist(String teamName) {
+		boolean exist = false;
+		Connection connection = null;
+		PreparedStatement pstmt = null;
+		ResultSet set = null;
+		String query = "SELECT COUNT(teamName) AS c FROM team"
+				+ " WHERE teamName=?";
+
+		try {
+			connection = getConnection();
+			pstmt = connection.prepareStatement(query);
+			pstmt.setString(1, teamName);
+			set = pstmt.executeQuery();
+
+			if (set.next()) {
+				if(set.getInt("c")!= 0) {
+					exist = true;
+				} 
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (set != null)
+					set.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (connection != null)
+					connection.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return exist;
+	}
 
 	private Connection getConnection() {
 		Connection connection = null;
