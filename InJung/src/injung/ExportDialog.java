@@ -59,7 +59,7 @@ public class ExportDialog extends JDialog implements ActionListener {
 	private JButton btnCancel;
 	
 	private JFileChooser chooser;
-	private File backDir = new File("c:/InjungBackup");
+	private File backDir = new File(PropertiesLoad.getProperties().getProperty("Location"));
 	private JLabel lblWarning;
 	
 	
@@ -144,7 +144,6 @@ public class ExportDialog extends JDialog implements ActionListener {
 		if(e.getSource().equals(btnSelectFolder)) {
 			chooser = new JFileChooser(backDir);
 			chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-//			chooser.setCurrentDirectory(backDir);
 			int returnVal = chooser.showOpenDialog(this);
 			if(returnVal==JFileChooser.APPROVE_OPTION) {
 				txtPath.setText(chooser.getSelectedFile().toString());
@@ -168,7 +167,6 @@ public class ExportDialog extends JDialog implements ActionListener {
 			System.out.println("");
 			
 			if (selected == 0) { 
-//				System.out.println("»Æ¿Œ ≈¨∏Øµ ");
 				File backDir = new File(txtPath.getText());
 				if(!backDir.exists()) backDir.mkdir();
 				

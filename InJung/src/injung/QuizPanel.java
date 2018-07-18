@@ -62,6 +62,7 @@ public class QuizPanel extends JPanel implements ActionListener {
 	private JTextField txtWrong = new JTextField();
 	
 	private final int idx = 3;
+	private final int max_hint =3;
 	private int hint;
 	private int wrong;
 	private int correct;
@@ -70,13 +71,16 @@ public class QuizPanel extends JPanel implements ActionListener {
 	
 	private ArrayList<EmployeeDto> dtos;
 	
-	private File dir = new File("./Photo");
+	private File dir;
 	private File file;
 	
 	/**
 	 * setup quizPanel
 	 */
 	public QuizPanel() {
+		// Load Properties from proerpties file 
+		dir = new File(PropertiesLoad.getProperties().getProperty("PHOTOPATH"));
+		
 		// set quizPanel
 		setLayout(null);
 
@@ -91,7 +95,7 @@ public class QuizPanel extends JPanel implements ActionListener {
 	}
 
 	private void initQuiz() {
-		hint = 3; 
+		hint = max_hint; 
 		correct = 0;
 		wrong = 0;
 		
@@ -310,7 +314,7 @@ public class QuizPanel extends JPanel implements ActionListener {
 				"=====결과===== \n"
 				+ "푼 문제 개수 : " + (correct+wrong)
 				+ "\n  맞은 개수 : " + correct
-				+ "\n사용한 힌트 : " + (3-hint),
+				+ "\n사용한 힌트 : " + (max_hint-hint),
 				
 				"Confirm",
 				JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);

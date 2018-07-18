@@ -106,7 +106,7 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 
 	// FileChooser(for photo upload)
 	private JFileChooser fileChooser = new JFileChooser();
-	private File dir = new File("./Photo");
+	private File dir;
 	private File photoFile;
 
 	// Buttons
@@ -124,7 +124,9 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 	 * Edit Employ Panel for new employee
 	 */
 	public EditEmployeePanel() {
-
+		// Load properties from Properties file
+		dir = new File(PropertiesLoad.getProperties().getProperty("PHOTOPATH"));
+		
 		// set up main Panel
 		setLayout(null);
 
@@ -159,7 +161,7 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 		lblPhoto.setHorizontalAlignment(SwingConstants.CENTER);
 
 		// lblPhoto
-		lblPhoto.setIcon(new ImageIcon("./Photo/no_avatar.jpg"));
+		lblPhoto.setIcon(new ImageIcon(dir.getAbsolutePath()+"no_avatar.jpg"));
 		lblPhoto.setBounds(24, 10, 150, 200);
 
 		// btnPhotoUpload
@@ -443,7 +445,7 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 
 		// if photo is not exist attempt to download photoFile from server.
 		if (photoFile.exists()) {
-			lblPhoto.setIcon(new ImageIcon("./Photo/" + eDto.getPhoto()));
+			lblPhoto.setIcon(new ImageIcon(dir.getAbsolutePath() + eDto.getPhoto()));
 		} else {
 			FileReceiver request = new FileReceiver(photoFile, lblPhoto);
 			request.start();
@@ -470,7 +472,7 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 		txtEmail.setText("");
 		txtLocation.setText("");
 		lblPhoto.setText("");
-		lblPhoto.setIcon(new ImageIcon("./Photo/no_avatar.jpg"));
+		lblPhoto.setIcon(new ImageIcon(dir.getAbsolutePath()+"no_avatar.jpg"));
 	}
 
 	/**

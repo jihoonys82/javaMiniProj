@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.nio.file.Files;
+import java.util.Properties;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -33,10 +34,12 @@ public class FileReceiver extends Thread {
 	private DataInputStream dis;
 	private BufferedInputStream bis;
 
-	private String host = "localhost";
-	private int port = 9998;
+	private String host;
+	private int port;
 
 	private JLabel lbl;
+	
+	private Properties prop = PropertiesLoad.getProperties();
 
 	/**
 	 * File Receiver Constructor
@@ -44,6 +47,10 @@ public class FileReceiver extends Thread {
 	 * @param file : Source file
 	 */
 	public FileReceiver(File file, JLabel lbl) {
+		// Load properties from properties file.
+		host = prop.getProperty("HOST");
+		port = Integer.parseInt(prop.getProperty("PORT"));
+		
 		this.file = file;
 		this.lbl = lbl;
 	}

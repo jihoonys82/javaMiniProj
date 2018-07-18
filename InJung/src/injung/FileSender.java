@@ -25,8 +25,8 @@ public class FileSender extends Thread {
 	private DataOutputStream dos;
 	private BufferedOutputStream bos;
 
-	private String host = "localhost";
-	private int port = 9998;
+	private String host;
+	private int port;
 
 	/**
 	 * File Sender Constructor
@@ -34,6 +34,9 @@ public class FileSender extends Thread {
 	 * @param file : Source file
 	 */
 	public FileSender(File file) {
+		host = PropertiesLoad.getProperties().getProperty("HOST");
+		port = Integer.parseInt(PropertiesLoad.getProperties().getProperty("PORT"));
+		
 		this.file = file;
 	}
 

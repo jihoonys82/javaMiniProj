@@ -67,14 +67,16 @@ public class EmployeeInfoPanel extends JPanel implements ActionListener {
 	private JButton btnEditInfo = new JButton("Edit Info");
 
 	// Files
-	private File dir = new File("./Photo");
+	private File dir;
 	private File file;
 
 	/**
 	 * Initialize EmployInfoPanel
 	 */
 	public EmployeeInfoPanel() {
-
+		// Load properties from properties file
+		dir = new File(PropertiesLoad.getProperties().getProperty("PHOTOPATH"));
+		
 		// set up main Panel
 		setLayout(null);
 
@@ -180,7 +182,7 @@ public class EmployeeInfoPanel extends JPanel implements ActionListener {
 		photoNamePane.setLayout(null);
 
 		// lblPhoto
-		lblPhoto.setIcon(new ImageIcon("./Photo/no_avatar.jpg"));
+		lblPhoto.setIcon(new ImageIcon(dir.getAbsolutePath()+"no_avatar.jpg"));
 		lblPhoto.setBounds(24, 10, 150, 200);
 
 		// lblTeam
