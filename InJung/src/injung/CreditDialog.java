@@ -2,6 +2,8 @@ package injung;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -9,9 +11,18 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.EtchedBorder;
 
-public class CreditDialog extends JDialog {
+public class CreditDialog extends JDialog implements ActionListener {
 
+	/**
+	 * 크레딧 다이얼로그
+	 * 작성자 : 이현우
+	 * 최근 작성일 : 7.18
+	 * 내용 : 
+	 */
+	private static final long serialVersionUID = 1L;
 	//컴포넌트 필드
 	JLabel lblPhoto = null;
 	JButton btnClose = null;
@@ -27,11 +38,12 @@ public class CreditDialog extends JDialog {
 		
 		//txtContent 설정
 		txtContent = new JTextArea();
-		txtContent.setBounds(10, 10, 360, 420);
+		txtContent.setBounds(10, 10, 360, 430);
 		txtContent.setFont(new Font("고딕",Font.BOLD,16));
 		txtContent.setEditable(false);
 		txtContent.setLineWrap(true);
 		txtContent.setBackground(new Color(238, 238, 238));
+		txtContent.setBorder(new BevelBorder(BevelBorder.RAISED));
 		
 		String txt = "\t<제작자 소개>\r\n" + 
 				"\r\n" + 
@@ -52,16 +64,25 @@ public class CreditDialog extends JDialog {
 		
 		//lblPhoto 설정
 		lblPhoto = new JLabel(new ImageIcon("./photo/credit.jpg"));
-		lblPhoto.setBounds(370, 30, 400, 300);
+		lblPhoto.setBounds(375, 10, 400, 360);
+		lblPhoto.setBorder(new EtchedBorder());
 		
 		//btnClose 설정
 		btnClose = new JButton("닫기");
-		btnClose.setBounds(660, 360, 100, 50);
+		btnClose.setBounds(670, 380, 100, 50);
 		
 		add(txtContent);
 		add(lblPhoto);
 		add(btnClose);
 		
+		btnClose.addActionListener(this);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource() == btnClose) {
+			dispose();
+		}
 	}
 	
 }
