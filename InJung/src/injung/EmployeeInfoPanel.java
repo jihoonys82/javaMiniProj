@@ -67,15 +67,13 @@ public class EmployeeInfoPanel extends JPanel implements ActionListener {
 	private JButton btnEditInfo = new JButton("Edit Info");
 
 	// Files
-	private File dir;
+	private File dir = new File(PropertiesLoad.getProperties().getProperty("PHOTOPATH"));
 	private File file;
 
 	/**
 	 * Initialize EmployInfoPanel
 	 */
 	public EmployeeInfoPanel() {
-		// Load properties from properties file
-		dir = new File(PropertiesLoad.getProperties().getProperty("PHOTOPATH"));
 		
 		// set up main Panel
 		setLayout(null);

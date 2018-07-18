@@ -513,7 +513,14 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 		}
 		// 크레딧
 		else if (e.getSource() == help_Credit) {
-			
+			dialog = new CreditDialog(
+					this, 
+					"크레딧",
+					true, 
+					getX()+100,
+					getY()+50);
+				
+				dialog.setVisible(true);
 		}
 		// 인정?어인정에 대하여
 		else if (e.getSource() == help_About) {
