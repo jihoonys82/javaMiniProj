@@ -12,6 +12,8 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.ListSelectionModel;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.EtchedBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -41,10 +43,12 @@ public class HelpDialog extends JDialog implements ListSelectionListener, Action
 		setLayout(null);
 		
 		//JList 설정
-		String[] data = {"File메뉴","Record메뉴","View메뉴","Help메뉴"};
+		String[] data = {"File메뉴","Record메뉴","View메뉴","Calender","Help메뉴"};
 		list = new JList<>(data);
-		list.setBounds(10, 20, 80, 80);
-		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);	
+		list.setBounds(10, 20, 80, 105);
+		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		list.setBackground(new Color(238, 238, 238));
+		list.setBorder(new BevelBorder(BevelBorder.LOWERED));
 		
 		//TextArea 설정
 		txtHelp = new JTextArea();
@@ -57,6 +61,7 @@ public class HelpDialog extends JDialog implements ListSelectionListener, Action
 		scrollPane = new JScrollPane(txtHelp, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     	scrollPane.setBounds(100, 20, 360, 250);
+    	scrollPane.setBorder(new EtchedBorder());
     	
     	//btnClose 설정
     	btnClose = new JButton("닫기");
@@ -87,6 +92,7 @@ public class HelpDialog extends JDialog implements ListSelectionListener, Action
 					"<환경설정>\r\n" + 
 					"서버와 DB, 디렉토리등을 설정할 수 있습니다.\r\n";
 			txtHelp.setText(txt);
+			txtHelp.setCaretPosition(0);
 		}
 		if(list.getSelectedIndex()==1) {
 			txt="<신규등록>\r\n" + 
@@ -99,6 +105,7 @@ public class HelpDialog extends JDialog implements ListSelectionListener, Action
 				"생성된 부서를 통해 사원을 팀 단위로 관리\r\n" + 
 				"할 수 있습니다.\r\n";
 			txtHelp.setText(txt);
+			txtHelp.setCaretPosition(0);
 		}
 		if(list.getSelectedIndex()==2) {
 			txt="<내 정보 보기>\r\n" + 
@@ -115,8 +122,10 @@ public class HelpDialog extends JDialog implements ListSelectionListener, Action
 				"팀별 사원의 정보를 3명 단위로 확인할 수 있습니다.\r\n"
 				+ " 상세보기 기능을 통해 원하는 사원의 정보를 상세히 확인할 수 있습니다.\r\n";
 			txtHelp.setText(txt);
+			txtHelp.setCaretPosition(0);
+			
 		}
-		if(list.getSelectedIndex()==3) {
+		if(list.getSelectedIndex()==4) {
 			txt="<퀴즈>\r\n" + 
 				"사원 맞추기 퀴즈를 제공합니다.\r\n" + 
 				"<도움말>\r\n" + 
@@ -126,6 +135,7 @@ public class HelpDialog extends JDialog implements ListSelectionListener, Action
 				"<인정? 어인정에 대하여>\r\n" + 
 				"프로그램 버전 정보등을 확인합니다";
 			txtHelp.setText(txt);
+			txtHelp.setCaretPosition(0);
 		}
 		
 	}

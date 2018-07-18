@@ -12,6 +12,7 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.border.BevelBorder;
 
 public class AboutInjungDialog extends JDialog implements ActionListener{
 	
@@ -79,8 +80,8 @@ public class AboutInjungDialog extends JDialog implements ActionListener{
 		//lblLogo ¼³Á¤
 		lblLogo = new JLabel();
 		lblLogo.setIcon(new ImageIcon("./photo/logo.jpg"));
-		lblLogo.setBounds(0, 0, 120, 120);
-		
+		lblLogo.setBounds(5, 2, 120, 120);
+		lblLogo.setBorder(new BevelBorder(BevelBorder.RAISED));
 		
 		btnPane.add(btnCancel);
 		btnPane.add(lblLogo);
