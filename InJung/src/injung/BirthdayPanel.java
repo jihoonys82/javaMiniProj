@@ -26,6 +26,7 @@ import injung.model.InJungDao;
  * 
  * - JLabel 제거
  * - JTable 사이즈 고정 및 컬럼 이동 불가 설정
+ * - 불필요한 소스 코드 삭제
  * 
  */
 
@@ -84,7 +85,6 @@ public class BirthdayPanel extends JPanel {
 		
 		bTablePanel = new JPanel();
 		bTablePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 5));
-		bTablePanel.setPreferredSize(new Dimension(800, 200)); // bTablePanel 크기 지정
 		
 		
 		// --- 테이블 속성 ---
