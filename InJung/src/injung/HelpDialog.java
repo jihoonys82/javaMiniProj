@@ -2,6 +2,8 @@ package injung;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -13,7 +15,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-public class HelpDialog extends JDialog implements ListSelectionListener{
+public class HelpDialog extends JDialog implements ListSelectionListener, ActionListener{
 
 	/**
 	 * 도움말 다이얼로그
@@ -64,6 +66,7 @@ public class HelpDialog extends JDialog implements ListSelectionListener{
 		add(list);
 		add(btnClose);
 		
+		btnClose.addActionListener(this);
 		list.addListSelectionListener(this);
 
 	}
@@ -124,6 +127,13 @@ public class HelpDialog extends JDialog implements ListSelectionListener{
 				"프로그램 버전 정보등을 확인합니다";
 			txtHelp.setText(txt);
 		}
+		
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource()==btnClose)
+			dispose();
 		
 	}
 }
