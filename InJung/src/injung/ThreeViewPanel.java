@@ -324,22 +324,28 @@ import injung.model.InJungDao;
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource().equals(btnDetailView[0])) {
-			
-			JDialog dialog = new DetailDialog(new EmployeeInfoPanel(dtos.get(0).getEmployeeId(), true));
-			dialog.setSize(700, 400);
-			dialog.setVisible(true);
+			if(dtos.get(0).getName()!="-") {
+				JDialog dialog = new DetailDialog(new EmployeeInfoPanel(dtos.get(0).getEmployeeId(), true));
+				dialog.setLocationRelativeTo(this);
+				dialog.setSize(700, 400);
+				dialog.setVisible(true);
+			}
 		
 		} else if(e.getSource().equals(btnDetailView[1])) {
-			JDialog dialog = new DetailDialog(new EmployeeInfoPanel(dtos.get(1).getEmployeeId(), true));
-			dialog.setSize(700, 400);
-			dialog.setVisible(true);
-			
+			if(dtos.get(1).getName()!="-") {
+				JDialog dialog = new DetailDialog(new EmployeeInfoPanel(dtos.get(1).getEmployeeId(), true));
+				dialog.setLocationRelativeTo(this);
+				dialog.setSize(700, 400);
+				dialog.setVisible(true);
+			}
 			
 		} else if(e.getSource().equals(btnDetailView[2])) {
-			JDialog dialog = new DetailDialog(new EmployeeInfoPanel(dtos.get(2).getEmployeeId(), true));
-			dialog.setSize(700, 400);
-			dialog.setVisible(true);
-		
+			if(dtos.get(2).getName()!="-") {
+				JDialog dialog = new DetailDialog(new EmployeeInfoPanel(dtos.get(2).getEmployeeId(), true));
+				dialog.setLocationRelativeTo(this);
+				dialog.setSize(700, 400);
+				dialog.setVisible(true);
+			}
 			
 		} else if(e.getSource().equals(btnPrivView)) {
 			if(CountPage>1) {

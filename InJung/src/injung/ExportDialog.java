@@ -59,7 +59,7 @@ public class ExportDialog extends JDialog implements ActionListener {
 	private JButton btnCancel;
 	
 	private JFileChooser chooser;
-	private File backDir = new File(PropertiesLoad.getProperties().getProperty("Location"));
+	private File backDir = new File(PropertiesLoad.getProperties().getProperty("LOCATION"));
 	private JLabel lblWarning;
 	
 	
