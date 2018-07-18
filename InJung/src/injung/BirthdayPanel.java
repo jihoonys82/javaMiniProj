@@ -25,6 +25,7 @@ import injung.model.InJungDao;
  * 이달의 생일 기능 (JTable)
  * 
  * - JLabel 제거
+ * - JTable 사이즈 고정 및 컬럼 이동 불가 설정
  * 
  */
 
@@ -124,12 +125,15 @@ public class BirthdayPanel extends JPanel {
 		}
 		
 		// 컬럼 사이즈
+		birthTable.getTableHeader().setResizingAllowed(false); // 사이즈 조절 못하게 고정하기
+		birthTable.getTableHeader().setReorderingAllowed(false); // 컬럼 이동 못하게 고정하기
+		// 	너비
 		birthTable.getColumnModel().getColumn(0).setPreferredWidth(200);
 		birthTable.getColumnModel().getColumn(1).setPreferredWidth(110);
 		birthTable.getColumnModel().getColumn(2).setPreferredWidth(200);
 		birthTable.getColumnModel().getColumn(3).setPreferredWidth(110);
 		birthTable.getColumnModel().getColumn(4).setPreferredWidth(180);
-		birthTable.setRowHeight(30);
+		birthTable.setRowHeight(30); // 높이
 		
 		
 		jScrollPane = new JScrollPane(birthTable);

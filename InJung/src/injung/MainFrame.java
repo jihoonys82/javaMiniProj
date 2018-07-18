@@ -313,7 +313,7 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 					root.removeAll();
 					
 					root.add(new EmployeeInfoPanel(id));
-					root.add(new PersonCalendar(id, "tab", true), BorderLayout.SOUTH); // 개인 일정 & 이달의 생일 tab
+					root.add(new PersonCalendarPanel(id, "tab", true), BorderLayout.SOUTH); // 개인 일정 & 이달의 생일 tab
 					
 					setTitle("내 정보");
 
@@ -407,7 +407,7 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 			root.removeAll();
 			
 			root.add(new EmployeeInfoPanel(id)); // 컨테이너 넣기;
-			root.add(new PersonCalendar(id, "tab", true), BorderLayout.SOUTH); // 개인 일정 & 이달의 생일 tab
+			root.add(new PersonCalendarPanel(id, "tab", true), BorderLayout.SOUTH); // 개인 일정 & 이달의 생일 tab
 			
 			setTitle("내 정보 보기");
 			
@@ -460,7 +460,7 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 		if (e.getSource() == calendar_PersonView) {
 			root.removeAll();
 			
-			root.add(new PersonCalendar(id, "normal", false)); // 컨테이너 넣기
+			root.add(new PersonCalendarPanel(id, "normal", false)); // 컨테이너 넣기
 			setTitle("개인 일정보기");
 			
 			root.validate(); // 컴포넌트 검증 (메모리 상태 확인) - 메모리 확실하게

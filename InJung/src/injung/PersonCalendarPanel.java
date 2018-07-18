@@ -24,11 +24,12 @@ import injung.model.InJungDao;
  * 개인 일정
  * 
  * - 탭뷰 메소드 추가 : initTab()
+ * - JTable 사이즈 조절 및 사이즈 고정, 컬럼 이동 불가 설정
  * 
  */
 
 @SuppressWarnings("serial")
-public class PersonCalendar extends JPanel{
+public class PersonCalendarPanel extends JPanel{
 	
 	private int id;
 
@@ -59,7 +60,7 @@ public class PersonCalendar extends JPanel{
 	private JTabbedPane tab;
 	
 	
-	public PersonCalendar(int id, String msg, boolean tab) {
+	public PersonCalendarPanel(int id, String msg, boolean tab) {
 		
 		System.out.println("PersonCalendar getId : " + id);
 		
@@ -122,14 +123,17 @@ public class PersonCalendar extends JPanel{
 		}
 		
 		// 컬럼 사이즈
-//		calenTable.getColumnModel().getColumn(0).setPreferredWidth(200);
-//		calenTable.getColumnModel().getColumn(1).setPreferredWidth(110);
-//		calenTable.getColumnModel().getColumn(2).setPreferredWidth(200);
-//		calenTable.getColumnModel().getColumn(3).setPreferredWidth(110);
-//		calenTable.getColumnModel().getColumn(4).setPreferredWidth(180);
-//		calenTable.getColumnModel().getColumn(5).setPreferredWidth(180);
-//		calenTable.getColumnModel().getColumn(6).setPreferredWidth(180);
-		calenTable.setRowHeight(30);
+		calenTable.getTableHeader().setResizingAllowed(false); // 사이즈 조절 못하게 고정하기
+		calenTable.getTableHeader().setReorderingAllowed(false); // 컬럼 이동 못하게 고정하기
+		// 	너비
+		calenTable.getColumnModel().getColumn(0).setPreferredWidth(30);
+		calenTable.getColumnModel().getColumn(1).setPreferredWidth(100);
+		calenTable.getColumnModel().getColumn(2).setPreferredWidth(180);
+		calenTable.getColumnModel().getColumn(3).setPreferredWidth(180);
+		calenTable.getColumnModel().getColumn(4).setPreferredWidth(180);
+		calenTable.getColumnModel().getColumn(5).setPreferredWidth(70);
+		calenTable.getColumnModel().getColumn(6).setPreferredWidth(160);
+		calenTable.setRowHeight(30); // 높이
 		
 		jScrollPane = new JScrollPane(calenTable);
 		
@@ -154,7 +158,7 @@ public class PersonCalendar extends JPanel{
 		
 //		tab.setLayout(new FlowLayout(FlowLayout.CENTER));
 		
-		tab.add("개인 일정", new PersonCalendar(id, "normal", true));
+		tab.add("개인 일정", new PersonCalendarPanel(id, "normal", true));
 		tab.add("이달의 생일", new BirthdayPanel());
 		
 		tab.setPreferredSize(new Dimension(850, 250)); // jScrollPane(birthTable) 크기 지정
