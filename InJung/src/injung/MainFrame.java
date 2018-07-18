@@ -24,6 +24,7 @@ import javax.swing.KeyStroke;
  *  - 개인 일정 보기 : 컨테이너 연결
  *  - 내 정보보기 : 개인 일정 & 이달의 생일 탭뷰 추가
  *  - 가져오기 : MainFrame에 연결
+ *  - MainFrame 창 사이즈 고정
  *  
  */
 
@@ -86,6 +87,7 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 //		setBounds(300, 100, 1000, 650);
 		
 		setSize(1000, 650);
+		setResizable(false);	// 창 사이즈 조절 못하게 하기
 		
 		//모니터 화면 중앙에 배치하기
 		Dimension frameSize = getSize(); // 프레임 사이즈

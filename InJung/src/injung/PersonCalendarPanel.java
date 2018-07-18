@@ -2,9 +2,12 @@ package injung;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Vector;
 
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -25,6 +28,7 @@ import injung.model.InJungDao;
  * 
  * - 탭뷰 메소드 추가 : initTab()
  * - JTable 사이즈 조절 및 사이즈 고정, 컬럼 이동 불가 설정
+ * - 일정 추가 버튼 추가 (아직 기능 구현 x) 및 레이아웃 수정
  * 
  */
 
@@ -33,8 +37,16 @@ public class PersonCalendarPanel extends JPanel{
 	
 	private int id;
 
+	// Button Panel
+	private JPanel cButtonPanel;
+	
 	// Table Panel
 	private JPanel cTablePanel; // calendar
+	
+	
+	// JButton
+	private JButton addButton;	// 개인 일정 추가 Button
+	
 	
 	// JTable 설정
 	private JTable calenTable; // 개인 일정 Table
@@ -71,6 +83,12 @@ public class PersonCalendarPanel extends JPanel{
 		calendarDto = new ArrayList<>();
 		calendarDto = dao.getAllTasks(id);
 		
+		
+//		if (!tab) {
+//			setLayout(new FlowLayout(FlowLayout.TRAILING, 40, 5));
+//			initButtonPanel();
+//		}
+		
 		if (msg == "normal") {
 			initTablePanel(calendarDto, tab);
 		} else if (msg == "tab") {
@@ -79,11 +97,29 @@ public class PersonCalendarPanel extends JPanel{
 		
 	}
 	
+	private void initButtonPanel() {
+		cButtonPanel = new JPanel();
+		
+		addButton = new JButton("일정 추가");
+		
+		addButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
+	
+		cButtonPanel.add(addButton);
+		
+		add(cButtonPanel);	// root container 에 넣기
+		
+	}
+	
 	private void initTablePanel(ArrayList<CalendarDto> calendarDto, boolean tab) {
 		
 		cTablePanel = new JPanel();
-		cTablePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 5));
-		cTablePanel.setBounds(0, 0, 1000, 600);
+		
 		
 		// --- 테이블 속성 ---
 		tableAttribute = new Vector<>();
@@ -140,7 +176,9 @@ public class PersonCalendarPanel extends JPanel{
 		// calenTable 사이즈
 		// 	calenTable를 넣은 jScrollPane를 수정해야 크기 조절이 된다.
 		if(!tab) {
-			jScrollPane.setPreferredSize(new Dimension(900, 550));
+			setLayout(new FlowLayout(FlowLayout.TRAILING, 40, 5));
+			initButtonPanel();
+			jScrollPane.setPreferredSize(new Dimension(900, 500));
 		} else {
 			jScrollPane.setPreferredSize(new Dimension(800, 200));
 		}
