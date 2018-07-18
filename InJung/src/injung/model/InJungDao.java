@@ -839,11 +839,11 @@ public class InJungDao {
 		Connection connection = null;
 		PreparedStatement pstmt = null;
 		String query = "INSERT INTO calendar("
-				+ " calendarId, taskName, startdate, expectedEndDate, ActualEndDate, status, note, ownerId ) "
+				+ " calendarId, taskName, startdate, expectEndDate, ActualEndDate, status, note, ownerId ) "
 				+ " VALUES (SEQ_CALENDAR.NEXTVAL," // 0. CalendarId (Auto generated)
 				+ " ?," // 1. taskName 
 				+ " ?," // 2. startDate
-				+ " ?," // 3. expectedEndDate
+				+ " ?," // 3. expectEndDate
 				+ " ?," // 4. ActualEndDate
 				+ " ?," // 5. status
 				+ " ?," // 6. note
@@ -934,7 +934,7 @@ public class InJungDao {
 				dto.setCalendarId(set.getInt("calendarId"));
 				dto.setTaskName(set.getString("taskName"));
 				dto.setStartDate(set.getString("startDate"));
-				dto.setExpectEndDate(set.getString("expectedEndDate"));
+				dto.setExpectEndDate(set.getString("expectEndDate"));
 				dto.setActualEndDate(set.getString("actualEndDate"));
 				dto.setStatus(set.getString("status"));
 				dto.setNote(set.getString("note"));
