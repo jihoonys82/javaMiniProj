@@ -127,7 +127,13 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
     	column.addElement("Leader_id");
     	    	
     	//테이블 설정
-    	tbDefault = new DefaultTableModel(column, 0); 
+    	tbDefault = new DefaultTableModel(column, 0) {  		
+			private static final long serialVersionUID = 1L;
+			@Override
+    		public boolean isCellEditable(int row, int column) {
+    			return false; //테이블 수정 불가
+    		}
+    	};    	
     	tbTeamRecord = new JTable(tbDefault);
     	tbTeamRecord.setFont(new Font("고딕",Font.BOLD,16));
     	tbTeamRecord.setRowHeight(40);
@@ -315,7 +321,25 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
 						JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-    			
+    		
+    		if(txtTeam.getText().trim().length()>7) {
+    			JOptionPane.showMessageDialog(
+						this,
+						"팀명이 너무 깁니다(6자 이내)",
+						"입력 오류",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+    		}
+    		
+    		if(txtRole.getText().trim().length()>33) {
+    			JOptionPane.showMessageDialog(
+						this,
+						"Role 내용이 너무 깁니다(33자 이내)",
+						"입력 오류",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+    		}
+    		
     		for(int i=0 ; i<tbTeamRecord.getRowCount() ; i++) {
     			boolean b = txtTeam.getText().trim().equals(
     					tbTeamRecord.getValueAt(i, 0));
@@ -332,8 +356,8 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
     		//DTO
     		dto_Team = new TeamDto();
     		String arr[] = new String[2];
-    		dto_Team.setTeamName(txtTeam.getText());
-    		dto_Team.setTeamRole(txtRole.getText());
+    		dto_Team.setTeamName(txtTeam.getText().trim());
+    		dto_Team.setTeamRole(txtRole.getText().trim());
 		
     		arr = ((String)cbLeader.getSelectedItem()).split("_사번:"); 
     		dto_Team.setTeamLeaderName(arr[0]);
@@ -343,8 +367,8 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
 		
     		//JTABLE
     		Vector<String> v = new Vector<>();
-    		v.addElement(txtTeam.getText());
-    		v.addElement(txtRole.getText());
+    		v.addElement(txtTeam.getText().trim());
+    		v.addElement(txtRole.getText().trim());
     		v.addElement(arr[0]);
     		v.addElement(arr[1]);
     		tbDefault.addRow(v);
@@ -395,7 +419,23 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
 						JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-			
+    		if(txtTeam.getText().trim().length()>7) {
+    			JOptionPane.showMessageDialog(
+						this,
+						"팀명이 너무 깁니다",
+						"입력 오류",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+    		}
+    		if(txtRole.getText().trim().length()>33) {
+    			JOptionPane.showMessageDialog(
+						this,
+						"Role 내용이 너무 깁니다(33자 이내)",
+						"입력 오류",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+    		}
+    		
     		if(txtTeam.getText().trim().equals(
     				tbTeamRecord.getValueAt(tbTeamRecord.getSelectedRow(), 0))
     			&& txtRole.getText().trim().equals(
@@ -425,14 +465,12 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
     						JOptionPane.ERROR_MESSAGE);
     				return;
     			}
-    		}
-    		
-  		   		
+    		}		   		
     		//DTO
     		String prevTeam = (String) tbTeamRecord.getValueAt(tbTeamRecord.getSelectedRow(), 0);
 			dto_Team = new TeamDto();
-			dto_Team.setTeamName(txtTeam.getText());
-			dto_Team.setTeamRole(txtRole.getText());
+			dto_Team.setTeamName(txtTeam.getText().trim());
+			dto_Team.setTeamRole(txtRole.getText().trim());
 		
 			dto_Team.setTeamLeaderName(arr[0]);
 			dto_Team.setTeamLeaderId(arr[1]);
@@ -440,8 +478,8 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
 			dao.updateTeam(dto_Team, prevTeam);
 			
 			//JTABLE
-			tbTeamRecord.setValueAt(txtTeam.getText(), tbTeamRecord.getSelectedRow(), 0);
-			tbTeamRecord.setValueAt(txtRole.getText(), tbTeamRecord.getSelectedRow(), 1);
+			tbTeamRecord.setValueAt(txtTeam.getText().trim(), tbTeamRecord.getSelectedRow(), 0);
+			tbTeamRecord.setValueAt(txtRole.getText().trim(), tbTeamRecord.getSelectedRow(), 1);
 			tbTeamRecord.setValueAt(arr[0], tbTeamRecord.getSelectedRow(), 2);
     	}
     
