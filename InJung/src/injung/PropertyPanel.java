@@ -3,9 +3,11 @@ package injung;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Properties;
 
 import javax.swing.JButton;
@@ -46,6 +48,7 @@ public class PropertyPanel extends JPanel implements ActionListener {
 	private JTextField txtPort;
 	private JTextField txtHost;
 	
+	private JButton btnDeletePt;
 	private JButton btnOk;
 	private JButton btnCancel;
 	
@@ -100,7 +103,7 @@ public class PropertyPanel extends JPanel implements ActionListener {
 		setLayout(null);
 
 		routePane = new JPanel();	// 경로 Panel 
-		routePane.setBounds(-41, 10, 884, 415);
+		routePane.setBounds(-41, 10, 941, 415);
 		routePane.setLayout(null);
 		
 		lblPhotoFolder = new JLabel("사진 폴더");	// 사진 폴더 경로 
@@ -165,6 +168,10 @@ public class PropertyPanel extends JPanel implements ActionListener {
 		txtHost.setBounds(414, 34, 286, 27);
 		txtHost.setEditable(true);
 
+		btnDeletePt = new JButton("캐시 삭제");
+		btnDeletePt.setBounds(781, 125, 105, 27);
+		btnDeletePt.addActionListener(this);
+		
 		btnPane = new JPanel();	// 버튼 Panel 
 		btnPane.setBounds(0, 443, 884, 57);
 		btnPane.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
@@ -193,9 +200,11 @@ public class PropertyPanel extends JPanel implements ActionListener {
 		routePane.add(lblServer);
 		routePane.add(lblHost);
 		routePane.add(lblPort);
+		routePane.add(btnDeletePt);
 		
 		add(btnPane);
 		add(routePane);
+		
 			
 		loadValue();
 	}
@@ -212,11 +221,45 @@ public class PropertyPanel extends JPanel implements ActionListener {
 			modifyValue();					  // 값 변경 메소드 실행 
 			
 			if (modifyValue() == SUCCESSED) {	// 값 변경 되었을 때 설정 저장 다이어로그 띄우기
-			JOptionPane.showMessageDialog(null, "설정이 저장되었습니다");
+				JOptionPane.showMessageDialog(null, "설정이 저장되었습니다");
 			}	
-		}	// 첫번째 if문 끝
+		} else if (e.getSource().equals(btnDeletePt)) {		
+			deletePhoto();
+			
+			if (deletePhoto() == true) {
+				JOptionPane.showMessageDialog(null, "캐시가 삭제되었습니다");
+			}
+		}
 	}
+		
+	private boolean deletePhoto() {	// 캐시삭제 버튼 클릭시 
 	
+		
+		boolean isDeleted = false;
+		
+		File dir = new File("./Photo");
+		File[] listOfFiles = dir.listFiles();
+		
+		for (int i=0; i<listOfFiles.length; i++) {			
+
+			if (listOfFiles[i].getName().equals("no_avatar.jpg") || listOfFiles[i].getName().equals("logo.jpg")) {
+				System.out.println("no_avatar/logo는 남겨둠");
+				continue;		
+				
+			} else {
+				System.out.println("no_avatar/logo 제외하고 삭제");
+				try {
+					Files.delete(listOfFiles[i].toPath());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				
+			}
+		}		
+		isDeleted = true;
+		return isDeleted;
+	}
+
 	public int modifyValue() {	// value 변경 메소드 
 		
 		int result = FAILED;
@@ -240,5 +283,4 @@ public class PropertyPanel extends JPanel implements ActionListener {
 		}	
 		return result;	
 	}
-	
 }
