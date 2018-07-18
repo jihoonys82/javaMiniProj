@@ -1,9 +1,7 @@
 package injung;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -12,11 +10,12 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
 
 import injung.model.EmployeeDto;
 import injung.model.InJungDao;
@@ -59,7 +58,9 @@ public class WholeView extends JPanel implements ActionListener, MouseListener{
 
 	// mouseListner 변수
 	private int clicktable;
-
+	
+	// JLable
+	private JLabel jl;
 	
 
 	// 생성자
@@ -108,7 +109,10 @@ public class WholeView extends JPanel implements ActionListener, MouseListener{
 
 		tableView = new JTable(tableModel); // JTable에 DefaultTableModel 설정
 		tableView.addMouseListener(this);
-
+		tableView.getTableHeader().setReorderingAllowed(false);
+		tableView.getTableHeader().setResizingAllowed(false);
+		tableView.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		
 		// 테이블에 데이터 넣기(row)
 		for (EmployeeDto list : listDto) {
 
@@ -139,6 +143,8 @@ public class WholeView extends JPanel implements ActionListener, MouseListener{
 		tableView.getColumnModel().getColumn(4).setPreferredWidth(300);
 		tableView.getColumnModel().getColumn(5).setPreferredWidth(200);
 		tableView.setRowHeight(30);
+		
+		
 
 //		tableView.setSize(900, 450);	// 변경X
 
@@ -152,6 +158,7 @@ public class WholeView extends JPanel implements ActionListener, MouseListener{
 		add(wholePanel); // wholeView Panel 추가
 
 	}
+
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {

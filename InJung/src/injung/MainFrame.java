@@ -501,28 +501,21 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 		}
 		// 도움말
 		else if (e.getSource() == help_Help) {
-			root.removeAll();
-			
-//			root.add(comp); // 컨테이너 넣기
-			setTitle("도움말");
-			
-			root.validate(); // 컴포넌트 검증 (메모리 상태 확인) - 메모리 확실하게
-			root.repaint(); // 다시 그리기
+			dialog = new HelpDialog(
+					this, 
+					"도움말",
+					true, 
+					getX()+250,
+					getY()+100);
+				
+			dialog.setVisible(true);
 		}
 		// 크레딧
 		else if (e.getSource() == help_Credit) {
-			root.removeAll();
 			
-//			root.add(comp); // 컨테이너 넣기
-			setTitle("크레딧");
-			
-			root.validate(); // 컴포넌트 검증 (메모리 상태 확인) - 메모리 확실하게
-			root.repaint(); // 다시 그리기
 		}
 		// 인정?어인정에 대하여
 		else if (e.getSource() == help_About) {
-			
-			//인정?어인정 다이얼로그 설정
 			dialog = new AboutInjungDialog(
 				this, 
 				"인정?어인정에 대하여",
