@@ -23,6 +23,7 @@ import javax.swing.KeyStroke;
  * 
  *  - 개인 일정 보기 : 컨테이너 연결
  *  - 내 정보보기 : 개인 일정 & 이달의 생일 탭뷰 추가
+ *  - 가져오기 : MainFrame에 연결
  *  
  */
 
@@ -347,11 +348,13 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 		} 
 		// 가져오기
 		else if (e.getSource() == file_Import){
-			root.removeAll();
-//			root.add(comp); // 컨테이너 넣기
-			setTitle("가져오기");
-			root.validate(); // 컴포넌트 검증 (메모리 상태 확인) - 메모리 확실하게
-			root.repaint(); // 다시 그리기
+
+			dialog = new ImportDialog();
+			
+			dialog.setBounds(450, 250, 450, 300);
+			
+			dialog.setVisible(true);
+
 		}
 		// 내보내기
 		else if (e.getSource() == file_Export) {
