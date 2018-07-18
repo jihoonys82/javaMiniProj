@@ -158,7 +158,7 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 		lblPhoto.setHorizontalAlignment(SwingConstants.CENTER);
 
 		// lblPhoto
-		lblPhoto.setIcon(new ImageIcon(dir.getAbsolutePath()+"no_avatar.jpg"));
+		lblPhoto.setIcon(new ImageIcon(dir.getAbsolutePath()+"/no_avatar.jpg"));
 		lblPhoto.setBounds(24, 10, 150, 200);
 
 		// btnPhotoUpload
@@ -469,7 +469,7 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 		txtEmail.setText("");
 		txtLocation.setText("");
 		lblPhoto.setText("");
-		lblPhoto.setIcon(new ImageIcon(dir.getAbsolutePath()+"no_avatar.jpg"));
+		lblPhoto.setIcon(new ImageIcon(dir.getAbsolutePath()+"/no_avatar.jpg"));
 	}
 
 	/**

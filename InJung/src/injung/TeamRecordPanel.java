@@ -156,6 +156,8 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
     	header.setPreferredSize(new Dimension(970, 40));
     	header.setFont(new Font("고딕",Font.BOLD,16));
     	header.setBackground(new Color(200, 200, 200));
+    	header.setResizingAllowed(false);
+    	header.setReorderingAllowed(false);
 
     	// 테이블 컬럼 설정
     	tbTeamRecord.setRowSelectionInterval(1, 0);

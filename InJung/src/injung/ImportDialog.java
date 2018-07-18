@@ -54,7 +54,7 @@ public class ImportDialog extends JDialog implements ActionListener {
 	private JFileChooser photoChooser;
 	
 	private File dir = new File(PropertiesLoad.getProperties().getProperty("LOCATION"));
-	private File dirPhoto = new File(dir, "Photo/");
+	private File dirPhoto = new File(dir, "Photo");
 	private File empBackup = new File(dir, "EmployeeBackup.dat");
 	private File teamBackup = new File(dir, "TeamBackup.dat");
 	

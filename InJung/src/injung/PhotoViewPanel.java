@@ -4,6 +4,7 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
@@ -50,7 +51,7 @@ public class PhotoViewPanel extends JPanel implements ActionListener {
 	private int maxPageIndex;
 	private int[] lastEmpIds;
 
-	private String photoPath = "./Photo/";
+	private String photoPath = PropertiesLoad.getProperties().getProperty("PHOTOPATH");
 
 	public PhotoViewPanel() {
 		initPanel();
@@ -80,7 +81,13 @@ public class PhotoViewPanel extends JPanel implements ActionListener {
 
 			for (int i = 0; i < dtos.size(); i++) {
 				dto = dtos.get(i);
-				lblPhotos[i].setIcon(new ImageIcon(photoPath + dto.getPhoto()));
+				File photo = new File(photoPath+"/"+ dto.getPhoto());
+				if(!photo.exists()) {
+					FileReceiver receiver = new FileReceiver(photo, lblPhotos[i]);
+					receiver.start();
+				} else {
+					lblPhotos[i].setIcon(new ImageIcon(photoPath +"/"+ dto.getPhoto()));					
+				}
 				lblTeams[i].setText(dto.getTeam());
 				lblLevels[i].setText(dto.getLevel());
 				lblNames[i].setText(dto.getName());
@@ -103,7 +110,7 @@ public class PhotoViewPanel extends JPanel implements ActionListener {
 			personPanes[i].setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
 
 			lblPhotos[i] = new JLabel(); // 사진 레이블
-			lblPhotos[i].setIcon(new ImageIcon("./Photo/no_avatar.jpg"));
+			lblPhotos[i].setIcon(new ImageIcon(photoPath+"/no_avatar.jpg"));
 			lblPhotos[i].setBounds(15, 5, 150, 200);
 
 			lblTeams[i] = new JLabel("team" + i); // 팀 레이블
