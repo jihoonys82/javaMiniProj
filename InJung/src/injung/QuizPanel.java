@@ -71,16 +71,13 @@ public class QuizPanel extends JPanel implements ActionListener {
 	
 	private ArrayList<EmployeeDto> dtos;
 	
-	private File dir;
+	private File dir = new File(PropertiesLoad.getProperties().getProperty("PHOTOPATH"));
 	private File file;
 	
 	/**
 	 * setup quizPanel
 	 */
 	public QuizPanel() {
-		// Load Properties from proerpties file 
-		dir = new File(PropertiesLoad.getProperties().getProperty("PHOTOPATH"));
-		
 		// set quizPanel
 		setLayout(null);
 

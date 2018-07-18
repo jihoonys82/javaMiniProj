@@ -106,7 +106,7 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 
 	// FileChooser(for photo upload)
 	private JFileChooser fileChooser = new JFileChooser();
-	private File dir;
+	private File dir = new File(PropertiesLoad.getProperties().getProperty("PHOTOPATH"));
 	private File photoFile;
 
 	// Buttons
@@ -124,9 +124,6 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 	 * Edit Employ Panel for new employee
 	 */
 	public EditEmployeePanel() {
-		// Load properties from Properties file
-		dir = new File(PropertiesLoad.getProperties().getProperty("PHOTOPATH"));
-		
 		// set up main Panel
 		setLayout(null);
 
