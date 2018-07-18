@@ -106,8 +106,8 @@ public class PropertyPanel extends JPanel implements ActionListener {
 		routePane.setBounds(-41, 10, 941, 415);
 		routePane.setLayout(null);
 		
-		lblPhotoFolder = new JLabel("사진 폴더");	// 사진 폴더 경로 
-		lblPhotoFolder.setBounds(203, 122, 99, 33);
+		lblPhotoFolder = new JLabel("\uC0AC\uC9C4 \uCE90\uC2DC\uD3F4\uB354");	// 사진 폴더 경로 
+		lblPhotoFolder.setBounds(171, 122, 99, 33);
 				
 		lblDbRoute = new JLabel("DB 경로");	// DB 경로 
 		lblDbRoute.setBounds(203, 181, 99, 33);
@@ -125,7 +125,7 @@ public class PropertyPanel extends JPanel implements ActionListener {
 		lblDb.setBounds(292, 352, 79, 15);
 		
 		lblServer = new JLabel("서버");
-		lblServer.setBounds(203, 25, 99, 33);
+		lblServer.setBounds(219, 25, 99, 33);
 		
 		lblHost = new JLabel("호스트");
 		lblHost.setBounds(315, 34, 57, 15);
@@ -204,7 +204,6 @@ public class PropertyPanel extends JPanel implements ActionListener {
 		
 		add(btnPane);
 		add(routePane);
-		
 			
 		loadValue();
 	}
@@ -223,31 +222,29 @@ public class PropertyPanel extends JPanel implements ActionListener {
 			if (modifyValue() == SUCCESSED) {	// 값 변경 되었을 때 설정 저장 다이어로그 띄우기
 				JOptionPane.showMessageDialog(null, "설정이 저장되었습니다");
 			}	
-		} else if (e.getSource().equals(btnDeletePt)) {		
-			deletePhoto();
-			
-			if (deletePhoto() == true) {
-				JOptionPane.showMessageDialog(null, "캐시가 삭제되었습니다");
+		} else if (e.getSource().equals(btnDeletePt)) {		// 캐시삭제 버튼 클릭시 사진삭제 메소드 호출
+			deletePhoto();			
+			if (deletePhoto() == true) {	// deletePhoto값이 true를 반환 받으면 
+				JOptionPane.showMessageDialog(null, "캐시가 삭제되었습니다");	// 캐시 삭제 메세지 출력 
 			}
 		}
 	}
 		
-	private boolean deletePhoto() {	// 캐시삭제 버튼 클릭시 
-	
-		
+	private boolean deletePhoto() {	// 캐시삭제 버튼 클릭시 	
 		boolean isDeleted = false;
-		
-		File dir = new File("./Photo");
-		File[] listOfFiles = dir.listFiles();
+	
+		File dir = new File("./Photo");		// 파일 객체 생성 
+		File[] listOfFiles = dir.listFiles();	 
 		
 		for (int i=0; i<listOfFiles.length; i++) {			
 
-			if (listOfFiles[i].getName().equals("no_avatar.jpg") || listOfFiles[i].getName().equals("logo.jpg")) {
-				System.out.println("no_avatar/logo는 남겨둠");
+			// no_avatar.jpg, logo.jpg, credit.jpg는 삭제 X
+			if (listOfFiles[i].getName().equals("no_avatar.jpg") 	
+					|| listOfFiles[i].getName().equals("logo.jpg")
+					|| listOfFiles[i].getName().equals("credit.jpg")) {
 				continue;		
 				
-			} else {
-				System.out.println("no_avatar/logo 제외하고 삭제");
+			} else {	// 그 외 사진들은 삭제 
 				try {
 					Files.delete(listOfFiles[i].toPath());
 				} catch (IOException e) {
@@ -256,7 +253,7 @@ public class PropertyPanel extends JPanel implements ActionListener {
 				
 			}
 		}		
-		isDeleted = true;
+		isDeleted = true;	// true값 반환 
 		return isDeleted;
 	}
 
