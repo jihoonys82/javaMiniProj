@@ -918,7 +918,7 @@ public class InJungDao {
 		PreparedStatement pstmt = null;
 		ResultSet set = null;
 		String query = "SELECT * FROM Calendar"
-				+ "WHERE ownerId = ?"; // EQUI JOIN
+				+ " WHERE ownerId = ?";
 		ArrayList<CalendarDto> dtos = new ArrayList<>();
 		CalendarDto dto = null;
 
