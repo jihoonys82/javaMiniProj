@@ -322,7 +322,7 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
 				return;
 			}
     		
-    		if(txtTeam.getText().trim().length()>7) {
+    		if(txtTeam.getText().trim().length()>6) {
     			JOptionPane.showMessageDialog(
 						this,
 						"팀명이 너무 깁니다(6자 이내)",
@@ -419,7 +419,7 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
 						JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-    		if(txtTeam.getText().trim().length()>7) {
+    		if(txtTeam.getText().trim().length()>6) {
     			JOptionPane.showMessageDialog(
 						this,
 						"팀명이 너무 깁니다",
