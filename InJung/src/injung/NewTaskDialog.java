@@ -208,6 +208,7 @@ public class NewTaskDialog extends JDialog implements ActionListener {
 				
 				if(result==InJungDao.INSERT_DATA_SUCCESS) {
 					JOptionPane.showMessageDialog(this, "입력 성공");
+					this.dispose();
 				} else {
 					JOptionPane.showMessageDialog(this, "입력 실패");
 				}
