@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.swing.JDialog;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -24,13 +23,17 @@ import injung.model.InJungDao;
 /*
  * 작성 일자 : 2018.07.01
  * 수정 일자 : 2018.07.19
- *  - 더블 클릭으로 Dialog 불려오게끔 수정
- *  - 필요없는 import 삭제
  * 
  * 작성자 : 권미현
  * 수정자 : 권미현
  * 
  * 레코드 조회기능 - 전체보기
+ * 
+ * - 더블 클릭으로 Dialog 불려오게끔 수정
+ * - 필요없는 import 삭제
+ * - 창 사이즈 조절 못하게 하기
+ * - 필요없는 JLabel 삭제
+ *  
  */
 
 @SuppressWarnings("serial")
@@ -61,9 +64,6 @@ public class WholeView extends JPanel implements ActionListener, MouseListener{
 
 	// mouseListner 변수
 	private int clicktable;
-	
-	// JLable
-	private JLabel jl;
 	
 
 	// 생성자
@@ -172,6 +172,7 @@ public class WholeView extends JPanel implements ActionListener, MouseListener{
 				
 			JDialog dialog = new DetailDialog(new EmployeeInfoPanel(listDto.get(clicktable).getEmployeeId(), true));
 			dialog.setSize(700, 400);
+			dialog.setResizable(false); // 창 사이즈 조절 못하게 하기
 			dialog.setVisible(true);
 		 }
 		

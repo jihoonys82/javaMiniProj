@@ -25,6 +25,7 @@ import javax.swing.KeyStroke;
  *  - 내 정보보기 : 개인 일정 & 이달의 생일 탭뷰 추가
  *  - 가져오기 : MainFrame에 연결
  *  - MainFrame 창 사이즈 고정
+ *  - 프로그램 실행시 바로 로그인 창 뜨게끔 하기
  *  
  */
 
@@ -105,6 +106,35 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 		
 		setVisible(true);
 			
+		
+		// 프로그램 시작하자마자 Login 하게끔 하기
+		if(login == false) {
+
+			dialog = new LoginPanel(this,"Login Dialog",true);
+			
+			dialog.setVisible(true);
+
+			id = ((LoginPanel) dialog).getTxtEmployeeId(); // LoginPanel에서 받아온 ID 값
+
+			int logckeck = ((LoginPanel) dialog).isLoginCheck(id);
+			if(logckeck==LoginPanel.LOGIN_SUCCESSED) {
+
+				root.removeAll();
+				
+				root.add(new EmployeeInfoPanel(id));
+				root.add(new PersonCalendarPanel(id, "tab", true), BorderLayout.SOUTH); // 개인 일정 & 이달의 생일 tab
+				
+				setTitle("내 정보");
+
+				root.validate(); // 컴포넌트 검증 (메모리 상태 확인) - 메모리 확실하게
+				root.repaint(); // 다시 그리기
+
+				view_MyView.setEnabled(true); // 내 정보 보기 MenuItem 활성화
+				login = true;
+			}
+			
+		}
+				
 	}
 	
 	private void initMenu() {
