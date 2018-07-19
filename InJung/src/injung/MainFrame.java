@@ -26,6 +26,7 @@ import javax.swing.KeyStroke;
  *  - 가져오기 : MainFrame에 연결
  *  - MainFrame 창 사이즈 고정
  *  - 프로그램 실행시 바로 로그인 창 뜨게끔 하기
+ *  - 로그인/로그아웃 시 활성화 및 비활성화
  *  
  */
 
@@ -129,8 +130,15 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 				root.validate(); // 컴포넌트 검증 (메모리 상태 확인) - 메모리 확실하게
 				root.repaint(); // 다시 그리기
 
-				view_MyView.setEnabled(true); // 내 정보 보기 MenuItem 활성화
+				file_Import.setEnabled(true); // 내보내기 MenuItem 활성화
+				file_Export.setEnabled(true); // 가져오기 MenuItem 활성화
+				record.setEnabled(true); // Record 메뉴 활성화
+				view.setEnabled(true); // View 메뉴 활성화
+				calendar.setEnabled(true); // Calendar 메뉴 활성화
+				help_Quiz.setEnabled(true);	// 퀴즈 MenuItem 활성화
+				
 				login = true;
+				
 			}
 			
 		}
@@ -169,6 +177,8 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 		////////////////////
 		
 		menuBar.add(file);
+		file_Import.setEnabled(false);
+		file_Export.setEnabled(false);
 		
 		
 		//Record 메뉴
@@ -187,7 +197,7 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 		////////////////////
 		
 		menuBar.add(record);
-//		record_NewEmployee.setEnabled(false);
+		record.setEnabled(false);
 		
 		
 		//View 메뉴
@@ -214,7 +224,7 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 		////////////////////
 		
 		menuBar.add(view);
-		view_MyView.setEnabled(false);
+		view.setEnabled(false);
 		
 		
 		// Calendar 메뉴
@@ -236,6 +246,7 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 		////////////////////
 		
 		menuBar.add(calendar);
+		calendar.setEnabled(false);
 		
 	
 		// Help 메뉴
@@ -260,6 +271,8 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 		////////////////////
 		
 		menuBar.add(help);
+		help_Quiz.setEnabled(false);
+		
 		
 		setJMenuBar(menuBar); //프레임에 메뉴바 설정하기
 		
@@ -353,7 +366,13 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 					root.validate(); // 컴포넌트 검증 (메모리 상태 확인) - 메모리 확실하게
 					root.repaint(); // 다시 그리기
 
-					view_MyView.setEnabled(true); // 내 정보 보기 MenuItem 활성화
+					file_Import.setEnabled(true); // 내보내기 MenuItem 활성화
+					file_Export.setEnabled(true); // 가져오기 MenuItem 활성화
+					record.setEnabled(true); // Record 메뉴 활성화
+					view.setEnabled(true); // View 메뉴 활성화
+					calendar.setEnabled(true); // Calendar 메뉴 활성화
+					help_Quiz.setEnabled(true);	// 퀴즈 MenuItem 활성화
+					
 					login = true;
 					
 				}
@@ -368,7 +387,13 @@ public class MainFrame extends JFrame implements ActionListener{ // 액션 리스너 
 					root.validate(); // 컴포넌트 검증 (메모리 상태 확인) - 메모리 확실하게
 					root.repaint(); // 다시 그리기
 					
-					view_MyView.setEnabled(false); // 내 정보 보기 MenuItem 비활성화
+					file_Import.setEnabled(false); // 내보내기 MenuItem 활성화
+					file_Export.setEnabled(false); // 가져오기 MenuItem 활성화
+					record.setEnabled(false); // Record 메뉴 활성화
+					view.setEnabled(false); // View 메뉴 활성화
+					calendar.setEnabled(false); // Calendar 메뉴 활성화
+					help_Quiz.setEnabled(false);	// 퀴즈 MenuItem 활성화
+					
 					login = false;
 
 				} else if (logOut == 1) { // 취소 버튼
