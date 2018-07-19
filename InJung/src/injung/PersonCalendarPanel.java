@@ -35,11 +35,13 @@ import injung.model.InJungDao;
  * - 일정 추가 Dialog 연결 : NewTaskDialog
  * - 창 사이즈 조절 못하게 하기
  * - 마우스 이벤트 추가 : Update(finishTask)
+ * - 이미 완료된 일정일 경우에 대한 처리 추가
  * 
  */
 
-@SuppressWarnings("serial")
 public class PersonCalendarPanel extends JPanel implements MouseListener {
+	
+	private static final long serialVersionUID = 4045852819553979355L;
 	
 	private int id;
 	private int finish;
@@ -143,6 +145,7 @@ public class PersonCalendarPanel extends JPanel implements MouseListener {
 		
 	}
 	
+	@SuppressWarnings("serial")
 	private void initTablePanel(ArrayList<CalendarDto> calendarDto, boolean tab) {
 		
 		cTablePanel = new JPanel();
@@ -260,16 +263,26 @@ public class PersonCalendarPanel extends JPanel implements MouseListener {
 	 			calendarId = calendarDto.get(calenTable.getSelectedRow()).getCalendarId();
 //	 			System.out.println("Calendar ID : " + calendarId); // 클릭한 로우 Calendar ID_테스트 완료
 	 			
-	 			finish = dao.finishTask(calendarId, 
+	 			
+	 			if (calendarDto.get(calenTable.getSelectedRow()).getActualEndDate() != null) { 
+	 				// 종료일이 null이 아닐 경우 = 종료일이 있을 경우 = 완료
+	 				JOptionPane.showMessageDialog(this,
+	 						"이미 완료된 일정입니다.",
+	 						"경고", // Dialog Title
+	 						JOptionPane.WARNING_MESSAGE);
+	 			} else {
+	 				// 종료일이 null일 경우 = 종료일이 없을 경우 = 완료 x
+	 				finish = dao.finishTask(calendarId, 
 	 						String.valueOf(dateFormat.format(date)), 
 	 						"완료");
-	 			
-	 			if (finish == 1) {
-	 				JOptionPane.showMessageDialog(this,
-	 						"현재 일정을 완료했습니다.",
-	 						"", // Dialog Title
-	 						JOptionPane.INFORMATION_MESSAGE);
-	 			} // finish if문
+	 				
+	 				if (finish == 1) {
+	 					JOptionPane.showMessageDialog(this,
+	 							"현재 일정을 완료했습니다.",
+	 							"", // Dialog Title
+	 							JOptionPane.INFORMATION_MESSAGE);
+	 				} // finish if문
+	 			}
 	 			
 	 		} // yesNo if문
 			
