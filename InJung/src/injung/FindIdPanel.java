@@ -37,7 +37,7 @@ public class FindIdPanel extends JDialog implements ActionListener, KeyListener 
 	
 	private InJungDao dao = InJungDao.getInstance();
 	private EmployeeDto eDto;
-
+	
 	public FindIdPanel(JDialog dialog, String title, boolean modal,String str) {
 		super(dialog, title, true);
 
@@ -109,7 +109,7 @@ public class FindIdPanel extends JDialog implements ActionListener, KeyListener 
 
 		getContentPane().add(findIdPane);
 
-		int logid = Integer.parseInt(str);	// LoginPanel에서 전달 받은 ID텍스트필드값(사번)을 int형으로 변환  
+		int logid = Integer.parseInt(str);	// LoginPanel에서 전달 받은 ID텍스트필드값(사번)을 int형으로 변환
 		showData(logid);	// 해당 질문에 대한 분실질문을 호출
 	}
 
@@ -178,10 +178,13 @@ public class FindIdPanel extends JDialog implements ActionListener, KeyListener 
 	} // changeData
 	
 	public void showData(int empId) {	// 전달 받은 사번 값을 인자로 해당 사번에 대한 DB의 분실 질문 호출  메소드 
-
 		eDto = dao.getEmployee(empId);		
-		txtQuestion.setText(eDto.getLostIdQuestion());
+			
+		if (eDto == null) {		// 없는 사번으로 비밀번호찾기를 시도하면 경고 다이얼로그 호출 
+			JOptionPane.showMessageDialog(null,"없는 정보입니다");	
+		}
 		
+		txtQuestion.setText(eDto.getLostIdQuestion());	
 	}	// showData
 	
 
@@ -193,7 +196,7 @@ public class FindIdPanel extends JDialog implements ActionListener, KeyListener 
 			int id = Integer.parseInt(strId);
 			eDto = dao.getEmployee(id);
 			
-			createPw(id);
+			createPw(id);	// 비밀번호 변경 메소드 실행 
 		}
 	}
 
