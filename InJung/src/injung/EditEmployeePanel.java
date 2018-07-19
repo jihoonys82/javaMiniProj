@@ -64,7 +64,7 @@ public class EditEmployeePanel extends JPanel implements ActionListener {
 	private JPanel locationPane = new JPanel();
 
 	// Labels
-	private JLabel lblPhoto = new JLabel("Photo");
+	private JLabel lblPhoto = new JLabel();
 	private JLabel lblEmployeeId = new JLabel("사번");
 	private JLabel lblPassword = new JLabel("패스워드");
 	private JLabel lblPwConfirm = new JLabel("패스워드 확인");
