@@ -882,7 +882,7 @@ public class InJungDao {
 		String query = "UPDATE calendar SET "
 				+ " actualEndDate = ?," // 1. employName
 				+ " status = ?"
-				+ " WHERE caneldarId = ?";
+				+ " WHERE calendarId = ?"; // 2018.07.19 열명 수정
 
 		try {
 			connection = getConnection();

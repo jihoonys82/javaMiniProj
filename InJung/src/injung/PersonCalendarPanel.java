@@ -5,10 +5,15 @@ import java.awt.FlowLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Vector;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -29,13 +34,15 @@ import injung.model.InJungDao;
  * 
  * - 일정 추가 Dialog 연결 : NewTaskDialog
  * - 창 사이즈 조절 못하게 하기
+ * - 마우스 이벤트 추가 : Update(finishTask)
  * 
  */
 
 @SuppressWarnings("serial")
-public class PersonCalendarPanel extends JPanel{
+public class PersonCalendarPanel extends JPanel implements MouseListener {
 	
 	private int id;
+	private int finish;
 	
 	private NewTaskDialog dialog;
 	
@@ -181,6 +188,9 @@ public class PersonCalendarPanel extends JPanel{
 		calenTable.getColumnModel().getColumn(6).setPreferredWidth(160);
 		calenTable.setRowHeight(30); // 높이
 		
+		// MouseListener
+		calenTable.addMouseListener(this);
+		
 		jScrollPane = new JScrollPane(calenTable);
 		
 		// calenTable 사이즈
@@ -211,5 +221,76 @@ public class PersonCalendarPanel extends JPanel{
 		
 		add(tab);
 	}
+
+	
+	// --- 마우스 이벤트 ---
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		
+		if (e.getButton() == 1 && e.getClickCount() == 2) { // 마우스 왼 버튼 && 더블 클릭 시 
+			
+			// 현재 일정을 완료할건지 묻는  Dialog
+			Object[] options = {"확인", "취소"};
+	 		int yesNo = JOptionPane.showOptionDialog(
+					this, 
+					"현재 일정을 완료하시겠습니까?", 
+					"", // Dialog Title
+					JOptionPane.YES_NO_OPTION,
+					JOptionPane.QUESTION_MESSAGE,
+					null, 
+					options,
+					options[0]);
+	 		
+	 		// 확인을 누를시
+	 		if (yesNo == 0) {
+	 			
+	 			Date date = new Date();
+	 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
+	 			
+//	 			System.out.println(dateFormat.format(date)); // 현재 날짜 출력 확인_테스트 완료
+	 			
+	 			int calendarId = calendarDto.get(calenTable.getSelectedRow()).getCalendarId();
+//	 			System.out.println("Calendar ID : " + calendarId); // 클릭한 로우 Calendar ID_테스트 완료
+	 			
+	 			finish = dao.finishTask(calendarId, 
+	 						String.valueOf(dateFormat.format(date)), 
+	 						"완료");
+	 			
+	 			if (finish == 1) {
+	 				JOptionPane.showMessageDialog(this,
+	 						"현재 일정을 완료했습니다.",
+	 						"", // Dialog Title
+	 						JOptionPane.INFORMATION_MESSAGE);
+	 			} // finish if문
+	 			
+	 		} // yesNo if문
+			
+		}
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		
+		
+	}
+	// ----------------
 	
 }
