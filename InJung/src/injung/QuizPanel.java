@@ -321,7 +321,15 @@ public class QuizPanel extends JPanel implements ActionListener {
 				
 				"Confirm",
 				JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
-		if (selected == 0) initQuiz();
+		if (selected == 0) {
+			initQuiz();
+		}
+		else {
+			//Button disable
+			for(JButton btn : btnPhoto) {
+				btn.setEnabled(false);
+			}
+		}
 	}
 
 }
