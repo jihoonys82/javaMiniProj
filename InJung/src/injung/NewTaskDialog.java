@@ -30,6 +30,8 @@ import injung.model.InJungDao;
  * 수정자 : 권미현
  * 
  *  - 생성자 통합
+ *  - 메소드 setCalendar() 수정 : dto.setActualEndDate("NULL"); → 삭제
+ *  
  */
 
 public class NewTaskDialog extends JDialog implements ActionListener {
@@ -191,7 +193,6 @@ public class NewTaskDialog extends JDialog implements ActionListener {
 		dto.setTaskName(txtTaskName.getText().trim());
 		dto.setStartDate(txtStartDate.getText());
 		dto.setExpectEndDate(txtEndDate.getText());
-		dto.setActualEndDate("NULL");
 		dto.setStatus(cbStatus.getSelectedItem().toString());
 		dto.setNote(txtNote.getText());
 		dto.setOwnerId(empId);
@@ -203,6 +204,8 @@ public class NewTaskDialog extends JDialog implements ActionListener {
 			if(fieldValidation()) {
 				setCalendar();
 				int result = dao.insertCalendar(dto);
+				System.out.println("result : " + result); // 입력 실패
+				System.out.println("dto : " + dto);
 				
 				if(result==InJungDao.INSERT_DATA_SUCCESS) {
 					JOptionPane.showMessageDialog(this, "입력 성공");

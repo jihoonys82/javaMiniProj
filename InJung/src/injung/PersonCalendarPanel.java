@@ -28,6 +28,7 @@ import injung.model.InJungDao;
  * 개인 일정
  * 
  * - 일정 추가 Dialog 연결 : NewTaskDialog
+ * - 창 사이즈 조절 못하게 하기
  * 
  */
 
@@ -110,6 +111,7 @@ public class PersonCalendarPanel extends JPanel{
 				dialog = new NewTaskDialog(id);
 
 				dialog.setSize(420, 400);
+				dialog.setResizable(false); // 창 사이즈 조절 못하게 하기
 				
 				// 중간에 배치하기
 				dialog.setLocation((screenSize.width - dialog.getWidth())/2, 

@@ -844,7 +844,7 @@ public class InJungDao {
 				+ " ?," // 1. taskName 
 				+ " ?," // 2. startDate
 				+ " ?," // 3. expectEndDate
-				+ " ?," // 4. ActualEndDate
+				+ " NULL," // 4. ActualEndDate
 				+ " ?," // 5. status
 				+ " ?," // 6. note
 				+ " ?)"; // 7. ownerID
@@ -855,10 +855,9 @@ public class InJungDao {
 			pstmt.setString(1, dto.getTaskName());
 			pstmt.setString(2, dto.getStartDate());
 			pstmt.setString(3, dto.getExpectEndDate());
-			pstmt.setString(4, dto.getActualEndDate());
-			pstmt.setString(5, dto.getStatus());
-			pstmt.setString(6, dto.getNote());
-			pstmt.setInt(7, dto.getOwnerId());
+			pstmt.setString(4, dto.getStatus());
+			pstmt.setString(5, dto.getNote());
+			pstmt.setInt(6, dto.getOwnerId());
 			results = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
