@@ -25,6 +25,13 @@ import injung.model.EmployeeDto;
 import injung.model.InJungDao;
 import injung.model.TeamDto;
 
+/**
+ * ImportDialog
+ * get a backup data from local to server
+ * @since 2018-07-18
+ * @author Jihoon Jeong
+ *
+ */
 public class ImportDialog extends JDialog implements ActionListener {
 
 	private static final long serialVersionUID = -735159468639716345L;
@@ -62,6 +69,9 @@ public class ImportDialog extends JDialog implements ActionListener {
 	private ArrayList<EmployeeDto> eDtos;
 	private ArrayList<TeamDto> tDtos;
 	
+	/**
+	 * Import backup data from local
+	 */
 	public ImportDialog() {
 		setTitle("가져오기");
 		setModal(true);
@@ -186,6 +196,7 @@ public class ImportDialog extends JDialog implements ActionListener {
 		
 	}
 	
+	@SuppressWarnings("unchecked")
 	private int importEmp() {
 		int rtn = 0;
 		empBackup = new File(txtEmp.getText());
@@ -231,6 +242,7 @@ public class ImportDialog extends JDialog implements ActionListener {
 		return rtn;
 	}
 
+	@SuppressWarnings("unchecked")
 	private int importTeam() {
 		int rtn = 0;
 		teamBackup = new File(txtTeam.getText());

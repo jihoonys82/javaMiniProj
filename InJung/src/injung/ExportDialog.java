@@ -30,7 +30,7 @@ import injung.model.TeamDto;
 
 /**
  * Export Dialog 
- * Backup DB and photo to Files in Client
+ * Backup DB and photo to Files to Client
  * @since 2018-07-17
  * @author Jihoon Jeong
  *
@@ -133,7 +133,6 @@ public class ExportDialog extends JDialog implements ActionListener {
 		btnCancel = new JButton("취소");
 		btnCancel.setBounds(219, 214, 97, 23);
 		exportPanel.add(btnCancel);
-		btnConfirm.addActionListener(this);
 		btnCancel.addActionListener(this);
 		
 	}
@@ -151,6 +150,8 @@ public class ExportDialog extends JDialog implements ActionListener {
 				lblWarning.setText("내보낼 폴더를 다시 선택해 주세요.");
 			}
 		} else if(e.getSource().equals(btnConfirm)) {
+			System.out.println(11);
+			System.out.println(e);
 			String[] options = { "내보내기", "취소" };
 			int selected = JOptionPane.showOptionDialog(this, 
 					txtPath.getText() + "로 선택된 내용을 보냅니다. 시작할까요?", 
@@ -158,13 +159,6 @@ public class ExportDialog extends JDialog implements ActionListener {
 					JOptionPane.OK_CANCEL_OPTION, 
 					JOptionPane.QUESTION_MESSAGE, 
 					null, options, options[1]);
-			
-
-			System.out.println("");
-			System.out.println("");
-			System.out.println("");
-			System.out.println("");
-			System.out.println("");
 			
 			if (selected == 0) { 
 				File backDir = new File(txtPath.getText());
@@ -361,8 +355,10 @@ public class ExportDialog extends JDialog implements ActionListener {
 		
 		for(EmployeeDto dto : eDto) {
 			File photoFile = new File (photoFolder, dto.getPhoto());
-			FileReceiver receiver = new FileReceiver(photoFile, null);
-			receiver.start();
+			if(!photoFile.exists()) {
+				FileReceiver receiver = new FileReceiver(photoFile, null);
+				receiver.start();				
+			}
 		}
 	}
 }
