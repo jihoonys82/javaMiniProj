@@ -114,9 +114,15 @@ public class QuizPanel extends JPanel implements ActionListener {
 		dtos = dao.getQuizData();
 		Random rand = new Random();
 		answerIdx = rand.nextInt(idx);
-		int hintIdx = rand.nextInt(idx-1);
-		if(hintIdx == answerIdx) {
-			hintIdx = (answerIdx==0) ? hintIdx++ : hintIdx--; 
+		boolean hintBool = rand.nextBoolean();
+		if(answerIdx==0) {
+			hintIdx = (hintBool)? answerIdx+2 : answerIdx+1;
+		}
+		else if(answerIdx==1) {
+			hintIdx = (hintBool)? answerIdx+1 : answerIdx-1;
+		}
+		else {
+			hintIdx = (hintBool) ? answerIdx-1 : answerIdx -2; 
 		}
 		
 		// load images
