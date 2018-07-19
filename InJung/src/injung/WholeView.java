@@ -1,5 +1,7 @@
 package injung;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -15,7 +17,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
+
 
 import injung.model.EmployeeDto;
 import injung.model.InJungDao;
@@ -112,6 +116,7 @@ public class WholeView extends JPanel implements ActionListener, MouseListener{
 		tableView.getTableHeader().setReorderingAllowed(false);
 		tableView.getTableHeader().setResizingAllowed(false);
 		tableView.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		tableView.setBackground(new Color(235, 235, 235));
 		
 		// 테이블에 데이터 넣기(row)
 		for (EmployeeDto list : listDto) {
@@ -158,15 +163,19 @@ public class WholeView extends JPanel implements ActionListener, MouseListener{
 		add(wholePanel); // wholeView Panel 추가
 
 	}
-
 	
+
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		clicktable = tableView.getSelectedRow();
+		if(e.getButton() == 1)
+		 {
+		    clicktable = tableView.getSelectedRow();
+				
+			JDialog dialog = new DetailDialog(new EmployeeInfoPanel(listDto.get(clicktable).getEmployeeId(), true));
+			dialog.setSize(700, 400);
+			dialog.setVisible(true);
+		 }
 		
-		JDialog dialog = new DetailDialog(new EmployeeInfoPanel(listDto.get(clicktable).getEmployeeId(), true));
-		dialog.setSize(700, 400);
-		dialog.setVisible(true);
 	}
 
 	@Override

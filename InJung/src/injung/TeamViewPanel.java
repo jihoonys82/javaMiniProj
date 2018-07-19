@@ -285,18 +285,20 @@ import injung.model.TeamDto;
  	}
 
  	private void setTeamPageIndex(String team) {
-		int TempNum = dao.countEmployee(team);
-		if(TempNum%idx==0) {
-			Max_Page = TempNum/idx;
-		} else {
-			Max_Page = (TempNum/idx)+1;
-		}
-		CountPage = 1;
-		lblCurIdx.setText( ((Integer)CountPage).toString() );
-		lblMaxIdx.setText( "/" + ((Integer)Max_Page).toString() );
-		
-		lastEmpIds = new int[Max_Page];
-		lastEmpIds[0] = 1;
+ 		if(dao.countEmployee(team) != 0) {
+			int TempNum = dao.countEmployee(team);
+			if(TempNum%idx==0) {
+				Max_Page = TempNum/idx;
+			} else {
+				Max_Page = (TempNum/idx)+1;
+			}
+			CountPage = 1;
+			lblCurIdx.setText( ((Integer)CountPage).toString() );
+			lblMaxIdx.setText( "/" + ((Integer)Max_Page).toString() );
+			
+			lastEmpIds = new int[Max_Page];
+			lastEmpIds[0] = 1;
+ 		}
 	}
  	 
  	private void setTeamPageLoad(String team, int lastEmpId) {
@@ -328,8 +330,6 @@ import injung.model.TeamDto;
 		}		
 	}
 	
- 	// 할일 : 팀 선택 안됬을때 상세보기 누를시 널포인터 오류 해결
- 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(btnDetailView[0])) {
