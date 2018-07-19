@@ -172,6 +172,7 @@ public class WholeView extends JPanel implements ActionListener, MouseListener{
 				
 			JDialog dialog = new DetailDialog(new EmployeeInfoPanel(listDto.get(clicktable).getEmployeeId(), true));
 			dialog.setSize(700, 400);
+			dialog.setLocationRelativeTo(this);
 			dialog.setResizable(false); // 창 사이즈 조절 못하게 하기
 			dialog.setVisible(true);
 		 }
