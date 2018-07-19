@@ -1,7 +1,6 @@
 package injung;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -17,19 +16,19 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
-import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
-
 
 import injung.model.EmployeeDto;
 import injung.model.InJungDao;
 
 /*
  * 작성 일자 : 2018.07.01
- * 수정 일자 : 2018.07.14
- *  - 컬럼 높이 수정
+ * 수정 일자 : 2018.07.19
+ *  - 더블 클릭으로 Dialog 불려오게끔 수정
+ *  - 필요없는 import 삭제
  * 
  * 작성자 : 권미현
+ * 수정자 : 권미현
  * 
  * 레코드 조회기능 - 전체보기
  */
@@ -167,7 +166,7 @@ public class WholeView extends JPanel implements ActionListener, MouseListener{
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if(e.getButton() == 1)
+		if(e.getButton() == 1 && e.getClickCount() == 2) // 왼 버튼 && 더블 클릭 시
 		 {
 		    clicktable = tableView.getSelectedRow();
 				
