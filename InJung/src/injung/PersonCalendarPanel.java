@@ -43,7 +43,14 @@ public class PersonCalendarPanel extends JPanel implements MouseListener {
 	
 	private int id;
 	private int finish;
+	private int calendarId;
+	// ------------------------- //
 	
+	// Date
+	private Date date; // 날짜
+	private SimpleDateFormat dateFormat; // 날짜 형식
+	
+	// NewTaskDialog
 	private NewTaskDialog dialog;
 	
 	
@@ -105,6 +112,7 @@ public class PersonCalendarPanel extends JPanel implements MouseListener {
 	}
 	
 	private void initButtonPanel() {
+		
 		cButtonPanel = new JPanel();
 		
 		addButton = new JButton("일정 추가");
@@ -220,6 +228,7 @@ public class PersonCalendarPanel extends JPanel implements MouseListener {
 		tab.setPreferredSize(new Dimension(850, 250)); // jScrollPane(birthTable) 크기 지정
 		
 		add(tab);
+		
 	}
 
 	
@@ -244,12 +253,11 @@ public class PersonCalendarPanel extends JPanel implements MouseListener {
 	 		// 확인을 누를시
 	 		if (yesNo == 0) {
 	 			
-	 			Date date = new Date();
-	 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
-	 			
+	 			date = new Date();
+	 			dateFormat = new SimpleDateFormat("yyyy.MM.dd");	
 //	 			System.out.println(dateFormat.format(date)); // 현재 날짜 출력 확인_테스트 완료
 	 			
-	 			int calendarId = calendarDto.get(calenTable.getSelectedRow()).getCalendarId();
+	 			calendarId = calendarDto.get(calenTable.getSelectedRow()).getCalendarId();
 //	 			System.out.println("Calendar ID : " + calendarId); // 클릭한 로우 Calendar ID_테스트 완료
 	 			
 	 			finish = dao.finishTask(calendarId, 
@@ -266,31 +274,20 @@ public class PersonCalendarPanel extends JPanel implements MouseListener {
 	 		} // yesNo if문
 			
 		}
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		
 		
 	}
 
 	@Override
-	public void mouseExited(MouseEvent e) {
-		
-		
-	}
+	public void mouseEntered(MouseEvent e) {}
 
 	@Override
-	public void mousePressed(MouseEvent e) {
-		
-		
-	}
+	public void mouseExited(MouseEvent e) {}
 
 	@Override
-	public void mouseReleased(MouseEvent e) {
-		
-		
-	}
+	public void mousePressed(MouseEvent e) {}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {}
 	// ----------------
 	
 }
