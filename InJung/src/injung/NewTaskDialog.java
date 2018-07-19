@@ -24,6 +24,14 @@ import injung.model.InJungDao;
  * @author Jihoon Jeong
  *
  */
+
+/*
+ * 수정일자 : 2018.07.19
+ * 수정자 : 권미현
+ * 
+ *  - 생성자 통합
+ */
+
 public class NewTaskDialog extends JDialog implements ActionListener {
 	private static final long serialVersionUID = -6801677544922886092L;
 	
@@ -60,11 +68,16 @@ public class NewTaskDialog extends JDialog implements ActionListener {
 	private InJungDao dao = InJungDao.getInstance();
 	private CalendarDto dto = new CalendarDto();
 	
+	
 	/**
-	 * open New Task dialog. but not recommended.
-	 * Please use NewTaskDialog(int employeeId) 
+	 * Input new task dialog for employee
+	 * employeeId is required.
+	 * @param employeeId
 	 */
-	public NewTaskDialog() {
+	public NewTaskDialog(int employeeId) {	// 2018.07.19 : 생성자 통합
+		
+		this.empId = employeeId; 
+		
 		setTitle("새 태스크");
 		getContentPane().setLayout(null);
 		
@@ -139,16 +152,7 @@ public class NewTaskDialog extends JDialog implements ActionListener {
 		btnCancel.addActionListener(this);
 		
 		setVisible(true);
-	}
-	
-	/**
-	 * Input new task dialog for employee
-	 * employeeId is required.
-	 * @param employeeId
-	 */
-	public NewTaskDialog(int employeeId) {
-		this();
-		this.empId = employeeId; 
+		
 	}
 	
 	private boolean fieldValidation() {

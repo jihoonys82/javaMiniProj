@@ -2,6 +2,7 @@ package injung;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -19,16 +20,14 @@ import injung.model.InJungDao;
 
 /*
  * 작성일자 : 2018.07.17
- * 수정일자 : 2018.07.18
+ * 수정일자 : 2018.07.19
  * 
  * 작성자 : 권미현
  * 수정자 : 권미현
  * 
  * 개인 일정
  * 
- * - 탭뷰 메소드 추가 : initTab()
- * - JTable 사이즈 조절 및 사이즈 고정, 컬럼 이동 불가 설정
- * - 일정 추가 버튼 추가 (아직 기능 구현 x) 및 레이아웃 수정
+ * - 일정 추가 Dialog 연결 : NewTaskDialog
  * 
  */
 
@@ -36,7 +35,10 @@ import injung.model.InJungDao;
 public class PersonCalendarPanel extends JPanel{
 	
 	private int id;
-
+	
+	private NewTaskDialog dialog;
+	
+	
 	// Button Panel
 	private JPanel cButtonPanel;
 	
@@ -60,6 +62,10 @@ public class PersonCalendarPanel extends JPanel{
 	private JScrollPane jScrollPane; // 컴포넌트 스크롤바
 	
 	
+	// Tab (개인일정, 이달의 생일)
+	private JTabbedPane tab;
+	
+	
 	// DAO, DTO (일정)
 	private static InJungDao dao;
 	private ArrayList<CalendarDto> calendarDto;
@@ -68,13 +74,12 @@ public class PersonCalendarPanel extends JPanel{
 	private static Vector<String> vDto; 
 	
 	
-	// Tab (개인일정, 이달의 생일)
-	private JTabbedPane tab;
+	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize(); // 모니터 사이즈
 	
 	
 	public PersonCalendarPanel(int id, String msg, boolean tab) {
 		
-		System.out.println("PersonCalendar getId : " + id);
+//		System.out.println("PersonCalendar getId : " + id);	// 테스트 완료
 		
 		this.id = id;
 		
@@ -82,12 +87,6 @@ public class PersonCalendarPanel extends JPanel{
 		dao = InJungDao.getInstance();
 		calendarDto = new ArrayList<>();
 		calendarDto = dao.getAllTasks(id);
-		
-		
-//		if (!tab) {
-//			setLayout(new FlowLayout(FlowLayout.TRAILING, 40, 5));
-//			initButtonPanel();
-//		}
 		
 		if (msg == "normal") {
 			initTablePanel(calendarDto, tab);
@@ -106,6 +105,17 @@ public class PersonCalendarPanel extends JPanel{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+//				System.out.println("addButton get ID : " + id); // id 값을 받아왔는지 테스트_완료
+				
+				dialog = new NewTaskDialog(id);
+
+				dialog.setSize(420, 400);
+				
+				// 중간에 배치하기
+				dialog.setLocation((screenSize.width - dialog.getWidth())/2, 
+						(screenSize.height - dialog.getHeight())/2);
+				
+				dialog.setVisible(true);
 				
 			}
 		});
@@ -139,11 +149,9 @@ public class PersonCalendarPanel extends JPanel{
 		};
 		
 		calenTable = new JTable(tableModel); // JTable에 DefaultTableModel 설정
-		System.out.println("테이블 속성까지 완료");
 		
 		// 테이블에 데이터 넣기(row)
 		for (CalendarDto list : calendarDto) {
-			System.out.println("데이터 넣기!!");
 			vDto = new Vector<>();
 			
 			vDto.add(String.valueOf(list.getCalendarId()));
@@ -155,7 +163,7 @@ public class PersonCalendarPanel extends JPanel{
 			vDto.add(list.getNote());
 			
 			tableModel.addRow(vDto); // 벡터로 밖에 값을 못 집어넣음
-			System.out.println(vDto);
+//			System.out.println(vDto);	// vDto에 값이 제대로 넣어졌는지... 테스트 완료
 		}
 		
 		// 컬럼 사이즈
@@ -176,7 +184,7 @@ public class PersonCalendarPanel extends JPanel{
 		// calenTable 사이즈
 		// 	calenTable를 넣은 jScrollPane를 수정해야 크기 조절이 된다.
 		if(!tab) {
-			setLayout(new FlowLayout(FlowLayout.TRAILING, 40, 5));
+			setLayout(new FlowLayout(FlowLayout.TRAILING, 40, 5));	// root 레이아웃 설정
 			initButtonPanel();
 			jScrollPane.setPreferredSize(new Dimension(900, 500));
 		} else {
@@ -193,8 +201,6 @@ public class PersonCalendarPanel extends JPanel{
 	public void initTab() { // 개인 일정 & 이달의 생일 탭뷰
 		
 		tab = new JTabbedPane();
-		
-//		tab.setLayout(new FlowLayout(FlowLayout.CENTER));
 		
 		tab.add("개인 일정", new PersonCalendarPanel(id, "normal", true));
 		tab.add("이달의 생일", new BirthdayPanel());
