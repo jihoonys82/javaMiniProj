@@ -182,9 +182,10 @@ public class FindIdPanel extends JDialog implements ActionListener, KeyListener 
 			
 		if (eDto == null) {		// 없는 사번으로 비밀번호찾기를 시도하면 경고 다이얼로그 호출 
 			JOptionPane.showMessageDialog(null,"없는 정보입니다");	
+		} else {
+			txtQuestion.setText(eDto.getLostIdQuestion());				
 		}
 		
-		txtQuestion.setText(eDto.getLostIdQuestion());	
 	}	// showData
 	
 
