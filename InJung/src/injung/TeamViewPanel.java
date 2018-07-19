@@ -328,30 +328,38 @@ import injung.model.TeamDto;
 		}		
 	}
 	
+ 	// 할일 : 팀 선택 안됬을때 상세보기 누를시 널포인터 오류 해결
+ 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(btnDetailView[0])) {
-			if(dtos.get(0).getName()!="-") {
+			if(cbTeam.getSelectedItem() != "") {
+				if(dtos.get(0).getName()!="-") {
 				JDialog dialog = new DetailDialog(new EmployeeInfoPanel(dtos.get(0).getEmployeeId(), true));
 				dialog.setLocationRelativeTo(this);
 				dialog.setSize(700, 400);
 				dialog.setVisible(true);
+				}
 			}
 			
 		} else if(e.getSource().equals(btnDetailView[1])) {
-			if(dtos.get(1).getName()!="-") {
+			if(cbTeam.getSelectedItem() != "") {
+				if(dtos.get(1).getName()!="-") {
 				JDialog dialog = new DetailDialog(new EmployeeInfoPanel(dtos.get(1).getEmployeeId(), true));
 				dialog.setLocationRelativeTo(this);
 				dialog.setSize(700, 400);
 				dialog.setVisible(true);
+				}
 			}
 			
 		} else if(e.getSource().equals(btnDetailView[2])) {
-			if(dtos.get(2).getName()!="-") {
+			if(cbTeam.getSelectedItem() != "") {
+				if(dtos.get(2).getName()!="-") {
 				JDialog dialog = new DetailDialog(new EmployeeInfoPanel(dtos.get(2).getEmployeeId(), true));
 				dialog.setLocationRelativeTo(this);
 				dialog.setSize(700, 400);
 				dialog.setVisible(true);
+				}
 			}
 		
 		} else if(e.getSource().equals(btnPrivView)) {
