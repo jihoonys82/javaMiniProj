@@ -156,8 +156,8 @@ import injung.model.TeamDto;
 			
 			// set photoPane
 			photoPane[i] = new JPanel();
-			photoPane[i].setBounds(12, 10, 140, 120);
-			lblPhoto[i] = new JLabel("Photo");
+			photoPane[i].setBounds(10, 5, 120, 130);
+			lblPhoto[i] = new JLabel("");
 			
 			// set personInfoPane
 			personInfoPane[i] = new JPanel();
