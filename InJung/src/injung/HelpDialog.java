@@ -52,7 +52,7 @@ public class HelpDialog extends JDialog implements ListSelectionListener, Action
 		
 		//TextArea 설정
 		txtHelp = new JTextArea();
-		txtHelp.setFont(new Font("고딕",Font.BOLD,14));
+		txtHelp.setFont(new Font("고딕",Font.PLAIN,14));
 		txtHelp.setEditable(false);
 		txtHelp.setLineWrap(true);
 		txtHelp.setBackground(new Color(245, 245, 245));	
@@ -141,7 +141,14 @@ public class HelpDialog extends JDialog implements ListSelectionListener, Action
 		}
 		//캘린더 메뉴 도움말
 		if(list.getSelectedIndex()==3) {
-			txt="<개인 일정 보기>\r\n";
+			txt="<개인 일정보기>\r\n"
+					+ "개인의 일정을 등록하고 관리할 수 있습니다\r\n"
+					+ "\r\n"
+					+ "<팀 일정보기>\r\n"
+					+ "미구현\r\n"
+					+ "\r\n"
+					+ "<전체 일정보기>\r\n"
+					+ "미구현";
 			txtHelp.setText(txt);
 			txtHelp.setCaretPosition(0);
 			
