@@ -4,17 +4,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.text.ParseException;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
-import javax.swing.text.MaskFormatter;
+import javax.swing.JTextField;
 
 import injung.model.EmployeeDto;
 import injung.model.InJungDao;
@@ -35,7 +33,7 @@ class LoginPanel extends JDialog implements ActionListener, KeyListener {
 	private JLabel lblEmployeeId;
 	private JLabel lblPw;
 	private JLabel lblWarn;
-	private JFormattedTextField txtEmployeeId;
+	private JTextField txtEmployeeId;
 	private JPasswordField txtPw;
 	private JButton btnLogin;
 	private JButton btnFindInfo;
@@ -64,15 +62,8 @@ class LoginPanel extends JDialog implements ActionListener, KeyListener {
 
 		lblPw = new JLabel("패스워드 : "); // 패스워드 레이블 생성
 		lblPw.setBounds(46, 90, 77, 21);
-		
-		MaskFormatter format = null;		// MaskFormatter를 이용해 숫자 4자리만 입력받음 
-		try {
-			format = new MaskFormatter("####");
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		
-		txtEmployeeId = new JFormattedTextField(format); // 사번 텍스트 생성
+
+		txtEmployeeId = new JTextField(); // 사번 텍스트 생성
 		txtEmployeeId.setBounds(152, 53, 154, 21);
 		
 		txtPw = new JPasswordField(); // 패스워드 텍스트 생성
@@ -132,14 +123,19 @@ class LoginPanel extends JDialog implements ActionListener, KeyListener {
 
 		} else if (e.getSource().equals(btnFindInfo)) {		// 패스워드 찾기 버튼을 눌렀을 때
 			
-			if (txtEmployeeId.getText().equals("")) {	// 1. 사번을 입력하지 않았으면 
+			if (txtEmployeeId.getText().isEmpty()) {	// 1. 사번을 입력하지 않았으면 
 				JOptionPane.showMessageDialog(null, "사번을 입력해주세요");					
-			} else if (!(txtEmployeeId.getText().equals(""))) {	// 2. 사번이 입력되어있으면  			
-				String strId = txtEmployeeId.getText().trim();			
-				FindIdPanel findIddialog = new FindIdPanel(this, "Create new password", true ,strId);	// 비밀번호 변경 다이얼로그로 이동	
-				findIddialog.setLocation(525, 300);
-				findIddialog.setSize(500, 300);
-				findIddialog.setVisible(true);
+			} else {	// 2. 사번이 입력되어있으면  			
+				String strId = txtEmployeeId.getText();
+				
+				if(dao.isExist(Integer.parseInt(strId))) {
+					FindIdPanel findIddialog = new FindIdPanel(this, "Create new password", true ,strId);	// 비밀번호 변경 다이얼로그로 이동	
+					findIddialog.setLocation(525, 300);
+					findIddialog.setSize(500, 300);
+					findIddialog.setVisible(true);
+				} else {
+					JOptionPane.showMessageDialog(this, "해당 직원 정보가 없습니다.");
+				}
 			}
 		}
 	}
