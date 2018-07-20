@@ -135,9 +135,9 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
     		}
     	};    	
     	tbTeamRecord = new JTable(tbDefault);
-    	tbTeamRecord.setFont(new Font("°íµñ",Font.BOLD,16));
+    	tbTeamRecord.setFont(new Font("°íµñ",Font.BOLD,14));
     	tbTeamRecord.setRowHeight(40);
-    	tbTeamRecord.setBackground(new Color(235,235,235));
+    	tbTeamRecord.setBackground(new Color(238,238,238));
     	tbTeamRecord.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     	
     	//Çà Vector¿¡ TeamDto µ¥ÀÌÅÍ ³Ö±â  	
@@ -160,8 +160,8 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
     	// Å×ÀÌºí Çì´õ ¼³Á¤
     	JTableHeader header = tbTeamRecord.getTableHeader();
     	header.setPreferredSize(new Dimension(970, 40));
-    	header.setFont(new Font("°íµñ",Font.BOLD,16));
-    	header.setBackground(new Color(200, 200, 200));
+    	header.setFont(new Font("°íµñ",Font.BOLD,14));
+    	header.setBackground(new Color(238, 238, 238));
     	header.setResizingAllowed(false);
     	header.setReorderingAllowed(false);
 
@@ -209,19 +209,19 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
     	
     	//ÄÄÆ÷³ÍÆ®
     	lblTeam = new JLabel("ºÎ ¼­");
-    	lblTeam.setFont(lblTeam.getFont().deriveFont(16.0f));
+    	lblTeam.setFont(lblTeam.getFont().deriveFont(14.0f));
     	lblTeam.setBounds(new Rectangle(5, 5, 140, 45));
     	lblTeam.setHorizontalAlignment(JLabel.CENTER);
     	lblTeam.setBorder(BorderFactory.createLineBorder(Color.BLACK));   	
     	
     	lblRole = new JLabel("Role");
-    	lblRole.setFont(lblRole.getFont().deriveFont(16.0f));
+    	lblRole.setFont(lblRole.getFont().deriveFont(14.0f));
     	lblRole.setBounds(new Rectangle(5, 55, 140, 45));
     	lblRole.setHorizontalAlignment(JLabel.CENTER);
     	lblRole.setBorder(BorderFactory.createLineBorder(Color.BLACK));   	
     	
     	lblLeader = new JLabel("Leader");
-    	lblLeader.setFont(lblLeader.getFont().deriveFont(16.0f));
+    	lblLeader.setFont(lblLeader.getFont().deriveFont(14.0f));
     	lblLeader.setBounds(new Rectangle(5, 105, 140, 45));
     	lblLeader.setHorizontalAlignment(JLabel.CENTER);
     	lblLeader.setBorder(BorderFactory.createLineBorder(Color.BLACK));   	
@@ -280,16 +280,12 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
     	
     	//ÄÄÆ÷³ÍÆ®
     	btnInsert = new JButton("»ý¼º");
-    	btnInsert.setFont(new Font("°íµñ",Font.BOLD,14));
     	btnInsert.setBounds(5, 80, 130, 30);
     	btnCancel = new JButton("Ãë¼Ò");
-    	btnCancel.setFont(new Font("°íµñ",Font.BOLD,14));
     	btnCancel.setBounds(5, 120, 130, 30);
     	btnEdit = new JButton("¼öÁ¤");
-    	btnEdit.setFont(new Font("°íµñ",Font.BOLD,14));
     	btnEdit.setBounds(158, 80, 130, 30);
     	btnDelete = new JButton("»èÁ¦");
-    	btnDelete.setFont(new Font("°íµñ",Font.BOLD,14));
     	btnDelete.setBounds(158, 120, 130, 30);		
 
     	btnPane.add(btnInsert);

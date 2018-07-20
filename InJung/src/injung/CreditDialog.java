@@ -78,8 +78,10 @@ public class CreditDialog extends JDialog implements ActionListener {
 		btnClose.addActionListener(this);
 	}
 
+	//클릭이벤트
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		//닫기 메뉴
 		if(e.getSource() == btnClose) {
 			dispose();
 		}

@@ -93,9 +93,10 @@ public class AboutInjungDialog extends JDialog implements ActionListener{
 		btnCancel.addActionListener(this);		
 	}
 
+	//클릭 이벤트
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
+		//버튼 닫기
 		if(e.getSource()==btnCancel) {
 			dispose();
 		}
