@@ -5,6 +5,8 @@ import java.awt.Font;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -30,7 +32,7 @@ import injung.model.EmployeeDto;
 import injung.model.InJungDao;
 import injung.model.TeamDto;
 
-public class TeamRecordPanel extends JPanel implements ActionListener, MouseListener{
+public class TeamRecordPanel extends JPanel implements ActionListener, MouseListener, FocusListener{
 
 	/**
 	 * 	 <팀 레코드 판넬>
@@ -161,7 +163,7 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
     	JTableHeader header = tbTeamRecord.getTableHeader();
     	header.setPreferredSize(new Dimension(970, 40));
     	header.setFont(new Font("고딕",Font.BOLD,14));
-    	header.setBackground(new Color(238, 238, 238));
+    	header.setBackground(new Color(200, 200, 200));
     	header.setResizingAllowed(false);
     	header.setReorderingAllowed(false);
 
@@ -230,21 +232,24 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
     	txtTeam.setBounds(150, 5, 500, 45);
     	txtTeam.setFont(lblTeam.getFont());
     	txtTeam.setEditable(true);
+       	txtTeam.setText("6자 이내로 입력하세요:)");
+    	txtTeam.setForeground(Color.GRAY);
     	txtTeam.setBackground(Color.white);
-    	txtTeam.setForeground(Color.BLACK);
     	
     	txtRole = new JTextField();
     	txtRole.setBounds(150, 55, 500, 45);
     	txtRole.setFont(lblRole.getFont());
     	txtRole.setEditable(true);
+    	txtRole.setText("33자 이내로 입력하세요:)");
+    	txtRole.setForeground(Color.GRAY);
     	txtRole.setBackground(Color.white);
-    	txtRole.setForeground(Color.BLACK);
     	
-
+ 
+    	
       	//콤보박스에 employee DTO집어넣기
     	dtos_Employee=dao.getAllEmployee();
     	String data[] = new String[dtos_Employee.size()+1];
-    	data[0] = "";
+    	data[0] = "사원을 선택하세요:)";
 
     	for(int i=0 ; i<dtos_Employee.size() ; i++) {
     		data[i+1] = dtos_Employee.get(i).getName()+"_사번:"+dtos_Employee.get(i).getEmployeeId();
@@ -255,8 +260,8 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
     	cbLeader.setBounds(150, 105, 500, 45);
     	cbLeader.setFont(lblLeader.getFont());
     	cbLeader.setEditable(false);
+    	cbLeader.setForeground(Color.GRAY);
     	cbLeader.setBackground(Color.WHITE);
-    	cbLeader.setForeground(Color.BLACK);
     	
     	inputPane.add(lblTeam);
     	inputPane.add(lblRole);
@@ -266,6 +271,12 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
     	inputPane.add(cbLeader);
     	
     	add(inputPane);
+    	
+    	//Place Holder용 포커스 이벤트
+    	
+    	txtTeam.addFocusListener(this);
+    	txtRole.addFocusListener(this);
+    	cbLeader.addFocusListener(this);
     }
     
     //버튼판넬
@@ -309,7 +320,9 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
     		//예외처리
     		if(txtTeam.getText().trim().equals("")
 					||txtRole.getText().trim().equals("")
-					||cbLeader.getSelectedIndex()==0) {
+					||cbLeader.getSelectedIndex()==0
+					||txtTeam.getText().trim().equals("6자 이내로 입력하세요:)")
+					||txtRole.getText().trim().equals("33자 이내로 입력하세요:)")){
 				JOptionPane.showMessageDialog(
 						this,
 						"내용을 빠짐없이 입력하세요",
@@ -384,9 +397,13 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
 			
 			dao.deleteTeam(teamName);
 			
-			txtTeam.setText("");
-			txtRole.setText("");
+			txtTeam.setText("6자 이내로 입력하세요:)");
+			txtRole.setText("33자 이내로 입력하세요:)");
 			cbLeader.setSelectedIndex(0);
+			
+			txtTeam.setForeground(Color.GRAY);
+			txtRole.setForeground(Color.GRAY);
+			cbLeader.setForeground(Color.GRAY);
 			
 			//JTABLE
 			tbDefault.removeRow(tbTeamRecord.getSelectedRow());
@@ -407,7 +424,9 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
     		//예외처리
 			if(txtTeam.getText().trim().equals("")
 					||txtRole.getText().trim().equals("")
-					||cbLeader.getSelectedIndex()==0) {
+					||cbLeader.getSelectedIndex()==0
+					||txtTeam.getText().trim().equals("6자 이내로 입력하세요:)")
+					||txtRole.getText().trim().equals("33자 이내로 입력하세요:)")){
 				JOptionPane.showMessageDialog(
 						this,
 						"내용을 빠짐없이 입력하세요",
@@ -507,8 +526,11 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
 		
 		if(e.getSource()==btnCancel) {
 			//비우기
-			txtTeam.setText("");
-			txtRole.setText("");
+	    	txtTeam.setForeground(Color.GRAY);
+			txtTeam.setText("6자 이내로 입력하세요:)");
+	    	txtRole.setForeground(Color.GRAY);
+			txtRole.setText("33자 이내로 입력하세요:)");
+	    	cbLeader.setForeground(Color.GRAY);
 			cbLeader.setSelectedIndex(0);
 		}
 		
@@ -550,6 +572,9 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
 	//마우스 클릭 이벤트 - 테이블 값 띄우기
 	@Override
 	public void mouseClicked(MouseEvent e) {
+    	txtTeam.setForeground(Color.BLACK);
+    	txtRole.setForeground(Color.BLACK);
+    	cbLeader.setForeground(Color.BLACK);
 		txtTeam.setText((String) tbTeamRecord.getValueAt(tbTeamRecord.getSelectedRow(), 0));
 		txtRole.setText((String) tbTeamRecord.getValueAt(tbTeamRecord.getSelectedRow(), 1));
 		
@@ -565,6 +590,45 @@ public class TeamRecordPanel extends JPanel implements ActionListener, MouseList
 	public void mouseEntered(MouseEvent e) {}
 	@Override
 	public void mouseExited(MouseEvent e) {}
+
+	@Override
+	public void focusGained(FocusEvent e) {
+		if(e.getSource()==txtTeam) {
+			if(txtTeam.getText().equals("6자 이내로 입력하세요:)")){
+				txtTeam.setText("");
+				txtTeam.setForeground(Color.BLACK);
+			}
+		}
+		if(e.getSource()==txtRole) {
+			if(txtRole.getText().equals("33자 이내로 입력하세요:)")){
+				txtRole.setText("");
+				txtRole.setForeground(Color.BLACK);
+			}
+		}
+		if(e.getSource()==cbLeader) {
+	    	cbLeader.setForeground(Color.BLACK);
+		}
+	}
+
+	@Override
+	public void focusLost(FocusEvent e) {
+		if(e.getSource()==txtTeam) {
+			if(txtTeam.getText().trim().equals("")){
+				txtTeam.setText("6자 이내로 입력하세요:)");
+				txtTeam.setForeground(Color.GRAY);
+			}
+		}
+		if(e.getSource()==txtRole) {
+			if(txtRole.getText().trim().equals("")){
+				txtRole.setText("33자 이내로 입력하세요:)");
+				txtRole.setForeground(Color.GRAY);
+			}
+		}
+		if(e.getSource()==cbLeader) {
+	    	if(cbLeader.getSelectedIndex()==0)
+	    		cbLeader.setForeground(Color.GRAY);
+		}
+	}
 }
 
 

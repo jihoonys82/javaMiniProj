@@ -52,7 +52,7 @@ public class AboutInjungDialog extends JDialog implements ActionListener{
 		txtContent.setBounds(0, 0, 400, 130);
 		txtContent.setColumns(20);
 		txtContent.setRows(10);
-		txtContent.setFont(new Font("∞ÌµÒ",Font.BOLD,14));
+		txtContent.setFont(new Font("∞ÌµÒ",Font.PLAIN,14));
 		txtContent.setEditable(false);
 		txtContent.setBackground(new Color(245, 245, 245));
 		txtContent.setText(txt);
@@ -67,7 +67,7 @@ public class AboutInjungDialog extends JDialog implements ActionListener{
 		//txtMaker º≥¡§
 		txtMaker = new JTextArea();
 		txt = " ¡¶¿€ : ¥‰¥‰«—≥≤∏≈µÈ ";
-		txtMaker.setFont(new Font("∞ÌµÒ",Font.BOLD,14));
+		txtMaker.setFont(new Font("∞ÌµÒ",Font.PLAIN,14));
 		txtMaker.setBounds(180, 20, 200, 30);
 		txtMaker.setEditable(false);
 		txtMaker.setBackground(new Color(245, 245, 245));
