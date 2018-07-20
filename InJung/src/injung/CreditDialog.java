@@ -39,7 +39,7 @@ public class CreditDialog extends JDialog implements ActionListener {
 		//txtContent ¼³Á¤
 		txtContent = new JTextArea();
 		txtContent.setBounds(10, 10, 360, 430);
-		txtContent.setFont(new Font("°íµñ",Font.BOLD,16));
+		txtContent.setFont(new Font("°íµñ",Font.PLAIN,16));
 		txtContent.setEditable(false);
 		txtContent.setLineWrap(true);
 		txtContent.setBackground(new Color(238, 238, 238));
