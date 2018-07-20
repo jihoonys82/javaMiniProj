@@ -958,6 +958,54 @@ public class InJungDao {
 	}
 	
 	/**
+	 * get single task
+	 * @param calendarId
+	 * @return CalenDto
+	 */
+	public CalendarDto getTask(int calendarId) {
+		Connection connection = null;
+		PreparedStatement pstmt = null;
+		ResultSet set = null;
+		String query = "SELECT * FROM Calendar"
+				+ " WHERE calendarId = ?";
+		CalendarDto dto = null;
+
+		try {
+			connection = getConnection();
+			pstmt = connection.prepareStatement(query);
+			pstmt.setInt(1, calendarId);
+			set = pstmt.executeQuery();
+
+			while (set.next()) {
+				dto = new CalendarDto();
+
+				dto.setCalendarId(set.getInt("calendarId"));
+				dto.setTaskName(set.getString("taskName"));
+				dto.setStartDate(set.getString("startDate"));
+				dto.setExpectEndDate(set.getString("expectEndDate"));
+				dto.setActualEndDate(set.getString("actualEndDate"));
+				dto.setStatus(set.getString("status"));
+				dto.setNote(set.getString("note"));
+				dto.setOwnerId(set.getInt("ownerId"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (set != null)
+					set.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (connection != null)
+					connection.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return dto;
+	}
+	
+	/**
 	 * Check employee is exist
 	 * @param employeeId
 	 * @return true: exist, false: not exist
