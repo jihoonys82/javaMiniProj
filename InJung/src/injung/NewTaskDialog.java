@@ -26,12 +26,10 @@ import injung.model.InJungDao;
  */
 
 /*
- * 수정일자 : 2018.07.19
+ * 수정일자 : 2018.07.20
  * 수정자 : 권미현
  * 
- *  - 생성자 통합
- *  - 메소드 setCalendar() 수정 : dto.setActualEndDate("NULL"); → 삭제
- *  - 필요없는 주석 삭제
+ * - 테이블에 데이터 값 넣기
  *  
  */
 
@@ -70,17 +68,17 @@ public class NewTaskDialog extends JDialog implements ActionListener {
 	private int empId; 
 	private InJungDao dao = InJungDao.getInstance();
 	private CalendarDto dto = new CalendarDto();
-	
+	private PersonCalendarPanel pcp;
 	
 	/**
 	 * Input new task dialog for employee
 	 * employeeId is required.
 	 * @param employeeId
 	 */
-	public NewTaskDialog(int employeeId) {	// 2018.07.19 : 생성자 통합
+	public NewTaskDialog(int employeeId, PersonCalendarPanel pcp) {	// 2018.07.19 : 생성자 통합
 		
 		this.empId = employeeId; 
-		
+		this.pcp = pcp;
 		setTitle("새 태스크");
 		getContentPane().setLayout(null);
 		
@@ -208,6 +206,7 @@ public class NewTaskDialog extends JDialog implements ActionListener {
 				
 				if(result==InJungDao.INSERT_DATA_SUCCESS) {
 					JOptionPane.showMessageDialog(this, "입력 성공");
+					pcp.addColumn(dto);
 					this.dispose();
 				} else {
 					JOptionPane.showMessageDialog(this, "입력 실패");

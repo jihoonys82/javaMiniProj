@@ -25,21 +25,18 @@ import injung.model.InJungDao;
 
 /*
  * 작성일자 : 2018.07.17
- * 수정일자 : 2018.07.19
+ * 수정일자 : 2018.07.20
  * 
  * 작성자 : 권미현
  * 수정자 : 권미현
  * 
  * 개인 일정
  * 
- * - 일정 추가 Dialog 연결 : NewTaskDialog
- * - 창 사이즈 조절 못하게 하기
- * - 마우스 이벤트 추가 : Update(finishTask)
- * - 이미 완료된 일정일 경우에 대한 처리 추가
+ * - 일정 추가 후 갱신 : addColumn(CalendarDto cDto) 메소드
  * 
  */
 
-public class PersonCalendarPanel extends JPanel implements MouseListener {
+public class PersonCalendarPanel extends JPanel implements MouseListener, ActionListener{
 	
 	private static final long serialVersionUID = 4045852819553979355L;
 	
@@ -112,6 +109,7 @@ public class PersonCalendarPanel extends JPanel implements MouseListener {
 		}
 		
 	}
+
 	
 	private void initButtonPanel() {
 		
@@ -119,26 +117,8 @@ public class PersonCalendarPanel extends JPanel implements MouseListener {
 		
 		addButton = new JButton("일정 추가");
 		
-		addButton.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-//				System.out.println("addButton get ID : " + id); // id 값을 받아왔는지 테스트_완료
-				
-				dialog = new NewTaskDialog(id);
-
-				dialog.setSize(420, 400);
-				dialog.setResizable(false); // 창 사이즈 조절 못하게 하기
-				
-				// 중간에 배치하기
-				dialog.setLocation((screenSize.width - dialog.getWidth())/2, 
-						(screenSize.height - dialog.getHeight())/2);
-				
-				dialog.setVisible(true);
-				
-			}
-		});
-	
+		addButton.addActionListener(this);
+		
 		cButtonPanel.add(addButton);
 		
 		add(cButtonPanel);	// root container 에 넣기
@@ -207,7 +187,7 @@ public class PersonCalendarPanel extends JPanel implements MouseListener {
 		// calenTable 사이즈
 		// 	calenTable를 넣은 jScrollPane를 수정해야 크기 조절이 된다.
 		if(!tab) {
-			setLayout(new FlowLayout(FlowLayout.TRAILING, 40, 5));	// root 레이아웃 설정
+			setLayout(new FlowLayout(FlowLayout.RIGHT, 40, 5));	// root 레이아웃 설정
 			initButtonPanel();
 			jScrollPane.setPreferredSize(new Dimension(900, 500));
 		} else {
@@ -235,6 +215,24 @@ public class PersonCalendarPanel extends JPanel implements MouseListener {
 	}
 
 	
+	// 일정 추가 후 갱신 메소드 - NewTaskDialog 에서 입력 받은 데이터들 Table 에 넣기
+	public void addColumn(CalendarDto cDto) {
+		vDto = new Vector<>();
+
+		vDto.add(String.valueOf(cDto.getCalendarId()));
+		vDto.add(cDto.getTaskName());
+		vDto.add(cDto.getStartDate());
+		vDto.add(cDto.getExpectEndDate());
+		vDto.add(cDto.getActualEndDate());
+		vDto.add(cDto.getStatus());
+		vDto.add(cDto.getNote());
+
+		tableModel.addRow(vDto);
+		System.out.println(vDto);	// vDto에 값이 제대로 넣어졌는지... 
+		tableModel.fireTableDataChanged();	// 테이블 내용(구조)이 바뀌었다는걸 알리기 = 새로고침
+	}
+	
+	
 	// --- 마우스 이벤트 ---
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -261,7 +259,7 @@ public class PersonCalendarPanel extends JPanel implements MouseListener {
 //	 			System.out.println(dateFormat.format(date)); // 현재 날짜 출력 확인_테스트 완료
 	 			
 	 			calendarId = calendarDto.get(calenTable.getSelectedRow()).getCalendarId();
-//	 			System.out.println("Calendar ID : " + calendarId); // 클릭한 로우 Calendar ID_테스트 완료
+	 			System.out.println("Calendar ID : " + calendarId); // 클릭한 로우 Calendar ID_테스트 완료
 	 			
 	 			
 	 			if (calendarDto.get(calenTable.getSelectedRow()).getActualEndDate() != null) { 
@@ -281,7 +279,11 @@ public class PersonCalendarPanel extends JPanel implements MouseListener {
 	 							"현재 일정을 완료했습니다.",
 	 							"", // Dialog Title
 	 							JOptionPane.INFORMATION_MESSAGE);
+	 					
 	 				} // finish if문
+	 				// Table 에 데이터 넣기
+	 				tableModel.setValueAt(String.valueOf(dateFormat.format(date)), calenTable.getSelectedRow(), 4);
+	 				tableModel.setValueAt("완료", calenTable.getSelectedRow(), 5);
 	 			}
 	 			
 	 		} // yesNo if문
@@ -302,5 +304,25 @@ public class PersonCalendarPanel extends JPanel implements MouseListener {
 	@Override
 	public void mouseReleased(MouseEvent e) {}
 	// ----------------
+	
+	
+	// ActionListener 이벤트
+	@Override
+	public void actionPerformed(ActionEvent e) {
+
+		if(e.getSource().equals(addButton)) {
+
+			dialog = new NewTaskDialog(id, this);
+
+			dialog.setSize(420, 400);
+			dialog.setResizable(false); // 창 사이즈 조절 못하게 하기
+
+			// 중간에 배치하기
+			dialog.setLocation((screenSize.width - dialog.getWidth())/2, 
+					(screenSize.height - dialog.getHeight())/2);
+
+			dialog.setVisible(true);
+		}
+	}
 	
 }
